@@ -1,0 +1,883 @@
+{
+  "$schema": "./node_modules/json-server/schema.json",
+  "products": [
+    {
+      "id": "p1",
+      "name": "iPhone 15 Pro",
+      "slug": "iphone-15-pro",
+      "category": "phone",
+      "brand": "Apple",
+      "price": 28990000,
+      "quantity": 1,
+      "discount": 10,
+      "rating": 4.8,
+      "sold": 1200,
+      "stock": 15,
+      "tags": [
+        "ios",
+        "flagship",
+        "camera"
+      ],
+      "createdAt": "2025-01-10"
+    },
+    {
+      "id": "p2",
+      "name": "Samsung Galaxy S24",
+      "slug": "samsung-galaxy-s24",
+      "category": "phone",
+      "brand": "Samsung",
+      "price": 24990000,
+      "quantity": 1,
+      "discount": 5,
+      "rating": 4.6,
+      "sold": 980,
+      "stock": 0,
+      "tags": [
+        "android",
+        "amoled"
+      ],
+      "createdAt": "2025-01-05"
+    },
+    {
+      "id": "p3",
+      "name": "MacBook Air M2",
+      "slug": "macbook-air-m2",
+      "quantity": 1,
+      "category": "laptop",
+      "brand": "Apple",
+      "price": 27990000,
+      "discount": 15,
+      "rating": 4.9,
+      "sold": 500,
+      "stock": 7,
+      "tags": [
+        "m2",
+        "ultrabook"
+      ],
+      "createdAt": "2024-12-20"
+    },
+    {
+      "id": "p4",
+      "name": "iPhone 14",
+      "slug": "iphone-14",
+      "quantity": 1,
+      "category": "phone",
+      "brand": "Apple",
+      "price": 19990000,
+      "discount": 15,
+      "rating": 4.7,
+      "sold": 1500,
+      "stock": 20,
+      "tags": [
+        "ios",
+        "camera"
+      ],
+      "createdAt": "2024-11-12"
+    },
+    {
+      "id": "p5",
+      "name": "Xiaomi 14 Pro",
+      "slug": "xiaomi-14-pro",
+      "quantity": 1,
+      "category": "phone",
+      "brand": "Xiaomi",
+      "price": 17990000,
+      "discount": 8,
+      "rating": 4.5,
+      "sold": 800,
+      "stock": 12,
+      "tags": [
+        "android",
+        "flagship"
+      ],
+      "createdAt": "2025-01-15"
+    },
+    {
+      "id": "p6",
+      "name": "Oppo Find X6",
+      "slug": "oppo-find-x6",
+      "quantity": 1,
+      "category": "phone",
+      "brand": "Oppo",
+      "price": 15990000,
+      "discount": 12,
+      "rating": 4.4,
+      "sold": 600,
+      "stock": 5,
+      "tags": [
+        "android",
+        "camera"
+      ],
+      "createdAt": "2024-12-02"
+    },
+    {
+      "id": "p7",
+      "name": "Asus ROG Phone 8",
+      "slug": "asus-rog-phone-8",
+      "quantity": 1,
+      "category": "phone",
+      "brand": "Asus",
+      "price": 21990000,
+      "discount": 5,
+      "rating": 4.6,
+      "sold": 450,
+      "stock": 9,
+      "tags": [
+        "gaming",
+        "android"
+      ],
+      "createdAt": "2025-01-18"
+    },
+    {
+      "id": "p8",
+      "name": "HP Spectre x360",
+      "slug": "hp-spectre-x360",
+      "quantity": 1,
+      "category": "laptop",
+      "brand": "HP",
+      "price": 26990000,
+      "discount": 10,
+      "rating": 4.6,
+      "sold": 320,
+      "stock": 4,
+      "tags": [
+        "ultrabook",
+        "touchscreen"
+      ],
+      "createdAt": "2024-10-25"
+    },
+    {
+      "id": "p9",
+      "name": "Lenovo ThinkPad X1 Carbon",
+      "slug": "thinkpad-x1-carbon",
+      "quantity": 1,
+      "category": "laptop",
+      "brand": "Lenovo",
+      "price": 30990000,
+      "discount": 7,
+      "rating": 4.8,
+      "sold": 210,
+      "stock": 6,
+      "tags": [
+        "business",
+        "ultrabook"
+      ],
+      "createdAt": "2025-01-02"
+    },
+    {
+      "id": "p10",
+      "name": "Acer Nitro 5",
+      "slug": "acer-nitro-5",
+      "quantity": 1,
+      "category": "laptop",
+      "brand": "Acer",
+      "price": 21990000,
+      "discount": 20,
+      "rating": 4.3,
+      "sold": 870,
+      "stock": 14,
+      "tags": [
+        "gaming",
+        "rtx"
+      ],
+      "createdAt": "2024-09-10"
+    },
+    {
+      "id": "p11",
+      "name": "MacBook Pro M3",
+      "slug": "macbook-pro-m3",
+      "quantity": 1,
+      "category": "laptop",
+      "brand": "Apple",
+      "price": 39990000,
+      "discount": 5,
+      "rating": 4.9,
+      "sold": 410,
+      "stock": 3,
+      "tags": [
+        "m3",
+        "pro"
+      ],
+      "createdAt": "2025-02-01"
+    },
+    {
+      "id": "p12",
+      "name": "iPad Pro M2",
+      "slug": "ipad-pro-m2",
+      "quantity": 1,
+      "category": "tablet",
+      "brand": "Apple",
+      "price": 24990000,
+      "discount": 10,
+      "rating": 4.8,
+      "sold": 730,
+      "stock": 11,
+      "tags": [
+        "tablet",
+        "m2"
+      ],
+      "createdAt": "2024-11-30"
+    },
+    {
+      "id": "p13",
+      "name": "Samsung Galaxy Tab S9",
+      "slug": "galaxy-tab-s9",
+      "quantity": 1,
+      "category": "tablet",
+      "brand": "Samsung",
+      "price": 18990000,
+      "discount": 12,
+      "rating": 4.6,
+      "sold": 520,
+      "stock": 8,
+      "tags": [
+        "tablet",
+        "android"
+      ],
+      "createdAt": "2024-12-18"
+    },
+    {
+      "id": "p14",
+      "name": "Sony WH-1000XM5",
+      "slug": "sony-wh-1000xm5",
+      "quantity": 1,
+      "category": "accessory",
+      "brand": "Sony",
+      "price": 8990000,
+      "discount": 18,
+      "rating": 4.9,
+      "sold": 2000,
+      "stock": 25,
+      "tags": [
+        "headphone",
+        "noise-canceling"
+      ],
+      "createdAt": "2024-08-20"
+    },
+    {
+      "id": "p15",
+      "name": "AirPods Max",
+      "slug": "airpods-max",
+      "quantity": 1,
+      "category": "accessory",
+      "brand": "Apple",
+      "price": 13990000,
+      "discount": 10,
+      "rating": 4.7,
+      "sold": 650,
+      "stock": 10,
+      "tags": [
+        "headphone",
+        "ios"
+      ],
+      "createdAt": "2024-10-05"
+    },
+    {
+      "id": "p16",
+      "name": "Logitech G Pro X",
+      "slug": "logitech-g-pro-x",
+      "quantity": 1,
+      "category": "accessory",
+      "brand": "Logitech",
+      "price": 3490000,
+      "discount": 15,
+      "rating": 4.5,
+      "sold": 980,
+      "stock": 30,
+      "tags": [
+        "gaming",
+        "headset"
+      ],
+      "createdAt": "2024-07-15"
+    },
+    {
+      "id": "p17",
+      "name": "Razer DeathAdder V3",
+      "slug": "razer-deathadder-v3",
+      "quantity": 1,
+      "category": "accessory",
+      "brand": "Razer",
+      "price": 2490000,
+      "discount": 20,
+      "rating": 4.6,
+      "sold": 1200,
+      "stock": 18,
+      "tags": [
+        "gaming",
+        "mouse"
+      ],
+      "createdAt": "2024-09-28"
+    },
+    {
+      "id": "p18",
+      "name": "Samsung Odyssey G7",
+      "slug": "samsung-odyssey-g7",
+      "quantity": 1,
+      "category": "monitor",
+      "brand": "Samsung",
+      "price": 15990000,
+      "discount": 10,
+      "rating": 4.7,
+      "sold": 350,
+      "stock": 7,
+      "tags": [
+        "gaming",
+        "monitor"
+      ],
+      "createdAt": "2024-11-01"
+    },
+    {
+      "id": "p19",
+      "name": "LG UltraWide 34",
+      "slug": "lg-ultrawide-34",
+      "quantity": 1,
+      "category": "monitor",
+      "brand": "LG",
+      "price": 12990000,
+      "discount": 12,
+      "rating": 4.5,
+      "sold": 290,
+      "stock": 9,
+      "tags": [
+        "monitor",
+        "ultrawide"
+      ],
+      "createdAt": "2024-10-12"
+    },
+    {
+      "id": "p20",
+      "name": "Canon EOS R50",
+      "slug": "canon-eos-r50",
+      "quantity": 1,
+      "category": "camera",
+      "brand": "Canon",
+      "price": 22990000,
+      "discount": 8,
+      "rating": 4.6,
+      "sold": 180,
+      "stock": 5,
+      "tags": [
+        "camera",
+        "mirrorless"
+      ],
+      "createdAt": "2024-12-05"
+    },
+    {
+      "id": "p21",
+      "name": "GoPro Hero 12",
+      "slug": "gopro-hero-12",
+      "quantity": 1,
+      "category": "camera",
+      "brand": "GoPro",
+      "price": 10990000,
+      "discount": 10,
+      "rating": 4.7,
+      "sold": 430,
+      "stock": 16,
+      "tags": [
+        "camera",
+        "action"
+      ],
+      "createdAt": "2024-09-22"
+    },
+    {
+      "id": "p22",
+      "name": "Nintendo Switch OLED",
+      "slug": "nintendo-switch-oled",
+      "quantity": 1,
+      "category": "console",
+      "brand": "Nintendo",
+      "price": 8990000,
+      "discount": 5,
+      "rating": 4.8,
+      "sold": 1400,
+      "stock": 13,
+      "tags": [
+        "gaming",
+        "console"
+      ],
+      "createdAt": "2024-08-01"
+    },
+    {
+      "id": "p23",
+      "name": "PlayStation 5 Slim",
+      "slug": "ps5-slim",
+      "quantity": 1,
+      "category": "console",
+      "brand": "Sony",
+      "price": 13990000,
+      "discount": 7,
+      "rating": 4.9,
+      "sold": 1600,
+      "stock": 6,
+      "tags": [
+        "gaming",
+        "console"
+      ],
+      "createdAt": "2025-01-25"
+    }
+  ],
+  "users": [
+    {
+      "id": "u1",
+      "email": "dtlong943@gmail.com",
+      "password": "123123",
+      "name": "Thanh Long",
+      "avatar": "",
+      "phone": "0925633080",
+      "addresses": [
+        {
+          "id": "a1",
+          "fullName": "Thanh Long",
+          "phone": "0901234567",
+          "street": "3 đê la thành",
+          "city": "HN",
+          "isDefault": true
+        }
+      ],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-18"
+    },
+    {
+      "id": "df59",
+      "email": "dtlo943@gmail.com",
+      "password": "20012001",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-24T05:55:30.661Z"
+    },
+    {
+      "id": "2462",
+      "email": "dtlon943@gmail.com",
+      "password": "20012001",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-24T05:57:43.062Z"
+    },
+    {
+      "id": "f489",
+      "email": "dtlong123943@gmail.com",
+      "password": "20012001",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-24T05:58:34.258Z"
+    },
+    {
+      "id": "3cf1",
+      "email": "dt23@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-24T06:08:44.276Z"
+    },
+    {
+      "id": "41cc",
+      "email": "dtlo943asd@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-26T10:06:18.537Z"
+    },
+    {
+      "id": "30bf",
+      "email": "31123@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-26T10:07:11.495Z"
+    },
+    {
+      "id": "b4e6",
+      "email": "dtlong941231233@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-26T10:07:42.264Z"
+    },
+    {
+      "id": "d7a5",
+      "email": "asdasd@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-26T10:08:59.275Z"
+    },
+    {
+      "id": "17a8",
+      "email": "dtlo9412311113@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-26T10:09:25.250Z"
+    },
+    {
+      "id": "89f0",
+      "email": "123dtlo943@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-26T10:10:32.030Z"
+    },
+    {
+      "id": "572d",
+      "email": "dtlo2222943@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-26T10:12:46.060Z"
+    },
+    {
+      "id": "9987",
+      "email": "132123@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-26T10:13:41.389Z"
+    },
+    {
+      "id": "92ac",
+      "email": "dtlong941231231233@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-26T10:54:09.002Z"
+    },
+    {
+      "id": "6af7",
+      "email": "dt123long943@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-26T10:55:09.743Z"
+    },
+    {
+      "id": "9ecf",
+      "email": "123@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-26T11:21:27.967Z"
+    },
+    {
+      "id": "65da",
+      "email": "dtlong91312343@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-27T12:16:31.807Z"
+    },
+    {
+      "id": "3f8f",
+      "email": "taolamay@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [
+        {
+          "id": 5,
+          "title": "Red Nail Polish",
+          "description": "The Red Nail Polish offers a rich and glossy red hue for vibrant and polished nails. With a quick-drying formula, it provides a salon-quality finish at home.",
+          "category": "beauty",
+          "price": 8.99,
+          "discountPercentage": 11.44,
+          "rating": 4.32,
+          "stock": 79,
+          "tags": [
+            "beauty",
+            "nail polish"
+          ],
+          "brand": "Nail Couture",
+          "sku": "BEA-NAI-NAI-005",
+          "weight": 8,
+          "dimensions": {
+            "width": 21.63,
+            "height": 16.48,
+            "depth": 29.84
+          },
+          "warrantyInformation": "1 month warranty",
+          "shippingInformation": "Ships overnight",
+          "availabilityStatus": "In Stock",
+          "reviews": [
+            {
+              "rating": 2,
+              "comment": "Poor quality!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Benjamin Wilson",
+              "reviewerEmail": "benjamin.wilson@x.dummyjson.com"
+            },
+            {
+              "rating": 5,
+              "comment": "Great product!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Liam Smith",
+              "reviewerEmail": "liam.smith@x.dummyjson.com"
+            },
+            {
+              "rating": 1,
+              "comment": "Very unhappy with my purchase!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Clara Berry",
+              "reviewerEmail": "clara.berry@x.dummyjson.com"
+            }
+          ],
+          "returnPolicy": "No return policy",
+          "minimumOrderQuantity": 22,
+          "meta": {
+            "createdAt": "2025-04-30T09:41:02.053Z",
+            "updatedAt": "2025-04-30T09:41:02.053Z",
+            "barcode": "4063010628104",
+            "qrCode": "https://cdn.dummyjson.com/public/qr-code.png"
+          },
+          "images": [
+            "https://cdn.dummyjson.com/product-images/beauty/red-nail-polish/1.webp"
+          ],
+          "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/red-nail-polish/thumbnail.webp",
+          "quantity": 2
+        },
+        {
+          "id": 1,
+          "title": "Essence Mascara Lash Princess",
+          "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
+          "category": "beauty",
+          "price": 9.99,
+          "discountPercentage": 10.48,
+          "rating": 2.56,
+          "stock": 99,
+          "tags": [
+            "beauty",
+            "mascara"
+          ],
+          "brand": "Essence",
+          "sku": "BEA-ESS-ESS-001",
+          "weight": 4,
+          "dimensions": {
+            "width": 15.14,
+            "height": 13.08,
+            "depth": 22.99
+          },
+          "warrantyInformation": "1 week warranty",
+          "shippingInformation": "Ships in 3-5 business days",
+          "availabilityStatus": "In Stock",
+          "reviews": [
+            {
+              "rating": 3,
+              "comment": "Would not recommend!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Eleanor Collins",
+              "reviewerEmail": "eleanor.collins@x.dummyjson.com"
+            },
+            {
+              "rating": 4,
+              "comment": "Very satisfied!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Lucas Gordon",
+              "reviewerEmail": "lucas.gordon@x.dummyjson.com"
+            },
+            {
+              "rating": 5,
+              "comment": "Highly impressed!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Eleanor Collins",
+              "reviewerEmail": "eleanor.collins@x.dummyjson.com"
+            }
+          ],
+          "returnPolicy": "No return policy",
+          "minimumOrderQuantity": 48,
+          "meta": {
+            "createdAt": "2025-04-30T09:41:02.053Z",
+            "updatedAt": "2025-04-30T09:41:02.053Z",
+            "barcode": "5784719087687",
+            "qrCode": "https://cdn.dummyjson.com/public/qr-code.png"
+          },
+          "images": [
+            "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/1.webp"
+          ],
+          "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp",
+          "quantity": 1
+        }
+      ],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-27T14:23:10.384Z"
+    },
+    {
+      "id": "ea68",
+      "email": "thanhlong9@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [
+        {
+          "id": 3,
+          "title": "Powder Canister",
+          "description": "The Powder Canister is a finely milled setting powder designed to set makeup and control shine. With a lightweight and translucent formula, it provides a smooth and matte finish.",
+          "category": "beauty",
+          "price": 14.99,
+          "discountPercentage": 9.84,
+          "rating": 4.64,
+          "stock": 89,
+          "tags": [
+            "beauty",
+            "face powder"
+          ],
+          "brand": "Velvet Touch",
+          "sku": "BEA-VEL-POW-003",
+          "weight": 8,
+          "dimensions": {
+            "width": 29.27,
+            "height": 27.93,
+            "depth": 20.59
+          },
+          "warrantyInformation": "3 months warranty",
+          "shippingInformation": "Ships in 1-2 business days",
+          "availabilityStatus": "In Stock",
+          "reviews": [
+            {
+              "rating": 4,
+              "comment": "Would buy again!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Alexander Jones",
+              "reviewerEmail": "alexander.jones@x.dummyjson.com"
+            },
+            {
+              "rating": 5,
+              "comment": "Highly impressed!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Elijah Cruz",
+              "reviewerEmail": "elijah.cruz@x.dummyjson.com"
+            },
+            {
+              "rating": 1,
+              "comment": "Very dissatisfied!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Avery Perez",
+              "reviewerEmail": "avery.perez@x.dummyjson.com"
+            }
+          ],
+          "returnPolicy": "No return policy",
+          "minimumOrderQuantity": 22,
+          "meta": {
+            "createdAt": "2025-04-30T09:41:02.053Z",
+            "updatedAt": "2025-04-30T09:41:02.053Z",
+            "barcode": "8418883906837",
+            "qrCode": "https://cdn.dummyjson.com/public/qr-code.png"
+          },
+          "images": [
+            "https://cdn.dummyjson.com/product-images/beauty/powder-canister/1.webp"
+          ],
+          "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/powder-canister/thumbnail.webp",
+          "quantity": 5
+        }
+      ],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-02-28T16:21:20.444Z"
+    }
+  ],
+  "comments": []
+}
