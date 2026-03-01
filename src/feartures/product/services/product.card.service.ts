@@ -1,15 +1,20 @@
 import { productsInstance } from '@/lib/axios'
 import { Card } from '../types/card.type'
+import { randomCreatedAt } from '@/utils/randomCreatedAt'
 
 export const getProducts = async () => {
-    const res = await productsInstance.get('/products')
+    const res = await productsInstance.get('/products?limit=0')
+
     const products = res.data.products.map((p: Card) => {
         return {
             ...p,
-            createdAt: new Date(
-                Date.now() - Math.random() * 10000000000 //dummyjson createdAt is a same date so I have to fake time here
-            ).toISOString(),
+            createdAt: randomCreatedAt(p),
         }
     })
     return products
+}
+
+export const getProductsCategory = async () => {
+    const res = await productsInstance.get(`/products/categories`)
+    return res.data
 }

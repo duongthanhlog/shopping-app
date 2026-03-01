@@ -44,6 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     <Toast />
                     {children}
                     <AuthModal />
+                    {/* <GlobalLoading /> */}
                 </Providers>
             </body>
         </html>

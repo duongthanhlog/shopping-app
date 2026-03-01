@@ -1,11 +1,8 @@
-import { useState } from 'react'
-import { useAuth } from '../../feartures/auth/auth.context'
 import { useToast } from '../../feartures/toast/toast.context'
-import { ConfirmIcon, FailIcon, SuccessIcon, WarningIcon } from '@/public/icons'
+import { FailIcon, SuccessIcon, WarningIcon } from '@/public/icons'
 
 export default function Toast() {
-    const { toast, hideToast } = useToast()
-    const { logout } = useAuth()
+    const { toast } = useToast()
     if (!toast) return null
     return (
         <>

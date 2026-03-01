@@ -1,5 +1,6 @@
 'use client'
 
+import { FilterProvider } from '@/feartures/filter/filter.context'
 import { ModalProvider } from '../src/context/modal.context'
 import { AuthProvider } from '../src/feartures/auth/auth.context'
 import ToastProvider from '../src/feartures/toast/toast.context'
@@ -11,7 +12,9 @@ export default function Providers({ children }) {
             <QueryProvider>
                 <ToastProvider>
                     <AuthProvider>
-                        <ModalProvider>{children}</ModalProvider>
+                        <FilterProvider>
+                            <ModalProvider>{children}</ModalProvider>
+                        </FilterProvider>
                     </AuthProvider>
                 </ToastProvider>
             </QueryProvider>

@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import { StarVote } from '@/public/icons'
 import { formatCurrency } from '../../../utils/formatNumber'
 import Currency from '@/components/ui/currency'
 import Link from 'next/link'
@@ -46,7 +45,7 @@ export default function ProductCard({ card, href }) {
                                 Đã bán{' '}
                                 {card.sold > 1000
                                     ? `${Math.round(card.sold) / 1000}k`
-                                    : card.sold}
+                                    : card.minimumOrderQuantity}
                             </span>
                         </div>
                     </div>

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 export default function BottomPaginationNav() {
-    const [active, setActive] = useState(1)
+    const [active, setActive] = useState(0)
     return (
         <div className="flex justify-center gap-10 mt-10 mb-10">
             <button className="text-lg text-gray-400 cursor-pointer px-4 py-1">
