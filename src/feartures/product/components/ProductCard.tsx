@@ -12,8 +12,8 @@ export default function ProductCard({ card, href }) {
             <div className=" border border-gray-300">
                 <Image
                     loading="eager"
-                    width={200}
-                    height={200}
+                    width={300}
+                    height={300}
                     className="w-full"
                     alt=""
                     src={card.thumbnail}

@@ -1,23 +1,30 @@
-import { SortWith } from './types'
+import { OrderType, SortByType } from './types'
 
-export const sort = {
-    NEWEST: 'newest',
-    OLDER: 'older',
-    BEST_SELLER: 'bestSeller',
-    LOW_PRICE_HIGH: 'low-price-high',
-    HIGH_PRICE_LOW: 'high-price-low',
+export const SORTBY = {
+    PRICE: 'price',
+    BESTSELLER: 'minimumOrderQuantity',
+    RATING: 'rating',
+    CREATED_AT: 'createdAt',
+} as const
+
+export const ORDER = {
+    ASC: 'asc',
+    DESC: 'desc',
 } as const
 
 export const sortPriceSelections: {
     text: string
-    value: SortWith
+    value: OrderType
+    sortBy: SortByType
 }[] = [
     {
         text: 'Giá: Thấp đến Cao',
-        value: sort.LOW_PRICE_HIGH,
+        sortBy: SORTBY.PRICE,
+        value: ORDER.ASC,
     },
     {
         text: 'Giá: Cao đến Thấp',
-        value: sort.HIGH_PRICE_LOW,
+        sortBy: SORTBY.PRICE,
+        value: ORDER.DESC,
     },
 ]

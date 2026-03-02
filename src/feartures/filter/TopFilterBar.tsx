@@ -1,24 +1,32 @@
 'use client'
 import Button from '@/components/ui/Button'
 import { useState } from 'react'
-import { useFilter } from '@/feartures/filter/filter.context'
+import { useFilter } from '@/feartures/filter/contexts/filter.context'
 import { CheckIcon } from '@/public/icons'
-import { sort, sortPriceSelections } from './constant'
-import { SortWith } from './types'
+import { ORDER, SORTBY, sortPriceSelections } from './constant'
+import { OrderType, SortByType } from './types'
 
 export default function TopFilterBar() {
     const [open, setOpen] = useState(false)
-    const { SortWith, filterSlug, handleFilter } = useFilter()
+    const { order, sortBy, filterSlug, handleFilter } = useFilter()
     const [activeSelected, setActiveSelected] = useState<string>('Giá')
 
-    const handleSelect = (value: string, sortOption: SortWith) => {
+    const handleSelect = (
+        value: string,
+        order: OrderType,
+        sortBy: SortByType
+    ) => {
         setActiveSelected(value)
-        handleFilter(filterSlug, sortOption)
+        handleFilter(filterSlug, order, sortBy)
         setOpen(false)
     }
 
-    const handleSortFiltered = (slug: string, SortWith: SortWith) => {
-        handleFilter(slug, SortWith)
+    const handleSortFiltered = (
+        slug: string,
+        order: OrderType,
+        sortBy: SortByType
+    ) => {
+        handleFilter(slug, order, sortBy)
     }
 
     return (
@@ -26,28 +34,48 @@ export default function TopFilterBar() {
             <div className="flex gap-3 p-3 pl-0 items-center">
                 <span className="font-semibold">Sắp xếp theo</span>
                 <Button
-                    active={SortWith === sort.NEWEST}
-                    onClick={() => handleSortFiltered(filterSlug, sort.NEWEST)}
+                    active={
+                        sortBy === SORTBY.CREATED_AT && order === ORDER.DESC
+                    }
+                    onClick={() =>
+                        handleSortFiltered(
+                            filterSlug,
+                            ORDER.DESC,
+                            SORTBY.CREATED_AT
+                        )
+                    }
                 >
                     Mới nhất
                 </Button>
                 <Button
-                    active={SortWith === sort.OLDER}
-                    onClick={() => handleSortFiltered(filterSlug, sort.OLDER)}
+                    active={sortBy === SORTBY.CREATED_AT && order === ORDER.ASC}
+                    onClick={() =>
+                        handleSortFiltered(
+                            filterSlug,
+                            ORDER.ASC,
+                            SORTBY.CREATED_AT
+                        )
+                    }
                 >
                     Cũ nhất
                 </Button>
                 <Button
-                    active={SortWith === sort.BEST_SELLER}
+                    active={
+                        sortBy === SORTBY.BESTSELLER && order === ORDER.DESC
+                    }
                     onClick={() =>
-                        handleSortFiltered(filterSlug, sort.BEST_SELLER)
+                        handleSortFiltered(
+                            filterSlug,
+                            ORDER.DESC,
+                            SORTBY.BESTSELLER
+                        )
                     }
                 >
                     Bán chạy
                 </Button>
                 <div className="relative">
                     <div
-                        className={` ${SortWith === sort.HIGH_PRICE_LOW || SortWith === sort.LOW_PRICE_HIGH ? 'text-primary' : 'text-black'} select-none w-50 relative flex justify-between cursor-pointer bg-white font-semibold p-1 px-3`}
+                        className={` ${sortBy === SORTBY.PRICE ? 'text-primary' : 'text-black'} select-none w-50 relative flex justify-between cursor-pointer bg-white font-semibold p-1 px-3`}
                         onClick={() => setOpen(!open)}
                     >
                         {activeSelected}
@@ -60,12 +88,16 @@ export default function TopFilterBar() {
                                 <div
                                     key={item.value}
                                     onClick={() =>
-                                        handleSelect(item.text, item.value)
+                                        handleSelect(
+                                            item.text,
+                                            item.value,
+                                            item.sortBy
+                                        )
                                     }
                                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full flex justify-between"
                                 >
                                     {item.text}
-                                    {SortWith === item.value && (
+                                    {order === item.value && (
                                         <CheckIcon className="w-4 h-4 text-primary" />
                                     )}
                                 </div>

@@ -1,29 +1,59 @@
-import { getProducts } from '@/feartures/product/services/product.card.service'
 import { Card } from '@/feartures/product/types/card.type'
 import { productsInstance } from '@/lib/axios'
-import { SortWith } from '../types'
-import { sortProducts } from '@/utils/sortProducts'
+import { OrderType } from '../types'
 import { randomCreatedAt } from '@/utils/randomCreatedAt'
+import { SORTBY } from '../constant'
 
-export const getCategoryFiltered = async (
+type QueryParams = {
+    limit?: number
+    skip?: number
+    order?: string
+    sortBy?: string
+}
+
+export const getProductByCategory = async (
     category: string,
-    SortWith: SortWith
+    params: QueryParams
 ) => {
-    let products: Card[]
+    const res = await productsInstance.get(`/products/category/${category}`, {
+        params,
+    })
+    const result = res.data.products.map((p: Card) => {
+        return {
+            ...p,
+            createdAt: randomCreatedAt(),
+        }
+    })
+    return {
+        products: result,
+        totalProduct: res.data.total,
+    }
+}
+
+export const getFilteredProducts = async (
+    category: string,
+    order?: OrderType,
+    limit?: number,
+    skip?: number,
+    sortBy?: string
+) => {
+    let products: Card[] = []
+    let totalProduct: number
+    const params: QueryParams = {
+        limit,
+        skip,
+        sortBy,
+    }
+
+    if (order) {
+        params.order = order
+    }
 
     if (category) {
-        const res = await productsInstance.get(`/products/category/${category}`)
-
-        products = res.data.products.map((p: Card) => {
-            return {
-                ...p,
-                createdAt: randomCreatedAt(p),
-            }
-        })
-    } else {
-        products = await getProducts()
+        const result = await getProductByCategory(category, params)
+        products = result.products
+        totalProduct = result.totalProduct
     }
-    console.log(products)
 
-    return sortProducts(products, SortWith)
+    return { products, totalProduct }
 }

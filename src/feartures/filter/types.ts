@@ -1,2 +1,3 @@
-import { sort } from './constant'
-export type SortWith = (typeof sort)[keyof typeof sort]
+import { SORTBY, ORDER } from './constant'
+export type SortByType = (typeof SORTBY)[keyof typeof SORTBY]
+export type OrderType = (typeof ORDER)[keyof typeof ORDER]

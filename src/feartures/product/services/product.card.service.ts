@@ -3,12 +3,12 @@ import { Card } from '../types/card.type'
 import { randomCreatedAt } from '@/utils/randomCreatedAt'
 
 export const getProducts = async () => {
-    const res = await productsInstance.get('/products?limit=0')
+    const res = await productsInstance.get(`/products`)
 
     const products = res.data.products.map((p: Card) => {
         return {
             ...p,
-            createdAt: randomCreatedAt(p),
+            createdAt: randomCreatedAt(),
         }
     })
     return products

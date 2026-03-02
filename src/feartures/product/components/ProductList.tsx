@@ -1,32 +1,51 @@
 import { useQuery } from '@tanstack/react-query'
 import ProductCard from './ProductCard'
-import { Card } from '../types/card.type'
-import { useFilter } from '@/feartures/filter/filter.context'
-import { getCategoryFiltered } from '@/feartures/filter/services/filter.service'
+import { useFilter } from '@/feartures/filter/contexts/filter.context'
+import { getFilteredProducts } from '@/feartures/filter/services/filter.service'
+import BottomPaginationNav from '@/feartures/filter/BottomPaginationNav'
+import usePaginate from '@/feartures/filter/hook/usePaginate'
+import { useEffect } from 'react'
 
 export default function ProductList() {
-    const { filterSlug, SortWith } = useFilter()
+    const { filterSlug, order, sortBy } = useFilter()
+    const { page, limit, skip, handleChangePage } = usePaginate()
 
-    const { data, isLoading } = useQuery<Card[]>({
-        queryKey: ['filterd-product', { filterSlug, SortWith }],
-        queryFn: () => getCategoryFiltered(filterSlug, SortWith),
+    useEffect(() => {
+        handleChangePage(1)
+    }, [filterSlug])
+
+    const { data, isLoading } = useQuery({
+        queryKey: ['filterd-product', filterSlug, order, limit, skip, sortBy],
+        queryFn: () =>
+            getFilteredProducts(filterSlug, order, limit, skip, sortBy),
         refetchOnWindowFocus: false,
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
     })
 
-    if (isLoading) return <div>Skeleton loading</div>
+    const totalPage = Math.ceil(data?.totalProduct / limit)
 
+    if (isLoading) return <div>Skeleton loading</div>
+    if (!data) return <div>Có gì đó không đúng</div>
     return (
-        <ul className="mt-2 grid grid-cols-[1fr_1fr_1fr_1fr_1fr] gap-4">
-            {data.map((card) => {
-                return (
-                    <ProductCard
-                        href={`/product/${card.id}`}
-                        key={card.id}
-                        card={card}
-                    />
-                )
-            })}
-        </ul>
+        <>
+            <ul className="mt-2 grid grid-cols-[1fr_1fr_1fr_1fr_1fr] gap-4">
+                {data.products.map((card) => {
+                    return (
+                        <ProductCard
+                            href={`/product/${card.id}`}
+                            key={card.id}
+                            card={card}
+                        />
+                    )
+                })}
+            </ul>
+            {totalPage > 1 && (
+                <BottomPaginationNav
+                    page={page}
+                    onChange={handleChangePage}
+                    totalPage={totalPage}
+                />
+            )}
+        </>
     )
 }

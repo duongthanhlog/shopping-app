@@ -2,8 +2,8 @@ import { ArrowRight, ArrowUpSolidIcon, CheckIcon } from '@/public/icons'
 import { useQuery } from '@tanstack/react-query'
 import { getProductsCategory } from '../product/services/product.card.service'
 import { useState } from 'react'
-import { getCategoryFiltered } from './services/filter.service'
-import { useFilter } from './filter.context'
+import { getFilteredProducts } from './services/filter.service'
+import { useFilter } from './contexts/filter.context'
 
 interface CategoryType {
     slug: string
@@ -17,7 +17,7 @@ export default function LeftFilterBar() {
         queryFn: getProductsCategory,
     })
 
-    const { handleFilter, SortWith } = useFilter()
+    const { handleFilter, SortWith, filterSlug } = useFilter()
     const [active, setActive] = useState(null)
     const [showMore, setShowMore] = useState(false)
 
@@ -26,6 +26,9 @@ export default function LeftFilterBar() {
         handleFilter(slug, SortWith)
         console.log(SortWith, slug)
     }
+
+    const checkActiveFilter = (slug: string, i: number) =>
+        active === i || slug === filterSlug
 
     if (isLoading) return <div>Đang tải dữ liệu</div>
 
@@ -42,10 +45,10 @@ export default function LeftFilterBar() {
                         <li
                             key={i}
                             onClick={() => handleSort(i, category.slug)}
-                            className={`${active === i ? 'text-primary' : 'text-black'} px-4 relative select-none cursor-pointer font-semibold mb-3 text-[14px] flex`}
+                            className={`${checkActiveFilter(category.slug, i) ? 'text-primary' : 'text-black'} px-4 relative select-none cursor-pointer font-semibold mb-3 text-[14px] flex`}
                         >
                             <span className="absolute centerdiv left-0">
-                                {active === i && (
+                                {checkActiveFilter(category.slug, i) && (
                                     <ArrowRight className={'w-4'} />
                                 )}
                             </span>

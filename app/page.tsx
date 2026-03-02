@@ -13,7 +13,6 @@ export default function Home() {
                 <section>
                     <TopFilterBar />
                     <ProductList />
-                    <BottomPaginationNav />
                 </section>
             </div>
         </div>
