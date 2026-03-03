@@ -1,8 +1,7 @@
-import { ArrowRight, ArrowUpSolidIcon, CheckIcon } from '@/public/icons'
+import { ArrowRight, ArrowUpSolidIcon } from '@/public/icons'
 import { useQuery } from '@tanstack/react-query'
 import { getProductsCategory } from '../product/services/product.card.service'
 import { useState } from 'react'
-import { getFilteredProducts } from './services/filter.service'
 import { useFilter } from './contexts/filter.context'
 
 interface CategoryType {
@@ -16,19 +15,19 @@ export default function LeftFilterBar() {
         queryKey: ['categories'],
         queryFn: getProductsCategory,
     })
+    console.log(data)
 
-    const { handleFilter, SortWith, filterSlug } = useFilter()
+    const { handleFilter, category } = useFilter()
     const [active, setActive] = useState(null)
     const [showMore, setShowMore] = useState(false)
 
     const handleSort = (i: number, slug: string) => {
         setActive(i)
-        handleFilter(slug, SortWith)
-        console.log(SortWith, slug)
+        handleFilter(slug)
     }
 
     const checkActiveFilter = (slug: string, i: number) =>
-        active === i || slug === filterSlug
+        active === i || slug === category
 
     if (isLoading) return <div>Đang tải dữ liệu</div>
 

@@ -1,8 +1,6 @@
 import { Card } from '@/feartures/product/types/card.type'
 import { productsInstance } from '@/lib/axios'
 import { OrderType } from '../types'
-import { randomCreatedAt } from '@/utils/randomCreatedAt'
-import { SORTBY } from '../constant'
 
 type QueryParams = {
     limit?: number
@@ -18,14 +16,8 @@ export const getProductByCategory = async (
     const res = await productsInstance.get(`/products/category/${category}`, {
         params,
     })
-    const result = res.data.products.map((p: Card) => {
-        return {
-            ...p,
-            createdAt: randomCreatedAt(),
-        }
-    })
     return {
-        products: result,
+        products: res.data.products,
         totalProduct: res.data.total,
     }
 }

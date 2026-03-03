@@ -1,11 +1,9 @@
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useFilter } from '../contexts/filter.context'
-import { useEffect } from 'react'
 
 export default function usePaginate() {
     const router = useRouter()
     const searchParams = useSearchParams()
-    const limit = Number(searchParams.get('limit')) || 5
+    const limit = Number(searchParams.get('limit')) || 10
     const page = Number(searchParams.get('page')) || 1
     const skip = (page - 1) * limit
 

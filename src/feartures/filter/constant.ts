@@ -14,17 +14,17 @@ export const ORDER = {
 
 export const sortPriceSelections: {
     text: string
-    value: OrderType
+    order: OrderType
     sortBy: SortByType
 }[] = [
     {
         text: 'Giá: Thấp đến Cao',
         sortBy: SORTBY.PRICE,
-        value: ORDER.ASC,
+        order: ORDER.ASC,
     },
     {
         text: 'Giá: Cao đến Thấp',
         sortBy: SORTBY.PRICE,
-        value: ORDER.DESC,
+        order: ORDER.DESC,
     },
 ]

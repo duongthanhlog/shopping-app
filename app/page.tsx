@@ -1,7 +1,6 @@
 'use client'
 
 import TopFilterBar from '@/feartures/filter/TopFilterBar'
-import BottomPaginationNav from '@/feartures/filter/BottomPaginationNav'
 import LeftFilterBar from '@/feartures/filter/LeftFilterBar'
 import ProductList from '@/feartures/product/components/ProductList'
 

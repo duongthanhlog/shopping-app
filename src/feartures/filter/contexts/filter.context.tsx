@@ -3,19 +3,19 @@ import { OrderType, SortByType } from '../types'
 import { ORDER, SORTBY } from '../constant'
 
 type SortContextType = {
-    filterSlug: string
+    category: string
     order?: OrderType
     sortBy?: SortByType
     handleSort: (type: OrderType) => void
-    handleFilter: (slug: string, order: OrderType, sortBy?: SortByType) => void
+    handleFilter: (slug: string, order?: OrderType, sortBy?: SortByType) => void
 }
 
 const FilterContext = createContext<SortContextType | null>(null)
 
 export function FilterProvider({ children }) {
-    const [order, setOrder] = useState<OrderType | null>(ORDER.DESC)
-    const [sortBy, setSortBy] = useState<SortByType | null>(SORTBY.CREATED_AT)
-    const [filterSlug, setFilterSlug] = useState<string | null>('beauty')
+    const [order, setOrder] = useState<OrderType>(ORDER.DESC)
+    const [sortBy, setSortBy] = useState<SortByType>(SORTBY.CREATED_AT)
+    const [category, setCategory] = useState<string>('beauty')
 
     const handleSort = (order: OrderType) => {
         setOrder(order)
@@ -23,17 +23,17 @@ export function FilterProvider({ children }) {
 
     const handleFilter = (
         slug: string,
-        order: OrderType,
+        order?: OrderType,
         sortBy?: SortByType
     ) => {
-        setFilterSlug(slug)
+        setCategory(slug)
         handleSort(order)
         setSortBy(sortBy)
     }
 
     return (
         <FilterContext.Provider
-            value={{ order, sortBy, filterSlug, handleSort, handleFilter }}
+            value={{ order, sortBy, category, handleSort, handleFilter }}
         >
             {children}
         </FilterContext.Provider>
