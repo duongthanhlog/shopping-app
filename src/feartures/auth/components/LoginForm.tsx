@@ -8,6 +8,8 @@ import { useMutation } from '@tanstack/react-query'
 import { useAuth } from '../auth.context'
 import { useToast } from '../../toast/toast.context'
 import Spinner from '@/components/ui/Spinner'
+import { queryClient } from '@/lib/query-client'
+import useLogin from '../hooks/useLogin'
 
 export default function LoginForm() {
     const {
@@ -16,21 +18,8 @@ export default function LoginForm() {
         formState: { errors },
     } = useForm<LoginFormData>()
 
+    const { mutate, isPending } = useLogin()
     const { closeModal, openModal } = useModal()
-    const { login } = useAuth()
-    const { showToast } = useToast()
-
-    const { mutate, isPending } = useMutation({
-        mutationFn: loginApi,
-        onSuccess: async (data) => {
-            login(data)
-            showToast('success', 'Đăng nhập thành công')
-            closeModal()
-        },
-        onError: (error) => {
-            showToast('error', error.message)
-        },
-    })
 
     const onSubmit = async (data: LoginFormData) => {
         mutate(data)

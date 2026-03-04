@@ -1,24 +1,22 @@
 import SearchForm from './SearchForm'
 import TopMenu from './TopMenu'
-import useAuthLogin from '@/feartures/auth/auth.hook'
 import { useAuth } from '@/feartures/auth/auth.context'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { getUserCart } from '@/feartures/product/services/product.cart.service'
+import { getCartByUserId } from '@/feartures/product/services/product.cart.service'
 import { useModal } from '../../../context/modal.context'
 import Link from 'next/link'
 import { Card } from '@/feartures/product/types/card.type'
 import { CartIcon, ShopeeIcon } from 'public/icons'
+import useGetUser from '@/feartures/auth/hooks/useGetUser'
+import useGetUserCart from '@/feartures/product/hooks/useGetUserCart'
 
 export default function Header() {
-    const { loading } = useAuth()
-    const { data: user } = useAuthLogin()
-    const [badge, setBadge] = useState()
-    const { data: cart } = useQuery({
-        queryKey: ['cart', user?.id],
-        queryFn: () => getUserCart(user),
-        enabled: !!user,
-    })
+    const { loading, userId } = useAuth()
+    const { user } = useGetUser()
+    const [badge, setBadge] = useState<number | null>(null)
+
+    const { cart } = useGetUserCart()
 
     const { openConfirm, openModal } = useModal()
 
@@ -32,7 +30,7 @@ export default function Header() {
     }, [cart])
 
     const handleCartClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (!user) {
+        if (!userId) {
             e.preventDefault()
             openConfirm({
                 title: 'Vui lòng đăng nhập',
@@ -59,7 +57,7 @@ export default function Header() {
                     onClick={handleCartClick}
                     className="mx-10 p-3 mt-2 pb-1 relative cursor-pointer"
                 >
-                    {cart?.length > 0 && (
+                    {cart.length > 0 && userId && (
                         <span className="border absolute text-sm bg-white text-primary p-[1px] w-[24px] h-[24px] rounded-xl top-0 right-0 centerdiv">
                             {badge}
                         </span>

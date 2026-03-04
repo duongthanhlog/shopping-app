@@ -1,97 +1,25 @@
 'use client'
 import CartItem from '../../src/feartures/product/components/CartItem'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import useAuthLogin from '../../src/feartures/auth/auth.hook'
-import {
-    deleteCartItem,
-    getUserCart,
-    updateCartquantity,
-} from '../../src/feartures/product/services/product.cart.service'
-import { useToast } from '../../src/feartures/toast/toast.context'
-import { queryClient } from '../../src/lib/query-client'
-import {
-    ActionType,
-    CartItemActions,
-} from '../../src/feartures/product/types/cart.type'
-import { Card } from '../../src/feartures/product/types/card.type'
-import { CART_ACTION } from '../../src/feartures/product/constants/cart'
 import Image from 'next/image'
-import { useModal } from '../../src/context/modal.context'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import useGetUserCart from '@/feartures/product/hooks/useGetUserCart'
+import useUpdateCart from '@/feartures/product/hooks/useUpdateCart'
+import { useAuth } from '@/feartures/auth/auth.context'
 
 export default function CartPage() {
     const router = useRouter()
-    const { data: user, isLoading } = useAuthLogin()
-    const { showToast } = useToast()
-    const { openConfirm, closeModal } = useModal()
-
-    const { data } = useQuery<Card[]>({
-        queryKey: ['cart', user?.id],
-        queryFn: () => getUserCart(user),
-        enabled: !!user?.id,
-    })
+    const { userId } = useAuth()
+    const { cart } = useGetUserCart()
+    const { onIncrease, onDecrease, onDelete } = useUpdateCart()
 
     useEffect(() => {
-        if (!isLoading && !user) {
+        if (!userId) {
             router.replace('/')
         }
-    }, [user, isLoading])
+    }, [userId])
 
-    const { mutate: updateMutate } = useMutation({
-        mutationFn: (payload: { card: Card; type: ActionType }) => {
-            return updateCartquantity(payload, user)
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ['cart'],
-            })
-        },
-        onError: (error) => {
-            showToast('error', error.message)
-        },
-    })
-
-    const { mutate: deleteMutate } = useMutation({
-        mutationFn: (card: Card) => deleteCartItem(card, user),
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ['cart'],
-            })
-        },
-        onError: (error) => {
-            showToast('error', error.message)
-        },
-    })
-
-    const handleDelete = (card: Card) => {
-        deleteMutate(card)
-    }
-
-    const handleIncrease = (card: Card) => {
-        updateMutate({ card, type: CART_ACTION.INCREASE })
-    }
-    const handleDecrease = (card: Card) => {
-        if (card.quantity === 1) {
-            openConfirm({
-                title: 'Bạn chắc chắn muốn xóa sản phẩm khỏi giỏ hàng ?',
-                onConfirm: () => {
-                    closeModal()
-                    updateMutate({ card, type: CART_ACTION.DECREASE })
-                },
-            })
-            return
-        }
-        updateMutate({ card, type: CART_ACTION.DECREASE })
-    }
-
-    const actions: CartItemActions = {
-        onDelete: handleDelete,
-        onIncrease: handleIncrease,
-        onDecrease: handleDecrease,
-    }
-
-    if (data?.length === 0) {
+    if (cart?.length === 0) {
         return (
             <div className="flex justify-center select-none h-[100vh-100px]">
                 <Image
@@ -104,7 +32,7 @@ export default function CartPage() {
             </div>
         )
     }
-    if (!data) return null
+
     return (
         <>
             <div className="bg-white">
@@ -112,16 +40,18 @@ export default function CartPage() {
                     Giỏ hàng của bạn{' '}
                 </div>
             </div>
-            <div className="bg-white mt-4">
+            <div className="bg-white">
                 <div className="container"></div>
             </div>
-            <div className="bg-white mt-4 py-5">
+            <div className="bg-white py-5 ">
                 <div className="container">
-                    <ul className="">
-                        {data.map((item, i) => {
+                    <ul className="min-h-[65vh]  border-t border-gray-300">
+                        {cart.map((item, i) => {
                             return (
                                 <CartItem
-                                    actions={actions}
+                                    onIncrease={onIncrease}
+                                    onDecrease={onDecrease}
+                                    onDelete={onDelete}
                                     key={i}
                                     item={item}
                                 />

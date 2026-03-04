@@ -14,7 +14,7 @@ export default function ConfirmModal() {
         <>
             <div className="flex flex-col bg-white z-100 p-4 rounded-[8px] w-[400px] ">
                 <span
-                    className="text-[18px] tracking-wide
+                    className="text-[18px] tracking-wide select-none
             "
                 >
                     {confirmOption?.title}

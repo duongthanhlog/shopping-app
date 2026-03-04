@@ -1,5 +1,5 @@
 import { Card } from '@/feartures/product/types/card.type'
-import { productsInstance } from '@/lib/axios'
+import { apiDummy } from '@/lib/axios'
 import { OrderType } from '../types'
 
 type QueryParams = {
@@ -13,7 +13,7 @@ export const getProductByCategory = async (
     category: string,
     params: QueryParams
 ) => {
-    const res = await productsInstance.get(`/products/category/${category}`, {
+    const res = await apiDummy.get(`/products/category/${category}`, {
         params,
     })
     return {

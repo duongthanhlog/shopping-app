@@ -1,11 +1,16 @@
 import Image from 'next/image'
-import Currency from '@/components/ui/currency'
+import Currency from '@/components/ui/Currency'
 import { CartItemProps } from '../types/cart.type'
 import { formatCurrency } from '../../../utils/formatNumber'
 import QuantityBox from '@/components/ui/Quantity.box'
 import Link from 'next/link'
 
-export default function CartItem({ item, actions }: CartItemProps) {
+export default function CartItem({
+    item,
+    onIncrease,
+    onDecrease,
+    onDelete,
+}: CartItemProps) {
     return (
         <div className="grid grid-cols-[1fr_3fr_2fr_2fr_2fr] justify-center border-b border-gray-300 p-4">
             <Link
@@ -23,8 +28,8 @@ export default function CartItem({ item, actions }: CartItemProps) {
             </div>
             <QuantityBox
                 quantity={item.quantity}
-                onIncrease={() => actions.onIncrease(item)}
-                onDecrease={() => actions.onDecrease(item)}
+                onIncrease={() => onIncrease(item)}
+                onDecrease={() => onDecrease(item)}
             />
             <div className="centerdiv text-primary font-medium">
                 {formatCurrency(item.quantity * item.price)}
@@ -37,7 +42,7 @@ export default function CartItem({ item, actions }: CartItemProps) {
                     Mua ngay
                 </button>
                 <button
-                    onClick={() => actions.onDelete(item)}
+                    onClick={() => onDelete(item)}
                     className="centerdiv font-medium mr-4 cursor-pointer hover:underline"
                 >
                     Xóa

@@ -1,69 +1,36 @@
 'use client'
 import Image from 'next/image'
-import Currency from '@/components/ui/currency'
+import Currency from '@/components/ui/Currency'
 import { formatCurrency } from '@/utils/formatNumber'
 import QuantityBox from '@/components/ui/Quantity.box'
-import useAuthLogin from '@/feartures/auth/auth.hook'
-import { useToast } from '@/feartures/toast/toast.context'
 import { useModal } from '@/context/modal.context'
-import { useMutation } from '@tanstack/react-query'
-import { updateCartquantity } from '@/feartures/product/services/product.cart.service'
-import { queryClient } from '@/lib/query-client'
-import { CART_ACTION } from '@/feartures/product/constants/cart'
 import { useState } from 'react'
-import { Card } from '@/feartures/product/types/card.type'
 import PercentRating from '@/utils/canculateRating'
+import useUpdateCart from '@/feartures/product/hooks/useUpdateCart'
+import { useAuth } from '@/feartures/auth/auth.context'
 
-export default function ProductDetail({ product }) {
-    const { data: user } = useAuthLogin()
-    const { showToast } = useToast()
+export default function ProductDetail({ card }) {
+    const { userId } = useAuth()
     const { openModal, openConfirm } = useModal()
-
+    const { onIncrease } = useUpdateCart()
     const [quantity, setQuantity] = useState(1)
 
-    const { mutate } = useMutation({
-        mutationFn: async ({
-            product,
-            quantity,
-        }: {
-            product: Card
-            quantity: number
-        }) => {
-            return await updateCartquantity(
-                {
-                    card: product,
-                    type: CART_ACTION.INCREASE,
-                    newQuantity: quantity,
-                },
-                user
-            )
-        },
-        onSuccess: (updatedUser) => {
-            queryClient.setQueryData(['cart', user?.id], updatedUser.cart)
-            showToast('success', 'Đã thêm vào giỏ hàng')
-        },
-        onError: (error) => {
-            console.log(error)
-
-            openConfirm({
-                title: error.message,
-                onConfirm: () => {
-                    openModal('login')
-                },
-            })
-        },
-    })
-
     const handleAddToCart = () => {
-        if (!user) {
+        if (!userId) {
             openConfirm({
                 title: 'Vui lòng đăng nhập',
                 onConfirm: () => openModal('login'),
             })
             return
         }
+        onIncrease(card, quantity)
+    }
 
-        mutate({ product, quantity })
+    const handleIncrease = () =>
+        setQuantity((prev) => (prev < card.stock ? prev + 1 : prev))
+
+    const handleDecrease = () => {
+        setQuantity((prev) => prev - 1)
     }
 
     return (
@@ -71,7 +38,7 @@ export default function ProductDetail({ product }) {
             <Image
                 width={200}
                 height={200}
-                src={product.thumbnail}
+                src={card.thumbnail}
                 alt=""
                 loading="eager"
                 className="flex-3 p-4"
@@ -81,45 +48,48 @@ export default function ProductDetail({ product }) {
                     Yêu thích
                 </span>
                 <span className="text-[20px] leading-5 mt-2">
-                    {product.description}
+                    {card.description}
                 </span>
-                <div className="flex">
+                <div className="flex items-center">
                     <div className="mt-[10px] flex gap-4 font-medium items-center text-gray-600 divide-x divide-gray-300">
                         <span className="pr-4 ">
-                            <span className="underline leading-4 flex">
+                            <span className="underline underline-offset-3 flex">
                                 <span className="font-semibold">
-                                    {Math.ceil(product.rating * 10) / 10}
+                                    {Math.ceil(card.rating * 10) / 10}
                                 </span>
-                                <span className="flex w-[100px] ml-2">
-                                    {PercentRating(product.rating)}
+                                <span className="flex w-[100px] ml-2 mt-[3px]">
+                                    {PercentRating(card.rating)}
                                 </span>
                             </span>
                         </span>
-                        <span className=" text-md pr-4">
-                            <span className="font-semibold underline text-[16px] leading-4 text-black mr-1">
-                                {product.reviews.length === 0
+                        <span className=" text-md pr-4 ">
+                            <span className="font-semibold underline underline-offset-3  text-[16px] text-black mr-1">
+                                {card.reviews.length === 0
                                     ? 'Chưa có đánh giá'
-                                    : product.reviews.length}
+                                    : card.reviews.length}
                             </span>{' '}
                             Đánh giá
                         </span>
                         <span className=" pr-4 text-md">
                             Đã bán
-                            <span className="text-[16px] font-semibold underline leading-4 text-black ml-2">
-                                {product.minimumOrderQuantity}
+                            <span className="text-[16px] font-semibold underline underline-offset-3 text-black ml-2">
+                                {card.minimumOrderQuantity}
                             </span>{' '}
                         </span>
                     </div>
-                    <span className="ml-auto ">Tố cáo</span>
+                    <span className="ml-auto font-semibold mr-2 mt-2">
+                        Tồn kho :{' '}
+                        <span className="text-primary font-semibold underline">
+                            {card.stock}
+                        </span>
+                    </span>
                 </div>
                 <div className="bg-gray-100 px-[20px] py-[15px] mt-5 flex items-center">
                     <span className="text-[30px] text-primary font-normal">
                         <span className="px-2">
                             {formatCurrency(
-                                product.price -
-                                    (product.price *
-                                        product.discountPercentage) /
-                                        100
+                                card.price -
+                                    (card.price * card.discountPercentage) / 100
                             )}{' '}
                             <Currency right={7} bottom={10} size={20} />
                         </span>
@@ -132,17 +102,17 @@ export default function ProductDetail({ product }) {
                                 font-semibold
                               "
                     >
-                        {formatCurrency(product.price)}{' '}
+                        {formatCurrency(card.price)}{' '}
                         <Currency right={0} bottom={2} size={10} />
                     </div>
                     <span className="ml-4 bg-red-100 text-primary px-1 text-sm font-bold">
-                        {`-${product.discountPercentage}%`}
+                        {`-${card.discountPercentage}%`}
                     </span>
                 </div>
                 <section className="flex mt-6">
                     <span className="shrink-0 text-gray-500">Vận chuyển</span>
                     <div className="ml-4 flex-col">
-                        <div>{product.shippingInformation}</div>
+                        <div>{card.shippingInformation}</div>
                         <div className="text-green-700 font-semibold my-1">
                             Phí ship 0đ
                         </div>
@@ -157,7 +127,7 @@ export default function ProductDetail({ product }) {
                     <div className="text-gray-500 text-[14px] uppercase">
                         bảo hành
                     </div>
-                    <div className="ml-4">{product.warrantyInformation}</div>
+                    <div className="ml-4">{card.warrantyInformation}</div>
                 </section>
 
                 <section className="flex gap-8 mt-8">
@@ -166,8 +136,8 @@ export default function ProductDetail({ product }) {
                     </span>
                     <QuantityBox
                         disable={quantity === 1}
-                        onIncrease={() => setQuantity(quantity + 1)}
-                        onDecrease={() => setQuantity(quantity - 1)}
+                        onIncrease={handleIncrease}
+                        onDecrease={handleDecrease}
                         quantity={quantity}
                     />
                 </section>

@@ -7,10 +7,10 @@ interface Props {
 }
 export default async function ProductDetails({ params }: Props) {
     const { id } = await params
-    const product = await getProductById(id)
-    console.log(product)
 
-    if (!product) return null
+    const card = await getProductById(id)
 
-    return <ProductDetail product={product} />
+    if (!card) return <div>Not Found</div>
+
+    return <ProductDetail card={card} />
 }

@@ -1,22 +1,21 @@
-import instance from '@/lib/axios'
-import { User } from '../../auth/auth.types'
+import api from '@/lib/axios'
 import { getUserById } from '../../auth/auth.service'
 import { CART_ACTION } from '../constants/cart'
 import { Card } from '../types/card.type'
 import { ActionType } from '../types/cart.type'
 
-export const getUserCart = async (user: User) => {
-    const res = await getUserById(user.id)
+export const getCartByUserId = async (userId: string) => {
+    const res = await getUserById(userId)
     const data = await res.cart
     return data
 }
 
-export const deleteCartItem = async (card: Card, user: User) => {
-    const cart: Card[] = await getUserCart(user)
+export const deleteCartItem = async (card: Card, userId: string) => {
+    const cart: Card[] = await getCartByUserId(userId)
     const patchRes = cart.filter((item) => {
         return item.id !== card.id
     })
-    const updateCart = await instance.patch(`/users/${user.id}`, {
+    const updateCart = await instance.patch(`/users/${userId}`, {
         cart: patchRes,
     })
     return updateCart
@@ -24,9 +23,9 @@ export const deleteCartItem = async (card: Card, user: User) => {
 
 export const updateCartquantity = async (
     payload: { card: Card; type: ActionType; newQuantity?: number },
-    user: User
+    userId: string
 ) => {
-    const cart: Card[] = await getUserCart(user)
+    const cart: Card[] = await getCartByUserId(userId)
 
     const existingItem = cart.find((item) => item.id === payload.card.id)
 
@@ -35,7 +34,7 @@ export const updateCartquantity = async (
             existingItem.quantity === 1 &&
             payload.type === CART_ACTION.DECREASE
         ) {
-            return deleteCartItem(existingItem, user)
+            return deleteCartItem(existingItem, userId)
         }
 
         const updatequantityCart = cart.map((item) => {
@@ -51,12 +50,12 @@ export const updateCartquantity = async (
             return item
         })
 
-        const res = await instance.patch(`/users/${user.id}`, {
+        const res = await instance.patch(`/users/${userId}`, {
             cart: updatequantityCart,
         })
         return res.data
     } else {
-        const res = await instance.patch(`/users/${user.id}`, {
+        const res = await instance.patch(`/users/${userId}`, {
             cart: [...cart, { ...payload.card, quantity: payload.newQuantity }],
         })
         return res.data

@@ -1,25 +1,24 @@
 import axios from 'axios'
 
-const instance = axios.create({
-    baseURL: 'http://localhost:8000',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-})
+const createAxiosInstance = (baseURL: string) => {
+    const instance = axios.create({
+        baseURL,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    instance.interceptors.request.use((config) => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            config.headers.Authorization = `Bear ${token}`
+        }
+        return config
+    })
+    return instance
+}
+console.log(process.env.NEXT_PUBLIC_API_BASE_URL)
 
-instance.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token')
-    if (token) {
-        config.headers.Authorization = `Bear ${token}`
-    }
-    return config
-})
-
-export const productsInstance = axios.create({
-    baseURL: 'https://dummyjson.com',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-})
-
-export default instance
+export const api = createAxiosInstance(process.env.NEXT_PUBLIC_API_BASE_URL!)
+export const apiDummy = createAxiosInstance(
+    process.env.NEXT_PUBLIC_DUMMY_BASE_URL!
+)

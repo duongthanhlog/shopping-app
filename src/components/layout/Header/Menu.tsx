@@ -1,17 +1,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { MenuItemType } from './header-menu.types'
-import { User } from '../../../feartures/auth/auth.types'
 
 interface Props {
     item: MenuItemType
-    loading: boolean
-    user: User
+    userId: string
     className?: string
     displayName?: string
     onClick?: () => void
 }
-export default function MenuItem({ item, className, user }: Props) {
+export default function MenuItem({ item, className, userId }: Props) {
     switch (item?.type) {
         case 'link':
             return (
@@ -35,7 +33,7 @@ export default function MenuItem({ item, className, user }: Props) {
                         </>
                     )}
                     <span
-                        className={`${user && item.name !== 'Đăng xuất' ? 'font-bold' : 'font-tight'}`}
+                        className={`${userId && item.name !== 'Đăng xuất' ? 'font-bold' : 'font-tight'}`}
                     >
                         {item.name}
                     </span>

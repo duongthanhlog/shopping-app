@@ -2,10 +2,7 @@ import { useForm } from 'react-hook-form'
 import { CloseIcon } from '@/public/icons'
 import { useModal } from '../../../context/modal.context'
 import { RegisterFormData } from '../auth.types'
-import { login as loginApi, register as registerApi } from '../auth.service'
-import { useMutation } from '@tanstack/react-query'
-import { useAuth } from '../auth.context'
-import { useToast } from '../../toast/toast.context'
+import useRegister from '../hooks/useRegister'
 
 export default function RegisterForm() {
     const {
@@ -14,25 +11,9 @@ export default function RegisterForm() {
         formState: { errors },
         getValues,
     } = useForm<RegisterFormData>()
+
+    const { mutate, isPending } = useRegister()
     const { closeModal, openModal } = useModal()
-    const { login } = useAuth()
-    const { showToast } = useToast()
-
-    const { mutate, isPending } = useMutation({
-        mutationFn: async (data: RegisterFormData) => {
-            await registerApi(data)
-            return await loginApi(data)
-        },
-        onSuccess: (token) => {
-            login(token)
-            closeModal()
-            showToast('success', 'Đăng ký thành công')
-        },
-        onError: (error) => {
-            showToast('error', error.message)
-        },
-    })
-
     const onSubmit = async (data: RegisterFormData) => {
         mutate(data)
     }

@@ -1,14 +1,14 @@
-import useAuthLogin from '@/feartures/auth/auth.hook'
 import useHeaderMenu from '../../../hooks/useHeaderMenu'
-import { menuLeft } from './const'
 import MenuItem from './Menu'
+import { useAuth } from '@/feartures/auth/auth.context'
 
 export default function TopMenu() {
-    const { data, isLoading } = useAuthLogin()
+    // const { user, isLoading } = useGetUser()
+    const { userId } = useAuth()
     const { menuRight } = useHeaderMenu()
     return (
         <>
-            <ul className="text-white-500 flex">
+            {/* <ul className="text-white-500 flex">
                 {menuLeft.map((item, index) => {
                     const showDivider = index < menuLeft.length - 2
                     return (
@@ -22,12 +22,11 @@ export default function TopMenu() {
                         />
                     )
                 })}
-            </ul>
-            <ul className="text-white-500 flex">
+            </ul> */}
+            <ul className="text-white-500 flex ml-auto">
                 {menuRight.map((item, index) => (
                     <MenuItem
-                        user={data}
-                        loading={isLoading}
+                        userId={userId}
                         item={item}
                         key={index}
                         className="text-sm pt-1 ml-3.5 cursor-pointer flex items-center"

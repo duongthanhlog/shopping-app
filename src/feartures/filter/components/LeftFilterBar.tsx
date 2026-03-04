@@ -1,8 +1,9 @@
 import { ArrowRight, ArrowUpSolidIcon } from '@/public/icons'
-import { useQuery } from '@tanstack/react-query'
-import { getProductsCategory } from '../product/services/product.card.service'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { getProductsCategory } from '../../product/services/product.card.service'
 import { useState } from 'react'
-import { useFilter } from './contexts/filter.context'
+import useFilter from '../hook/useFilter'
+import CategorySidebarSkeleton from '@/components/ui/skeletons/CategorySidebarSkeleton'
 
 interface CategoryType {
     slug: string
@@ -14,22 +15,19 @@ export default function LeftFilterBar() {
     const { data, isLoading } = useQuery<CategoryType[]>({
         queryKey: ['categories'],
         queryFn: getProductsCategory,
+        placeholderData: keepPreviousData,
+        refetchOnWindowFocus: false,
     })
-    console.log(data)
 
-    const { handleFilter, category } = useFilter()
-    const [active, setActive] = useState(null)
+    const { handleFilter, category, removeFilter } = useFilter()
     const [showMore, setShowMore] = useState(false)
 
-    const handleSort = (i: number, slug: string) => {
-        setActive(i)
-        handleFilter(slug)
-    }
+    const categories = [
+        { name: 'Tất cả sản phẩm', slug: null },
+        ...(data ?? []),
+    ]
 
-    const checkActiveFilter = (slug: string, i: number) =>
-        active === i || slug === category
-
-    if (isLoading) return <div>Đang tải dữ liệu</div>
+    if (isLoading) return <CategorySidebarSkeleton />
 
     return (
         <nav>
@@ -39,19 +37,21 @@ export default function LeftFilterBar() {
             <ul
                 className={`${showMore ? 'h-auto' : 'overflow-auto'} mt-4 h-50 overflow-hidden`}
             >
-                {data.map((category: CategoryType, i: number) => {
+                {categories.map((item: CategoryType, i: number) => {
                     return (
                         <li
                             key={i}
-                            onClick={() => handleSort(i, category.slug)}
-                            className={`${checkActiveFilter(category.slug, i) ? 'text-primary' : 'text-black'} px-4 relative select-none cursor-pointer font-semibold mb-3 text-[14px] flex`}
+                            onClick={() => {
+                                handleFilter(item.slug)
+                            }}
+                            className={`${item.slug === category ? 'text-primary' : 'text-black'} px-4 relative select-none cursor-pointer font-semibold mb-3 text-[14px] flex`}
                         >
                             <span className="absolute centerdiv left-0">
-                                {checkActiveFilter(category.slug, i) && (
+                                {item.slug === category && (
                                     <ArrowRight className={'w-4'} />
                                 )}
                             </span>
-                            {category.name}
+                            {item.name}
                         </li>
                     )
                 })}
