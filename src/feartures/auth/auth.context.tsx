@@ -8,7 +8,7 @@ import { useToast } from '../toast/toast.context'
 interface AuthContextType {
     login: (data: LoginResponse) => Promise<void>
     logout: () => void
-    loading: boolean
+    isLoading: boolean
     userId: string
 }
 
@@ -16,18 +16,18 @@ const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: RootLayoutProps) {
     const [userId, setUserId] = useState<string | null>(null)
-    const [loading, setLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)
     const { showToast } = useToast()
     useEffect(() => {
         const storedToken = localStorage.getItem('token')
         if (!storedToken) {
-            setLoading(false)
+            setIsLoading(false)
             return
         }
 
         const userId = getUserIdByToken(storedToken)
         setUserId(userId)
-        setLoading(false)
+        setIsLoading(false)
     }, [])
 
     const login = async (data: LoginResponse) => {
@@ -40,11 +40,7 @@ export function AuthProvider({ children }: RootLayoutProps) {
         setUserId(null)
         showToast('success', 'Đã đăng xuất')
     }
-    return (
-        <AuthContext value={{ userId, login, logout, loading }}>
-            {children}
-        </AuthContext>
-    )
+    return <AuthContext value={{ userId, login, logout, isLoading }}>{children}</AuthContext>
 }
 
 export const useAuth = () => {

@@ -2,24 +2,23 @@
 import CartItem from '../../src/feartures/product/components/CartItem'
 import Image from 'next/image'
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import useGetUserCart from '@/feartures/product/hooks/useGetUserCart'
 import useUpdateCart from '@/feartures/product/hooks/useUpdateCart'
 import { useAuth } from '@/feartures/auth/auth.context'
+import CartSkeleton from '@/components/ui/skeletons/CartSkeleton'
 
 export default function CartPage() {
-    const router = useRouter()
-    const { userId } = useAuth()
-    const { cart } = useGetUserCart()
+    const { userId, isLoading } = useAuth()
+    const { cart, isFetched, isFetching } = useGetUserCart()
     const { onIncrease, onDecrease, onDelete } = useUpdateCart()
 
-    useEffect(() => {
-        if (!userId) {
-            router.replace('/')
-        }
-    }, [userId])
+    if (!userId && !isLoading) {
+        redirect('/')
+    }
+    if (isFetching || isLoading) return <CartSkeleton />
 
-    if (cart?.length === 0) {
+    if (isFetched && cart.length === 0) {
         return (
             <div className="flex justify-center select-none h-[100vh-100px]">
                 <Image
@@ -32,16 +31,21 @@ export default function CartPage() {
             </div>
         )
     }
+    const cartGrid = 'grid grid-cols-[3fr_2fr_2fr_2fr_2fr] px-4 items-center'
 
     return (
         <>
             <div className="bg-white">
-                <div className="text-primary text-[30px] container py-5">
-                    Giỏ hàng của bạn{' '}
-                </div>
+                <div className="text-primary text-[30px] container py-5">Giỏ hàng của bạn </div>
             </div>
-            <div className="bg-white">
-                <div className="container"></div>
+            <div className="bg-white container">
+                <div className={`text-gray-500 ${cartGrid} p-4 my-4 select-none`}>
+                    <div className="">Sản phẩm</div>
+                    <div className="centerdiv">Đơn giá</div>
+                    <div className="centerdiv">Số lượng</div>
+                    <div className="centerdiv">Số tiền</div>
+                    <div className="centerdiv">Thao tác</div>
+                </div>
             </div>
             <div className="bg-white py-5 ">
                 <div className="container">
@@ -54,6 +58,7 @@ export default function CartPage() {
                                     onDelete={onDelete}
                                     key={i}
                                     item={item}
+                                    className={cartGrid}
                                 />
                             )
                         })}

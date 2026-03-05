@@ -3,7 +3,6 @@ import MenuItem from './Menu'
 import { useAuth } from '@/feartures/auth/auth.context'
 
 export default function TopMenu() {
-    // const { user, isLoading } = useGetUser()
     const { userId } = useAuth()
     const { menuRight } = useHeaderMenu()
     return (

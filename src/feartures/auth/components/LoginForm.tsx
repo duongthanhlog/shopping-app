@@ -8,7 +8,6 @@ import { useMutation } from '@tanstack/react-query'
 import { useAuth } from '../auth.context'
 import { useToast } from '../../toast/toast.context'
 import Spinner from '@/components/ui/Spinner'
-import { queryClient } from '@/lib/query-client'
 import useLogin from '../hooks/useLogin'
 
 export default function LoginForm() {
@@ -32,9 +31,7 @@ export default function LoginForm() {
             <div onClick={() => closeModal()}>
                 <CloseIcon className="w-10 h-10 ml-auto text-gray-300 cursor-pointer hover:text-gray-400" />
             </div>
-            <div className="text-center text-[50px] text-primary font-normal ">
-                Đăng nhập
-            </div>
+            <div className="text-center text-[50px] text-primary font-normal ">Đăng nhập</div>
             <div className="flex flex-col">
                 <label className="mt-4" htmlFor="">
                     Email
@@ -53,9 +50,7 @@ export default function LoginForm() {
                     name="email"
                     id=""
                 />
-                <span className="h-4 text-red-400">
-                    {errors.email && errors.email.message}
-                </span>
+                <span className="h-4 text-red-400">{errors.email && errors.email.message}</span>
             </div>
             <div className="flex flex-col">
                 <label className="mt-4" htmlFor="">
@@ -71,9 +66,7 @@ export default function LoginForm() {
                     name="password"
                     id=""
                 />
-                <span className="h-4 text-red-400">
-                    {errors.password && errors.password.message}
-                </span>
+                <span className="h-4 text-red-400">{errors.password && errors.password.message}</span>
             </div>
             <button
                 disabled={isPending}
@@ -84,10 +77,7 @@ export default function LoginForm() {
             </button>
             <div className="mt-2">
                 Chưa có tài khoản? -{' '}
-                <span
-                    onClick={() => openModal('register')}
-                    className="text-primary cursor-pointer hover:underline"
-                >
+                <span onClick={() => openModal('register')} className="text-primary cursor-pointer hover:underline">
                     Đăng ký
                 </span>
             </div>

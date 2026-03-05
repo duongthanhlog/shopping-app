@@ -435,129 +435,7 @@
           "isDefault": true
         }
       ],
-      "cart": [
-        {
-          "id": 2,
-          "title": "Eyeshadow Palette with Mirror",
-          "description": "The Eyeshadow Palette with Mirror offers a versatile range of eyeshadow shades for creating stunning eye looks. With a built-in mirror, it's convenient for on-the-go makeup application.",
-          "category": "beauty",
-          "price": 19.99,
-          "discountPercentage": 18.19,
-          "rating": 2.86,
-          "stock": 34,
-          "tags": [
-            "beauty",
-            "eyeshadow"
-          ],
-          "brand": "Glamour Beauty",
-          "sku": "BEA-GLA-EYE-002",
-          "weight": 9,
-          "dimensions": {
-            "width": 9.26,
-            "height": 22.47,
-            "depth": 27.67
-          },
-          "warrantyInformation": "1 year warranty",
-          "shippingInformation": "Ships in 2 weeks",
-          "availabilityStatus": "In Stock",
-          "reviews": [
-            {
-              "rating": 5,
-              "comment": "Great product!",
-              "date": "2025-04-30T09:41:02.053Z",
-              "reviewerName": "Savannah Gomez",
-              "reviewerEmail": "savannah.gomez@x.dummyjson.com"
-            },
-            {
-              "rating": 4,
-              "comment": "Awesome product!",
-              "date": "2025-04-30T09:41:02.053Z",
-              "reviewerName": "Christian Perez",
-              "reviewerEmail": "christian.perez@x.dummyjson.com"
-            },
-            {
-              "rating": 1,
-              "comment": "Poor quality!",
-              "date": "2025-04-30T09:41:02.053Z",
-              "reviewerName": "Nicholas Bailey",
-              "reviewerEmail": "nicholas.bailey@x.dummyjson.com"
-            }
-          ],
-          "returnPolicy": "7 days return policy",
-          "minimumOrderQuantity": 20,
-          "meta": {
-            "createdAt": "2025-04-30T09:41:02.053Z",
-            "updatedAt": "2025-04-30T09:41:02.053Z",
-            "barcode": "9170275171413",
-            "qrCode": "https://cdn.dummyjson.com/public/qr-code.png"
-          },
-          "images": [
-            "https://cdn.dummyjson.com/product-images/beauty/eyeshadow-palette-with-mirror/1.webp"
-          ],
-          "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/eyeshadow-palette-with-mirror/thumbnail.webp",
-          "quantity": 12
-        },
-        {
-          "id": 19,
-          "title": "Chicken Meat",
-          "description": "Fresh and tender chicken meat, suitable for various culinary preparations.",
-          "category": "groceries",
-          "price": 9.99,
-          "discountPercentage": 13.7,
-          "rating": 3.19,
-          "stock": 97,
-          "tags": [
-            "meat"
-          ],
-          "sku": "GRO-BRD-CHI-019",
-          "weight": 1,
-          "dimensions": {
-            "width": 11.03,
-            "height": 22.11,
-            "depth": 16.01
-          },
-          "warrantyInformation": "1 year warranty",
-          "shippingInformation": "Ships in 1 month",
-          "availabilityStatus": "In Stock",
-          "reviews": [
-            {
-              "rating": 5,
-              "comment": "Great product!",
-              "date": "2025-04-30T09:41:02.053Z",
-              "reviewerName": "Mateo Bennett",
-              "reviewerEmail": "mateo.bennett@x.dummyjson.com"
-            },
-            {
-              "rating": 4,
-              "comment": "Highly recommended!",
-              "date": "2025-04-30T09:41:02.053Z",
-              "reviewerName": "Jackson Evans",
-              "reviewerEmail": "jackson.evans@x.dummyjson.com"
-            },
-            {
-              "rating": 3,
-              "comment": "Not worth the price!",
-              "date": "2025-04-30T09:41:02.053Z",
-              "reviewerName": "Sadie Morales",
-              "reviewerEmail": "sadie.morales@x.dummyjson.com"
-            }
-          ],
-          "returnPolicy": "7 days return policy",
-          "minimumOrderQuantity": 22,
-          "meta": {
-            "createdAt": "2025-04-30T09:41:02.053Z",
-            "updatedAt": "2025-04-30T09:41:02.053Z",
-            "barcode": "8829514594521",
-            "qrCode": "https://cdn.dummyjson.com/public/qr-code.png"
-          },
-          "images": [
-            "https://cdn.dummyjson.com/product-images/groceries/chicken-meat/1.webp",
-            "https://cdn.dummyjson.com/product-images/groceries/chicken-meat/2.webp"
-          ],
-          "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/chicken-meat/thumbnail.webp",
-          "quantity": 1
-        }
-      ],
+      "cart": [],
       "wishlist": [],
       "orders": [],
       "role": "user",
@@ -1178,6 +1056,173 @@
       "orders": [],
       "role": "user",
       "createdAt": "2026-03-04T08:47:08.841Z"
+    },
+    {
+      "id": "5908",
+      "email": "dtlong922222243@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [
+        {
+          "id": 68,
+          "title": "Pan",
+          "description": "The Pan is a versatile and essential cookware item for frying, sautéing, and cooking various dishes. Its non-stick coating ensures easy food release and cleanup.",
+          "category": "kitchen-accessories",
+          "price": 24.99,
+          "discountPercentage": 3,
+          "rating": 2.79,
+          "stock": 90,
+          "tags": [
+            "cookware",
+            "pans"
+          ],
+          "sku": "KIT-BRD-PRD-068",
+          "weight": 8,
+          "dimensions": {
+            "width": 17.14,
+            "height": 21.7,
+            "depth": 25.75
+          },
+          "warrantyInformation": "1 year warranty",
+          "shippingInformation": "Ships in 3-5 business days",
+          "availabilityStatus": "In Stock",
+          "reviews": [
+            {
+              "rating": 5,
+              "comment": "Highly impressed!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Michael Johnson",
+              "reviewerEmail": "michael.johnson@x.dummyjson.com"
+            },
+            {
+              "rating": 4,
+              "comment": "Highly recommended!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Adrian Flores",
+              "reviewerEmail": "adrian.flores@x.dummyjson.com"
+            },
+            {
+              "rating": 1,
+              "comment": "Not as described!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Nicholas Bailey",
+              "reviewerEmail": "nicholas.bailey@x.dummyjson.com"
+            }
+          ],
+          "returnPolicy": "30 days return policy",
+          "minimumOrderQuantity": 17,
+          "meta": {
+            "createdAt": "2025-04-30T09:41:02.053Z",
+            "updatedAt": "2025-04-30T09:41:02.053Z",
+            "barcode": "5159803862015",
+            "qrCode": "https://cdn.dummyjson.com/public/qr-code.png"
+          },
+          "images": [
+            "https://cdn.dummyjson.com/product-images/kitchen-accessories/pan/1.webp"
+          ],
+          "thumbnail": "https://cdn.dummyjson.com/product-images/kitchen-accessories/pan/thumbnail.webp",
+          "quantity": 6
+        }
+      ],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-03-04T17:08:24.160Z"
+    },
+    {
+      "id": "7b19",
+      "email": "dtlong943@gmail.com2",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [
+        {
+          "id": 95,
+          "title": "Rolex Cellini Date Black Dial",
+          "description": "The Rolex Cellini Date with Black Dial is a classic and prestigious watch. With a black dial and date complication, it exudes sophistication and is a symbol of Rolex's heritage.",
+          "category": "mens-watches",
+          "price": 8999.99,
+          "discountPercentage": 8.88,
+          "rating": 4.97,
+          "stock": 40,
+          "tags": [
+            "watches",
+            "luxury watches"
+          ],
+          "brand": "Rolex",
+          "sku": "MEN-ROL-ROL-095",
+          "weight": 2,
+          "dimensions": {
+            "width": 13.46,
+            "height": 26.1,
+            "depth": 17.9
+          },
+          "warrantyInformation": "3 months warranty",
+          "shippingInformation": "Ships in 1 week",
+          "availabilityStatus": "In Stock",
+          "reviews": [
+            {
+              "rating": 3,
+              "comment": "Not worth the price!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Owen Sullivan",
+              "reviewerEmail": "owen.sullivan@x.dummyjson.com"
+            },
+            {
+              "rating": 4,
+              "comment": "Very satisfied!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Jonathan Pierce",
+              "reviewerEmail": "jonathan.pierce@x.dummyjson.com"
+            },
+            {
+              "rating": 1,
+              "comment": "Would not buy again!",
+              "date": "2025-04-30T09:41:02.053Z",
+              "reviewerName": "Adrian Flores",
+              "reviewerEmail": "adrian.flores@x.dummyjson.com"
+            }
+          ],
+          "returnPolicy": "90 days return policy",
+          "minimumOrderQuantity": 1,
+          "meta": {
+            "createdAt": "2025-04-30T09:41:02.053Z",
+            "updatedAt": "2025-04-30T09:41:02.053Z",
+            "barcode": "9663455783895",
+            "qrCode": "https://cdn.dummyjson.com/public/qr-code.png"
+          },
+          "images": [
+            "https://cdn.dummyjson.com/product-images/mens-watches/rolex-cellini-date-black-dial/1.webp",
+            "https://cdn.dummyjson.com/product-images/mens-watches/rolex-cellini-date-black-dial/2.webp",
+            "https://cdn.dummyjson.com/product-images/mens-watches/rolex-cellini-date-black-dial/3.webp"
+          ],
+          "thumbnail": "https://cdn.dummyjson.com/product-images/mens-watches/rolex-cellini-date-black-dial/thumbnail.webp",
+          "quantity": 14
+        }
+      ],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-03-04T18:20:44.418Z"
+    },
+    {
+      "id": "e289",
+      "email": "duongtlong2001@gmail.com",
+      "password": "123123",
+      "name": "",
+      "avatar": "",
+      "phone": "",
+      "addresses": [],
+      "cart": [],
+      "wishlist": [],
+      "orders": [],
+      "role": "user",
+      "createdAt": "2026-03-05T12:24:45.552Z"
     }
   ],
   "comments": []

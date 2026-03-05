@@ -1,7 +1,6 @@
 'use client'
 import LeftFilterBar from '@/feartures/filter/components/LeftFilterBar'
 import ProductList from '@/feartures/product/components/ProductList'
-
 export default function ProductsPage() {
     return (
         <div className="container grid grids-cols-2 gap 4">

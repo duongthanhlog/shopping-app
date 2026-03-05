@@ -1,11 +1,11 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { ORDER, SORTBY } from '../constant'
 export type FilterUrl = {
-    category: string
-    sortBy: string
-    order: string
-    limit: number
-    skip: number
+    category?: string
+    sortBy?: string
+    order?: string
+    limit?: number
+    skip?: number
 }
 export default function useFilter() {
     const router = useRouter()

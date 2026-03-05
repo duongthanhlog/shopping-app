@@ -52,11 +52,7 @@ export default function Header() {
                     <ShopeeIcon className="w-40 " />
                 </a>
                 <SearchForm />
-                <Link
-                    href={'/cart'}
-                    onClick={handleCartClick}
-                    className="mx-10 p-3 mt-2 pb-1 relative cursor-pointer"
-                >
+                <Link href={'/cart'} onClick={handleCartClick} className="mx-10 p-3 mt-2 pb-1 relative cursor-pointer">
                     {cart.length > 0 && userId && (
                         <span className="border absolute text-sm bg-white text-primary p-[1px] w-[24px] h-[24px] rounded-xl top-0 right-0 centerdiv">
                             {badge}

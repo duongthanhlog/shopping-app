@@ -1,4 +1,4 @@
-import api from '@/lib/axios'
+import { api } from '@/lib/axios'
 import { getUserById } from '../../auth/auth.service'
 import { CART_ACTION } from '../constants/cart'
 import { Card } from '../types/card.type'
@@ -15,7 +15,7 @@ export const deleteCartItem = async (card: Card, userId: string) => {
     const patchRes = cart.filter((item) => {
         return item.id !== card.id
     })
-    const updateCart = await instance.patch(`/users/${userId}`, {
+    const updateCart = await api.patch(`/users/${userId}`, {
         cart: patchRes,
     })
     return updateCart
@@ -30,33 +30,35 @@ export const updateCartquantity = async (
     const existingItem = cart.find((item) => item.id === payload.card.id)
 
     if (!!existingItem) {
-        if (
-            existingItem.quantity === 1 &&
-            payload.type === CART_ACTION.DECREASE
-        ) {
+        if (existingItem.quantity === 1 && payload.type === CART_ACTION.DECREASE) {
             return deleteCartItem(existingItem, userId)
         }
 
         const updatequantityCart = cart.map((item) => {
             if (item.id === payload.card.id) {
+                const nextQuantity =
+                    payload.type === CART_ACTION.INCREASE
+                        ? item.quantity + (payload.newQuantity ?? 1)
+                        : item.quantity - 1
+
+                if (nextQuantity > item.stock) {
+                    throw new Error('Sản phẩm không đủ số lượng trong kho')
+                }
                 return {
                     ...item,
-                    quantity:
-                        payload.type === CART_ACTION.INCREASE
-                            ? item.quantity + (payload.newQuantity ?? 1)
-                            : Math.max(1, item.quantity - 1),
+                    quantity: nextQuantity,
                 }
             }
             return item
         })
 
-        const res = await instance.patch(`/users/${userId}`, {
+        const res = await api.patch(`/users/${userId}`, {
             cart: updatequantityCart,
         })
         return res.data
     } else {
-        const res = await instance.patch(`/users/${userId}`, {
-            cart: [...cart, { ...payload.card, quantity: payload.newQuantity }],
+        const res = await api.patch(`/users/${userId}`, {
+            cart: [...cart, { ...payload.card, quantity: payload.newQuantity ?? 1 }],
         })
         return res.data
     }

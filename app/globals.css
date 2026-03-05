@@ -15,3 +15,7 @@
 @utility centerdiv {
     @apply flex items-center justify-center text-center justify-self-center self-center;
 }
+
+@utility cartGrid {
+    @apply grid grid-cols-[3fr_2fr_2fr_2fr_2fr];
+}
