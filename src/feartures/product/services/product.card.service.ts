@@ -16,9 +16,7 @@ export const getProducts = async ({
     page?: number
 }) => {
     let products: any = []
-    const urlFilterParams = category
-        ? `/products/category/${category}`
-        : `/products`
+    const urlFilterParams = category ? `/products/category/${category}` : `/products`
 
     const params = {
         order,

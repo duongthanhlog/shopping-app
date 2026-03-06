@@ -1,23 +1,17 @@
 import SearchForm from './SearchForm'
 import TopMenu from './TopMenu'
-import { useAuth } from '@/feartures/auth/auth.context'
-import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { getCartByUserId } from '@/feartures/product/services/product.cart.service'
 import { useModal } from '../../../context/modal.context'
 import Link from 'next/link'
 import { Card } from '@/feartures/product/types/card.type'
 import { CartIcon, ShopeeIcon } from 'public/icons'
-import useGetUser from '@/feartures/auth/hooks/useGetUser'
 import useGetUserCart from '@/feartures/product/hooks/useGetUserCart'
+import { useAuth } from '@/feartures/auth/auth.context'
 
 export default function Header() {
-    const { loading, userId } = useAuth()
-    const { user } = useGetUser()
+    const { isLoading, userId } = useAuth()
     const [badge, setBadge] = useState<number | null>(null)
-
     const { cart } = useGetUserCart()
-
     const { openConfirm, openModal } = useModal()
 
     useEffect(() => {
@@ -45,7 +39,7 @@ export default function Header() {
     return (
         <header className="flex flex-col text-white h-[119px] bg-primary ">
             <div className="flex w-full h-[30px] justify-between lg:max-w-[1200px] md:max-w-[768px] sm:max-w-[360px] mx-auto">
-                {!loading && <TopMenu />}
+                {!isLoading && <TopMenu />}
             </div>
             <div className="w-full flex flex-1 items-center lg:max-w-[1200px] md:max-w-[768px] sm:max-w-[360px] mx-auto">
                 <a href="/" className="mr-10 shrink-0">

@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card } from '../types/card.type'
 import { deleteCartItem } from '../services/product.cart.service'
 import { useToast } from '@/feartures/toast/toast.context'
-
 import { useAuth } from '@/feartures/auth/auth.context'
 import { QUERY_KEYS } from '@/contants/queryKeys'
 
