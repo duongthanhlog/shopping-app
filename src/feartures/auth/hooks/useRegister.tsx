@@ -1,29 +1,26 @@
 import { useModal } from '@/context/modal.context'
-import { useAuth } from '../auth.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { RegisterFormData } from '../auth.types'
 import { useToast } from '@/feartures/toast/toast.context'
-import { login as loginApi, register as registerApi } from '../auth.service'
+import { register } from '../auth.service'
 import { QUERY_KEYS } from '@/contants/queryKeys'
+import { AxiosError } from 'axios'
 
 export default function useRegister() {
     const { closeModal } = useModal()
-    const { login } = useAuth()
     const { showToast } = useToast()
     const queryClient = useQueryClient()
     const { mutate, isPending } = useMutation({
         mutationFn: async (data: RegisterFormData) => {
-            await registerApi(data)
-            return await loginApi(data)
+            return await register(data)
         },
-        onSuccess: (token) => {
-            login(token)
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER })
             closeModal()
             showToast('success', `Đăng ký thành công`)
         },
-        onError: (error) => {
-            showToast('error', error.message)
+        onError: (error: AxiosError<any>) => {
+            showToast('warning', error.response.data.message)
         },
     })
     return { mutate, isPending }

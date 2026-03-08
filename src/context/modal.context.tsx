@@ -21,9 +21,7 @@ const ModalContext = createContext<ModalContextType | null>(null)
 export function ModalProvider({ children }: { children: ReactNode }) {
     const [open, setOpen] = useState(false)
     const [type, setType] = useState<ModalType | null>(null)
-    const [confirmOption, setConfirmOption] = useState<ConfirmOption | null>(
-        null
-    )
+    const [confirmOption, setConfirmOption] = useState<ConfirmOption | null>(null)
 
     const openModal = (type: ModalType, confirmOption?: ConfirmOption) => {
         setConfirmOption(confirmOption)

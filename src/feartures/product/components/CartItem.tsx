@@ -1,31 +1,48 @@
 import Image from 'next/image'
 import Currency from '@/components/ui/Currency'
-import { CartItemProps } from '../types/cart.type'
 import { formatCurrency } from '../../../utils/formatNumber'
 import QuantityBox from '@/components/ui/Quantity.box'
 import Link from 'next/link'
+import { useState } from 'react'
+import { ActionType } from '../types/cart.type'
+import { CART_ACTION } from '../constants/cartAction'
 
-export default function CartItem({ item, onIncrease, onDecrease, onDelete, className }: CartItemProps) {
+export default function CartItem({ item, onIncrease, onDecrease, onDelete, className, isPending }) {
+    const [action, setAction] = useState<ActionType | null>(null)
+    if (!item.productId) return null
+
+    const handleIncrease = () => {
+        onIncrease(item.productId._id)
+        setAction(CART_ACTION.INCREASE)
+    }
+
+    const handleDecrease = () => {
+        onDecrease(item.productId._id, item.quantity)
+        setAction(CART_ACTION.DECREASE)
+    }
+
     return (
         <div className="container">
             <div className={`${className} select-none border-b border-gray-300 p-4`}>
-                <Link href={`/products/${item.id}`} className="centerdiv gap-4">
-                    <Image width={80} height={80} src={item.thumbnail} alt="" />
-                    <div className=" w-[310px]">
-                        <span className="line-clamp-2">{item.title}</span>
+                <Link href={`/products/${item.productId._id}`} className="centerdiv gap-4">
+                    <Image width={80} height={80} src={item.productId.thumbnail || '/no-image.png'} alt="" />
+                    <div className=" w-77.5">
+                        <span className="line-clamp-2">{item.productId.title}</span>
                     </div>
                 </Link>
                 <div className="centerdiv font-medium">
-                    {formatCurrency(item.price)}
+                    {formatCurrency(item.productId.price)}
                     <Currency bottom={4} />
                 </div>
                 <QuantityBox
                     quantity={item.quantity}
-                    onIncrease={() => onIncrease(item)}
-                    onDecrease={() => onDecrease(item)}
+                    disablePlus={isPending && action === CART_ACTION.INCREASE}
+                    disableMinus={isPending && action === CART_ACTION.DECREASE}
+                    onIncrease={handleIncrease}
+                    onDecrease={handleDecrease}
                 />
                 <div className="centerdiv text-primary font-medium">
-                    {formatCurrency(item.quantity * item.price)}
+                    {formatCurrency(item.quantity * item.productId.price)}
                     <span className="relative text-[10px] ml-[2px] bottom-[4px] underline">đ</span>
                 </div>
                 <div className="centerdiv">
@@ -33,7 +50,7 @@ export default function CartItem({ item, onIncrease, onDecrease, onDelete, class
                         Mua ngay
                     </button>
                     <button
-                        onClick={() => onDelete(item)}
+                        onClick={() => onDelete(item.productId._id)}
                         className="centerdiv font-medium mr-4 cursor-pointer hover:underline"
                     >
                         Xóa

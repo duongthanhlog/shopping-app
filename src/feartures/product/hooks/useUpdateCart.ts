@@ -1,67 +1,75 @@
 import { updateCartquantity } from '../services/product.cart.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Card } from '../types/card.type'
-import { ActionType } from '../types/cart.type'
+import { ActionType, CartType } from '../types/cart.type'
 import { useToast } from '@/feartures/toast/toast.context'
-import { CART_ACTION } from '../constants/cart'
+import { CART_ACTION } from '../constants/cartAction'
 import useDeleteProducts from './useDeleteProducts'
 import { useModal } from '@/context/modal.context'
-import { useAuth } from '@/feartures/auth/auth.context'
 import { QUERY_KEYS } from '@/contants/queryKeys'
+import useGetUser from '@/feartures/auth/hooks/useGetUser'
+import { useState } from 'react'
 
 export default function useUpdateCart() {
-    const { userId } = useAuth()
+    const { user } = useGetUser()
     const { showToast } = useToast()
     const { openConfirm, closeModal } = useModal()
     const { deleteMutate } = useDeleteProducts()
     const queryClient = useQueryClient()
+    const [pendingId, setPendingId] = useState<string | null>(null)
 
     const { mutate: updateMutate, isPending } = useMutation({
-        mutationFn: (payload: { card: Card; type: ActionType; newQuantity?: number }) => {
-            return updateCartquantity(payload, userId)
+        mutationFn: (payload: { productId: any; type: ActionType; newQuantity?: number }) => {
+            if (!user?._id) throw new Error('Unauthorized')
+            return updateCartquantity(payload)
         },
-        onSuccess: (updatedUser) => {
-            queryClient.setQueryData(QUERY_KEYS.CART(userId), updatedUser.cart)
+        onSuccess: (userCart) => {
+            queryClient.setQueryData(QUERY_KEYS.CART(user?._id), userCart)
         },
-
         onError: (error) => {
+            console.log(error)
             showToast('warning', error.message)
         },
+        onSettled: () => {
+            setPendingId(null)
+        },
     })
-    const handleDelete = (card: Card) => {
+    const handleDelete = (productId: string) => {
         openConfirm({
             title: 'Bạn chắc chắn muốn xóa sản phẩm ?',
             onConfirm: () => {
-                deleteMutate(card)
+                deleteMutate(productId)
+                showToast('warning', 'Đã xóa sản phẩm')
                 closeModal()
             },
         })
     }
 
-    const handleIncrease = (card: Card, quantity?: number) => {
+    const handleIncrease = (productId: string, quantity?: number) => {
+        setPendingId(productId)
         updateMutate({
-            card,
+            productId,
             type: CART_ACTION.INCREASE,
             newQuantity: quantity,
         })
     }
 
-    const handleDecrease = (card: Card) => {
-        if (card.quantity === 1) {
+    const handleDecrease = (productId: string, quantity: number) => {
+        if (quantity === 1) {
             openConfirm({
                 title: 'Bạn chắc chắn muốn xóa sản phẩm khỏi giỏ hàng ?',
                 onConfirm: () => {
-                    deleteMutate(card)
+                    deleteMutate(productId)
                     closeModal()
                 },
             })
             return
         }
-        updateMutate({ card, type: CART_ACTION.DECREASE })
+        setPendingId(productId)
+        updateMutate({ productId, type: CART_ACTION.DECREASE })
     }
 
     return {
-        isPending,
+        pendingId,
         onDelete: handleDelete,
         onIncrease: handleIncrease,
         onDecrease: handleDecrease,

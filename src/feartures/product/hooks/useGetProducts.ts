@@ -4,20 +4,19 @@ import useFilter from '@/feartures/filter/hook/useFilter'
 import { QUERY_KEYS } from '@/contants/queryKeys'
 
 export default function useGetProducts() {
-    const { category, order, limit, skip, sortBy, page } = useFilter()
+    const { category, sortBy, order, limit, page } = useFilter()
     const filter = {
         category,
+        sortBy,
         order,
         limit,
-        skip,
-        sortBy,
         page,
     }
     const { data, isLoading, isFetching } = useQuery({
         queryKey: QUERY_KEYS.PRODUCT_FILTERED(filter),
-        queryFn: () => getProducts({ category, order, limit, skip, sortBy, page }),
+        queryFn: () => getProducts(filter),
         refetchOnWindowFocus: false,
-        staleTime: 0,
+        staleTime: 1000 * 60 * 60,
         placeholderData: keepPreviousData,
     })
 

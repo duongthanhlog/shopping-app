@@ -1,65 +1,26 @@
-import { api } from '@/lib/axios'
-import { getUserById } from '../../auth/auth.service'
-import { CART_ACTION } from '../constants/cart'
-import { Card } from '../types/card.type'
-import { ActionType } from '../types/cart.type'
+import { api, apiDummy } from '@/lib/axios'
+import { Product } from '../types/card.type'
+import { ActionType, CartType } from '../types/cart.type'
 
-export const getCartByUserId = async (userId: string) => {
-    const res = await getUserById(userId)
-    const data = await res.cart
-    return data
+export const getCartByUserId = async () => {
+    const res = await apiDummy.get(`/api/cart`)
+    return res.data.data
 }
 
-export const deleteCartItem = async (card: Card, userId: string) => {
-    const cart: Card[] = await getCartByUserId(userId)
-    const patchRes = cart.filter((item) => {
-        return item.id !== card.id
+export const deleteCartItem = async (productId: string) => {
+    const res = await apiDummy.delete('/api/cart', {
+        data: {
+            productId,
+        },
     })
-    const updateCart = await api.patch(`/users/${userId}`, {
-        cart: patchRes,
-    })
-    return updateCart
+    return res.data.data
 }
 
-export const updateCartquantity = async (
-    payload: { card: Card; type: ActionType; newQuantity?: number },
-    userId: string
-) => {
-    const cart: Card[] = await getCartByUserId(userId)
-
-    const existingItem = cart.find((item) => item.id === payload.card.id)
-
-    if (!!existingItem) {
-        if (existingItem.quantity === 1 && payload.type === CART_ACTION.DECREASE) {
-            return deleteCartItem(existingItem, userId)
-        }
-
-        const updatequantityCart = cart.map((item) => {
-            if (item.id === payload.card.id) {
-                const nextQuantity =
-                    payload.type === CART_ACTION.INCREASE
-                        ? item.quantity + (payload.newQuantity ?? 1)
-                        : item.quantity - 1
-
-                if (nextQuantity > item.stock) {
-                    throw new Error('Sản phẩm không đủ số lượng trong kho')
-                }
-                return {
-                    ...item,
-                    quantity: nextQuantity,
-                }
-            }
-            return item
-        })
-
-        const res = await api.patch(`/users/${userId}`, {
-            cart: updatequantityCart,
-        })
-        return res.data
-    } else {
-        const res = await api.patch(`/users/${userId}`, {
-            cart: [...cart, { ...payload.card, quantity: payload.newQuantity ?? 1 }],
-        })
-        return res.data
-    }
+export const updateCartquantity = async (payload: { productId: string; type: ActionType; newQuantity?: number }) => {
+    const res = await apiDummy.post('/api/cart/', {
+        productId: payload.productId,
+        type: payload.type,
+        quantity: payload.newQuantity,
+    })
+    return res.data.data
 }

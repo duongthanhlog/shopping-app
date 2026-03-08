@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 
 interface ProductSType {
-    id: String
     title: string
     slug: string
     description: string
@@ -20,7 +19,6 @@ interface ProductSType {
 }
 const ProductSchema = new mongoose.Schema(
     {
-        id: String,
         title: String,
         slug: String,
         description: String,
@@ -28,14 +26,25 @@ const ProductSchema = new mongoose.Schema(
         brand: String,
         price: Number,
         discountPercentage: Number,
+        shippingInformation: String,
+        availabilityStatus: String,
+        warrantyInformation: String,
         rating: Number,
         sold: Number,
         quantity: Number,
         minimumOrderQuantity: Number,
         thumbnail: String,
         stock: Number,
-        tags: Array,
-        createdAt: String,
+        tags: [String],
+        reviews: [
+            {
+                rating: { type: Number },
+                comment: { type: String },
+                date: { type: Date },
+                reviewerName: { type: String },
+                reviewerEmail: { type: String },
+            },
+        ],
     },
     { timestamps: true }
 )

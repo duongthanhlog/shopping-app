@@ -1,4 +1,4 @@
-import { Card } from '@/feartures/product/types/card.type'
+import { Product } from '@/feartures/product/types/card.type'
 import { apiDummy } from '@/lib/axios'
 import { OrderType } from '../types'
 
@@ -9,10 +9,7 @@ type QueryParams = {
     sortBy?: string
 }
 
-export const getProductByCategory = async (
-    category: string,
-    params: QueryParams
-) => {
+export const getProductByCategory = async (category: string, params: QueryParams) => {
     const res = await apiDummy.get(`/products/category/${category}`, {
         params,
     })
@@ -29,7 +26,7 @@ export const getFilteredProducts = async (
     skip?: number,
     sortBy?: string
 ) => {
-    let products: Card[] = []
+    let products: Product[] = []
     let totalProduct: number
     const params: QueryParams = {
         limit,

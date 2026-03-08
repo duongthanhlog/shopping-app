@@ -1,39 +1,24 @@
-import { api } from '@/lib/axios'
+import { apiDummy } from '@/lib/axios'
 import { LoginFormData, RegisterFormData } from './auth.types'
 
-export const getUserById = async (userId: string) => {
-    const res = await api.get(`/users/${userId}`)
-    return res.data
+export const getUser = async () => {
+    try {
+        const res = await apiDummy.get(`/api/auth/me`)
+        return res.data
+    } catch (error) {
+        if (error.status === 401) return null
+    }
 }
 
 export const login = async (data: LoginFormData) => {
-    const res = await api.get('/users', { params: { email: data.email } })
-    const user = res.data[0]
-
-    if (!user || user.password !== data.password) {
-        throw new Error('Tài khoản hoặc mật khẩu không đúng')
-    }
-    return { token: `long-token-${user.id}` }
+    return await apiDummy.post('/api/auth/login', data)
 }
 
 export const register = async (data: RegisterFormData) => {
-    const res = await api.get('/users', { params: { email: data.email } })
-    const { confirmPassword, ...rest } = data
+    return await apiDummy.post('/api/auth/register', data)
+}
 
-    const newUser = {
-        ...rest,
-        name: '',
-        avatar: '',
-        phone: '',
-        addresses: [],
-        cart: [],
-        wishlist: [],
-        orders: [],
-        role: 'user',
-        createdAt: new Date().toISOString(),
-    }
-    if (res.data.length > 0) {
-        throw new Error('Email đã được sử dụng')
-    }
-    return api.post('/users', newUser)
+export const logout = async () => {
+    const res = await apiDummy.post('/api/auth/logout')
+    return res.data
 }

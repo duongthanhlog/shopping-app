@@ -6,17 +6,13 @@ import { SORTBY, sortOptions, sortPriceSelections } from '../constant'
 import { OrderType, SortByType } from '../types'
 import useFilter from '../hook/useFilter'
 
-export default function TopFilterBar({ totalPage, onChange, isFetching }) {
+export default function TopFilterBar({ totalPages, onChange, isFetching }) {
     const [open, setOpen] = useState(false)
     const [activeSelected, setActiveSelected] = useState<string>('Giá')
 
-    const { order, sortBy, page, handleSortBy } = useFilter()
+    const { page, sortBy, order, handleSortBy } = useFilter()
 
-    const handleSelect = (
-        value: string,
-        order: OrderType,
-        sortBy: SortByType
-    ) => {
+    const handleSelect = (value: string, order: OrderType, sortBy: SortByType) => {
         setActiveSelected(value)
         setOpen(false)
         handleSortBy(sortBy, order)
@@ -30,10 +26,7 @@ export default function TopFilterBar({ totalPage, onChange, isFetching }) {
                     return (
                         <Button
                             key={i}
-                            active={
-                                sortBy === option.sortBy &&
-                                order === option.order
-                            }
+                            active={sortBy === option.sortBy && order === option.order}
                             onClick={() => {
                                 handleSortBy(option.sortBy, option.order)
                             }}
@@ -57,20 +50,13 @@ export default function TopFilterBar({ totalPage, onChange, isFetching }) {
                             {sortPriceSelections.map((item, i) => (
                                 <div
                                     key={i}
-                                    onClick={() =>
-                                        handleSelect(
-                                            item.text,
-                                            item.order,
-                                            item.sortBy
-                                        )
-                                    }
+                                    onClick={() => handleSelect(item.text, item.order, item.sortBy)}
                                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full flex justify-between"
                                 >
                                     {item.text}
-                                    {item.sortBy === sortBy &&
-                                        activeSelected === item.text && (
-                                            <CheckIcon className="w-4 h-4 text-primary" />
-                                        )}
+                                    {item.sortBy === sortBy && activeSelected === item.text && (
+                                        <CheckIcon className="w-4 h-4 text-primary" />
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -79,8 +65,7 @@ export default function TopFilterBar({ totalPage, onChange, isFetching }) {
             </div>
             <div className="ml-auto flex items-center">
                 <span className="mr-4">
-                    <span className="text-primary">{page}</span>/
-                    <span>{!!totalPage && totalPage}</span>
+                    <span className="text-primary">{page}</span>/<span>{!!totalPages && totalPages}</span>
                 </span>
                 <button
                     disabled={page < 1 || isFetching}
@@ -90,9 +75,9 @@ export default function TopFilterBar({ totalPage, onChange, isFetching }) {
                     {'<'}
                 </button>
                 <button
-                    disabled={page === totalPage || isFetching}
+                    disabled={page === totalPages || isFetching}
                     onClick={() => onChange(page + 1)}
-                    className={`${page === totalPage && 'opacity-50'} cursor-pointer bg-white w-10 h-10 border border-gray-200`}
+                    className={`${page === totalPages && 'opacity-50'} cursor-pointer bg-white w-10 h-10 border border-gray-200`}
                 >
                     {'>'}
                 </button>

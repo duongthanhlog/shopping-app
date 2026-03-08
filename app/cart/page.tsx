@@ -1,31 +1,42 @@
 'use client'
-import CartItem from '../../src/feartures/product/components/CartItem'
 import Image from 'next/image'
-import { useEffect } from 'react'
-import { redirect, useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import useGetUserCart from '@/feartures/product/hooks/useGetUserCart'
 import useUpdateCart from '@/feartures/product/hooks/useUpdateCart'
-import { useAuth } from '@/feartures/auth/auth.context'
-import CartSkeleton from '@/components/ui/skeletons/CartSkeleton'
+import useGetUser from '@/feartures/auth/hooks/useGetUser'
+import CartItem from '@/feartures/product/components/CartItem'
+import FullScreenSpinner from '@/components/ui/FullScreenSpinner'
+import { CartType } from '@/feartures/product/types/cart.type'
+import { useState } from 'react'
 
 export default function CartPage() {
-    const { userId, isLoading } = useAuth()
-    const { cart, isFetched, isFetching } = useGetUserCart()
-    const { onIncrease, onDecrease, onDelete } = useUpdateCart()
+    const { user, isLoading } = useGetUser()
+    const { data, isFetching, isLoading: isLoadingCart } = useGetUserCart()
+    const { onIncrease, onDecrease, onDelete, pendingId } = useUpdateCart()
+    const cart = data ?? []
 
-    if (!userId && !isLoading) {
+    if (!user && !isLoading) {
         redirect('/')
     }
-    if (isFetching || isLoading) return <CartSkeleton />
 
-    if (isFetched && cart.length === 0) {
+    const handleIncrease = (id: string) => {
+        onIncrease(id)
+    }
+
+    const handleDecrease = (id: string, quantity: number) => {
+        onDecrease(id, quantity)
+    }
+
+    if (isFetching || isLoading) return <FullScreenSpinner />
+
+    if (!isLoadingCart && cart.length === 0) {
         return (
-            <div className="flex justify-center select-none h-[100vh-100px]">
+            <div className="flex justify-center select-none h-[calc(100vh-300px)]">
                 <Image
-                    alt=""
-                    width={400}
-                    height={400}
-                    className=" object-cover"
+                    alt="Empty cart"
+                    width={600}
+                    height={600}
+                    objectFit="cover"
                     src="https://bizweb.dktcdn.net/100/476/619/themes/894432/assets/empty-cart.png?1744439213741"
                 />
             </div>
@@ -50,13 +61,14 @@ export default function CartPage() {
             <div className="bg-white py-5 ">
                 <div className="container">
                     <ul className="min-h-[65vh]  border-t border-gray-300">
-                        {cart.map((item, i) => {
+                        {cart.map((item: CartType) => {
                             return (
                                 <CartItem
-                                    onIncrease={onIncrease}
-                                    onDecrease={onDecrease}
+                                    isPending={pendingId === item.productId._id}
+                                    onIncrease={handleIncrease}
+                                    onDecrease={handleDecrease}
                                     onDelete={onDelete}
-                                    key={i}
+                                    key={item._id}
                                     item={item}
                                     className={cartGrid}
                                 />

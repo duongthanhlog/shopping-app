@@ -1,4 +1,4 @@
-import { Card } from '../product/types/card.type'
+import { Product } from '../product/types/card.type'
 
 export interface LoginFormData {
     email: string
@@ -15,7 +15,6 @@ export interface User {
     name: string
     avatar: string
     addresses: Adresses[]
-    cart: Card[]
     role: string
     createdAt: string
 }

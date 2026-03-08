@@ -1,19 +1,25 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Card } from '../types/card.type'
+import { Product } from '../types/card.type'
 import { deleteCartItem } from '../services/product.cart.service'
 import { useToast } from '@/feartures/toast/toast.context'
-import { useAuth } from '@/feartures/auth/auth.context'
 import { QUERY_KEYS } from '@/contants/queryKeys'
+import useGetUser from '@/feartures/auth/hooks/useGetUser'
+import { CartType } from '../types/cart.type'
 
 export default function useDeleteProducts() {
     const queryClient = useQueryClient()
-    const { userId } = useAuth()
+    const { user } = useGetUser()
     const { showToast } = useToast()
+
     const { mutate: deleteMutate } = useMutation({
-        mutationFn: (card: Card) => deleteCartItem(card, userId),
+        mutationFn: (productId: string) => {
+            if (!user?._id) throw new Error('Unauthorized')
+            return deleteCartItem(productId)
+        },
         onSuccess: () => {
+            if (!user?._id) throw new Error('Unauthorized')
             queryClient.invalidateQueries({
-                queryKey: QUERY_KEYS.CART(userId),
+                queryKey: QUERY_KEYS.CART(user._id),
             })
         },
         onError: (error) => {

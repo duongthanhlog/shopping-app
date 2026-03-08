@@ -1,11 +1,18 @@
-import { Card } from './card.type'
+import { Product } from './card.type'
 
 export type ActionType = 'increase' | 'decrease' | 'delete'
 
+export interface CartType {
+    _id: string
+    userId: string
+    productId: Product
+    quantity: number
+}
+
 export type CartItemProps = {
-    item: Card
+    item: CartType
     className: string
-    onDecrease: (item: Card) => void
-    onIncrease: (item: Card, quantity?: number) => void
-    onDelete: (item: Card) => void
+    onDecrease: (productId: string) => void
+    onIncrease: (productId: string, quantity?: number) => void
+    onDelete: (productId: string) => void
 }

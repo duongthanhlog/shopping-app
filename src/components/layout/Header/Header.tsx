@@ -1,30 +1,26 @@
 import SearchForm from './SearchForm'
 import TopMenu from './TopMenu'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useModal } from '../../../context/modal.context'
 import Link from 'next/link'
-import { Card } from '@/feartures/product/types/card.type'
+import { Product } from '@/feartures/product/types/card.type'
 import { CartIcon, ShopeeIcon } from 'public/icons'
 import useGetUserCart from '@/feartures/product/hooks/useGetUserCart'
-import { useAuth } from '@/feartures/auth/auth.context'
+import useGetUser from '@/feartures/auth/hooks/useGetUser'
+import { CartType } from '@/feartures/product/types/cart.type'
 
 export default function Header() {
-    const { isLoading, userId } = useAuth()
-    const [badge, setBadge] = useState<number | null>(null)
-    const { cart } = useGetUserCart()
+    const { isLoading, user } = useGetUser()
+    const { data } = useGetUserCart()
     const { openConfirm, openModal } = useModal()
 
-    useEffect(() => {
-        if (cart) {
-            const badgeNum = cart.reduce((total: number, item: Card) => {
-                return total + item.quantity
-            }, 0)
-            setBadge(badgeNum)
-        }
-    }, [cart])
+    const badgeNum = useMemo(() => {
+        if (!data) return 0
+        return data.reduce((t: number, i: CartType) => t + i.quantity, 0)
+    }, [data])
 
     const handleCartClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (!userId) {
+        if (!user) {
             e.preventDefault()
             openConfirm({
                 title: 'Vui lòng đăng nhập',
@@ -46,10 +42,10 @@ export default function Header() {
                     <ShopeeIcon className="w-40 " />
                 </a>
                 <SearchForm />
-                <Link href={'/cart'} onClick={handleCartClick} className="mx-10 p-3 mt-2 pb-1 relative cursor-pointer">
-                    {cart.length > 0 && userId && (
+                <Link href={`/cart`} onClick={handleCartClick} className="mx-10 p-3 mt-2 pb-1 relative cursor-pointer">
+                    {data?.length > 0 && user && (
                         <span className="border absolute text-sm bg-white text-primary p-[1px] w-[24px] h-[24px] rounded-xl top-0 right-0 centerdiv">
-                            {badge}
+                            {badgeNum}
                         </span>
                     )}
                     <CartIcon className="w-8 h-8 shrink-0" />

@@ -2,21 +2,22 @@
 import { MenuItemType } from '../components/layout/Header/header-menu.types'
 import { useModal } from '../context/modal.context'
 import { guestMenu } from '../components/layout/Header/const'
-import { useAuth } from '../feartures/auth/auth.context'
 import useGetUser from '@/feartures/auth/hooks/useGetUser'
+import { useLogout } from '@/feartures/auth/hooks/useLogout'
+import { useToast } from '@/feartures/toast/toast.context'
 
 export default function useHeaderMenu() {
-    const { userId, logout } = useAuth()
+    const { user } = useGetUser()
+    const { mutate: logout } = useLogout()
     const { openModal, closeModal, openConfirm } = useModal()
-    const { user, isLoading } = useGetUser()
     let userMenu: MenuItemType[]
 
-    if (userId) {
+    if (user) {
         userMenu = [
             {
                 type: 'action',
-                name: user?.name || user?.email?.split('@')[0],
-                avatar: user?.avatar,
+                name: user.name || user.email.split('@')[0],
+                avatar: user.avatar,
             },
             {
                 type: 'action',
@@ -33,8 +34,10 @@ export default function useHeaderMenu() {
             },
         ]
     }
-    const menuRight: MenuItemType[] = !userId
-        ? guestMenu.map((item) =>
+
+    const menuRight: MenuItemType[] = user
+        ? [...guestMenu.slice(0, 3), ...userMenu]
+        : guestMenu.map((item) =>
               item.type === 'action'
                   ? {
                         ...item,
@@ -42,9 +45,6 @@ export default function useHeaderMenu() {
                     }
                   : item
           )
-        : !isLoading
-          ? [...guestMenu.slice(0, 3), ...userMenu]
-          : []
 
     return { menuRight }
 }

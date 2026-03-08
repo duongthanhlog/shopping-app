@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 import AuthModal from '../src/feartures/auth/components/AuthModal'
 import Providers from './providers'
 import { useIsFetching } from '@tanstack/react-query'
-import Toast from '../src/components/ui/Toast'
+import Toast from '../src/feartures/toast/Toast'
 import Header from '@/components/layout/Header/Header'
 
 const geistSans = Geist({

@@ -1,24 +1,24 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { Card } from '../types/card.type'
+import { Product } from '../types/card.type'
 import { getCartByUserId } from '../services/product.cart.service'
-import { useAuth } from '@/feartures/auth/auth.context'
 import { QUERY_KEYS } from '@/contants/queryKeys'
+import useGetUser from '@/feartures/auth/hooks/useGetUser'
 
 export default function useGetUserCart() {
-    const { userId } = useAuth()
+    const { user } = useGetUser()
 
-    const {
-        data: cart = [],
-        isFetching,
-        isLoading,
-        isFetched,
-    } = useQuery<Card[]>({
-        queryKey: QUERY_KEYS.CART(userId),
-        queryFn: () => getCartByUserId(userId),
-        enabled: !!userId,
+    const { data, isFetching, isLoading, isFetched } = useQuery({
+        queryKey: QUERY_KEYS.CART(user?._id),
+        queryFn: () => {
+            if (!user?._id) throw new Error('Unauthorized')
+            return getCartByUserId()
+        },
+        enabled: !!user?._id,
+        staleTime: 1000 * 60 * 5,
         placeholderData: keepPreviousData,
         refetchOnWindowFocus: false,
+        retry: false,
     })
 
-    return { cart, isFetching, isLoading, isFetched }
+    return { data, isFetching, isLoading, isFetched }
 }

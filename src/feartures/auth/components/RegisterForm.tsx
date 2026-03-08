@@ -14,6 +14,7 @@ export default function RegisterForm() {
 
     const { mutate, isPending } = useRegister()
     const { closeModal, openModal } = useModal()
+
     const onSubmit = async (data: RegisterFormData) => {
         mutate(data)
     }

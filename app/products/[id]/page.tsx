@@ -4,35 +4,36 @@ import Currency from '@/components/ui/Currency'
 import { formatCurrency } from '@/utils/formatNumber'
 import QuantityBox from '@/components/ui/Quantity.box'
 import { useModal } from '@/context/modal.context'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PercentRating from '@/utils/canculateRating'
 import useUpdateCart from '@/feartures/product/hooks/useUpdateCart'
-import { useAuth } from '@/feartures/auth/auth.context'
 import { useParams } from 'next/navigation'
-import { useQuery } from '@tanstack/react-query'
-import { getProductById } from '@/feartures/product/services/product.details.service'
 import useGetDetailProduct from '@/feartures/product/hooks/useGetDetailProduct'
-import useGetUserCart from '@/feartures/product/hooks/useGetUserCart'
-import { useToast } from '@/feartures/toast/toast.context'
 import ProductDetailSkeleton from '@/components/ui/skeletons/ProductDetailSkeleton'
+import useGetUser from '@/feartures/auth/hooks/useGetUser'
+import { useToast } from '@/feartures/toast/toast.context'
+import useDebounce from '@/hooks/useDebounce'
 
 export default function ProductDetail() {
-    const { userId } = useAuth()
+    const { user } = useGetUser()
     const { openModal, openConfirm } = useModal()
-    const { onIncrease } = useUpdateCart()
+    const { onIncrease, isPending } = useUpdateCart()
     const [quantity, setQuantity] = useState(1)
+    const { showToast } = useToast()
+
     const { id } = useParams<{ id: string }>()
     const { card, isLoading } = useGetDetailProduct(id)
 
     const handleAddToCart = () => {
-        if (!userId) {
+        if (!user) {
             openConfirm({
                 title: 'Vui lòng đăng nhập',
                 onConfirm: () => openModal('login'),
             })
             return
         }
-        onIncrease(card, quantity)
+        onIncrease(card._id, quantity)
+        showToast('success', 'Đã thêm vào giỏ hàng')
     }
 
     const handleIncrease = () => setQuantity((prev) => prev + 1)
@@ -41,24 +42,23 @@ export default function ProductDetail() {
         setQuantity((prev) => prev - 1)
     }
     if (isLoading) return <ProductDetailSkeleton />
-
     return (
         <div className="bg-white mt-6 pt-5 flex ">
             <Image width={200} height={200} src={card.thumbnail} alt="" loading="eager" className="flex-3 p-4" />
             <div className="flex-4 px-5">
-                <span className="bg-primary text-white shrink-0 px-2 rounded-[4px] mr-2 text-[12px]">Yêu thích</span>
+                <span className="bg-primary text-white shrink-0 px-2 rounded-sm mr-2 text-[12px]">Yêu thích</span>
                 <span className="text-[20px] leading-5 mt-2">{card.description}</span>
                 <div className="flex items-center">
-                    <div className="mt-[10px] flex gap-4 font-medium items-center text-gray-600 divide-x divide-gray-300">
+                    <div className="mt-2.5 flex gap-4 font-medium items-center text-gray-600 divide-x divide-gray-300">
                         <span className="pr-4 ">
                             <span className="underline underline-offset-3 flex">
                                 <span className="font-semibold">{Math.ceil(card.rating * 10) / 10}</span>
-                                <span className="flex w-[100px] ml-2 mt-[3px]">{PercentRating(card.rating)}</span>
+                                <span className="flex w-25 ml-2 mt-0.75">{PercentRating(card.rating)}</span>
                             </span>
                         </span>
                         <span className=" text-md pr-4 ">
                             <span className="font-semibold underline underline-offset-3  text-[16px] text-black mr-1">
-                                {card.reviews.length === 0 ? 'Chưa có đánh giá' : card.reviews.length}
+                                {card?.tags?.length === 0 ? 'Chưa có đánh giá' : card.reviews.length}
                             </span>{' '}
                             Đánh giá
                         </span>
@@ -122,6 +122,7 @@ export default function ProductDetail() {
 
                 <section className="flex gap-4 mt-7">
                     <button
+                        disabled={isPending}
                         onClick={handleAddToCart}
                         className="cursor-pointer hover:bg-red-100 border border-primary bg-red-50 text-md text-primary px-5 py-[8px]"
                     >

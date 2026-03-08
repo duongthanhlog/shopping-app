@@ -4,12 +4,12 @@ import { MenuItemType } from './header-menu.types'
 
 interface Props {
     item: MenuItemType
-    userId: string
     className?: string
     displayName?: string
+    userRole?: string
     onClick?: () => void
 }
-export default function MenuItem({ item, className, userId }: Props) {
+export default function MenuItem({ item, className, userRole }: Props) {
     switch (item?.type) {
         case 'link':
             return (
@@ -32,9 +32,7 @@ export default function MenuItem({ item, className, userId }: Props) {
                             />
                         </>
                     )}
-                    <span
-                        className={`${userId && item.name !== 'Đăng xuất' ? 'font-bold' : 'font-tight'}`}
-                    >
+                    <span className={`${userRole && item.name !== 'Đăng xuất' ? 'font-bold' : 'font-tight'}`}>
                         {item.name}
                     </span>
                 </button>

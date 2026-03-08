@@ -1,12 +1,8 @@
 'use client'
 import { useForm } from 'react-hook-form'
 import { LoginFormData } from '../auth.types'
-import { login as loginApi } from '../auth.service'
 import { CloseIcon } from '@/public/icons'
 import { useModal } from '../../../context/modal.context'
-import { useMutation } from '@tanstack/react-query'
-import { useAuth } from '../auth.context'
-import { useToast } from '../../toast/toast.context'
 import Spinner from '@/components/ui/Spinner'
 import useLogin from '../hooks/useLogin'
 

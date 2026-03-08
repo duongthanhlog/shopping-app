@@ -1,6 +1,6 @@
 export default function CartSkeleton() {
     return (
-        <div className="bg-gray-100 min-h-screen">
+        <div className="bg-gray-100 ">
             {/* Title */}
             <div className="container py-8">
                 <div className="h-8 w-60 bg-gray-300 rounded animate-pulse mb-6" />
