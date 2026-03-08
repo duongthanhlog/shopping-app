@@ -1,9 +1,9 @@
 import Image from 'next/image'
-import Currency from '@/components/ui/currency'
 import { CartItemProps } from '../types/cart.type'
 import { formatCurrency } from '../../../utils/formatNumber'
 import QuantityBox from '@/components/ui/Quantity.box'
 import Link from 'next/link'
+import Currency from '@/components/ui/currency'
 
 export default function CartItem({ item, actions }: CartItemProps) {
     return (
