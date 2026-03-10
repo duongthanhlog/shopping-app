@@ -17,12 +17,15 @@ export async function POST(req: Request) {
         }
 
         const hashedPassword = await bcrypt.hash(body.password, 10)
+
         const user = await User.create({
             email: body.email,
             password: hashedPassword,
         })
 
-        const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY, { expiresIn: '7d' })
+        const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY, {
+            expiresIn: '7d',
+        })
 
         cookieStore.set('token', token, {
             httpOnly: true,

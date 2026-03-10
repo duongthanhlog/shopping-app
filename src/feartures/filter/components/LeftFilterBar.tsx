@@ -1,6 +1,6 @@
 import { ArrowRight, ArrowUpSolidIcon, CheckIcon } from '@/public/icons'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { getProductsCategory } from '../../product/services/product.card.service'
+import { getProductsCategory } from '../../product/services/products.service'
 import { useState } from 'react'
 import useFilter from '../hook/useFilter'
 import CategorySidebarSkeleton from '@/components/ui/skeletons/CategorySidebarSkeleton'
@@ -27,7 +27,9 @@ export default function LeftFilterBar() {
             <span className="pb-4 font-semibold text-xl flex items-center h-12.5 border-b-2 border-gray-200 mr-10">
                 Tất cả danh mục
             </span>
-            <ul className={`${showMore ? 'h-auto' : 'overflow-auto'} mt-4 h-50 overflow-hidden`}>
+            <ul
+                className={`${showMore ? 'h-auto' : 'overflow-auto'} mt-4 h-50 overflow-hidden`}
+            >
                 {categories.map((item: CategoryType, i: number) => {
                     return (
                         <li
@@ -38,7 +40,9 @@ export default function LeftFilterBar() {
                             className={`${item.slug === category ? 'text-primary' : 'text-black'} px-4 relative select-none cursor-pointer font-semibold mb-3 text-[14px] flex`}
                         >
                             <span className="absolute centerdiv left-0">
-                                {item.slug === category && <ArrowRight className={'w-4'} />}
+                                {item.slug === category && (
+                                    <ArrowRight className={'w-4'} />
+                                )}
                             </span>
                             {item.name}
                         </li>
@@ -46,7 +50,10 @@ export default function LeftFilterBar() {
                 })}
             </ul>
             {
-                <div onClick={() => setShowMore(!showMore)} className="cursor-pointer font-semibold px-4 text-[14px]">
+                <div
+                    onClick={() => setShowMore(!showMore)}
+                    className="cursor-pointer font-semibold px-4 text-[14px]"
+                >
                     {!showMore ? (
                         'Xem thêm ▾'
                     ) : (

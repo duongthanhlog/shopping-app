@@ -1,4 +1,4 @@
-import { Product } from '@/feartures/product/types/card.type'
+import { Product } from '@/feartures/product/types/product.type'
 import { apiDummy } from '@/lib/axios'
 import { OrderType } from '../types'
 

@@ -14,8 +14,8 @@ export default function useRegister() {
         mutationFn: async (data: RegisterFormData) => {
             return await register(data)
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER })
+        onSuccess: async (data) => {
+            await queryClient.setQueryData(QUERY_KEYS.USER, data.user)
             closeModal()
             showToast('success', `Đăng ký thành công`)
         },

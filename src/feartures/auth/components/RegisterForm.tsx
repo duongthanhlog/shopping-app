@@ -20,11 +20,16 @@ export default function RegisterForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="z-10 bg-white rounded-sm flex flex-col p-4 px-8 w-100 pb-10">
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="z-10 bg-white rounded-sm flex flex-col p-4 px-8 w-100 pb-10"
+        >
             <span onClick={() => closeModal()}>
                 <CloseIcon className="w-10 h-10 ml-auto text-gray-300 cursor-pointer hover:text-gray-400" />
             </span>
-            <div className="text-center text-[50px] text-primary font-normal">Đăng ký</div>
+            <div className="text-center text-[50px] text-primary font-normal">
+                Đăng ký
+            </div>
             <div className="flex flex-col">
                 <label className="mt-4" htmlFor="">
                     Email
@@ -43,7 +48,9 @@ export default function RegisterForm() {
                     name="email"
                     id=""
                 />
-                <span className="h-4 text-red-400">{errors?.email && errors?.email?.message}</span>
+                <span className="h-4 text-red-400">
+                    {errors?.email && errors?.email?.message}
+                </span>
             </div>
             <div className="flex flex-col">
                 <label className="mt-4" htmlFor="">
@@ -63,7 +70,9 @@ export default function RegisterForm() {
                     name="password"
                     id=""
                 />
-                <span className="h-4 text-red-400">{errors?.password && errors?.password?.message}</span>
+                <span className="h-4 text-red-400">
+                    {errors?.password && errors?.password?.message}
+                </span>
             </div>
             <div className="flex flex-col">
                 <label className="mt-4" htmlFor="">
@@ -76,7 +85,8 @@ export default function RegisterForm() {
                             value: 6,
                             message: 'Mật khẩu phải chứa ít nhất 6 ký tự',
                         },
-                        validate: (value) => value === getValues('password') || 'Mật khẩu không khớp',
+                        validate: (value) =>
+                            value === getValues('password') || 'Mật khẩu không khớp',
                     })}
                     className="border-none outline-none bg-gray-100 rounded-[2px] px-2 h-10"
                     type="password"
@@ -84,7 +94,9 @@ export default function RegisterForm() {
                     name="confirmPassword"
                     id=""
                 />
-                <span className="h-4 text-red-400">{errors?.confirmPassword && errors?.confirmPassword?.message}</span>
+                <span className="h-4 text-red-400">
+                    {errors?.confirmPassword && errors?.confirmPassword?.message}
+                </span>
             </div>
             <button
                 disabled={isPending}
@@ -95,7 +107,10 @@ export default function RegisterForm() {
             </button>
             <div className="mt-2">
                 Đã có tài khoản? -{' '}
-                <span onClick={() => openModal('login')} className="text-primary cursor-pointer hover:underline">
+                <span
+                    onClick={() => openModal('login')}
+                    className="text-primary cursor-pointer hover:underline"
+                >
                     Đăng nhập
                 </span>
             </div>

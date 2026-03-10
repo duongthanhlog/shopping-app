@@ -1,4 +1,4 @@
-import { getProductsCategory } from '@/feartures/product/services/product.card.service'
+import { getProductsCategory } from '@/feartures/product/services/products.service'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { CategoryType } from '../types'
 import { QUERY_KEYS } from '@/contants/queryKeys'

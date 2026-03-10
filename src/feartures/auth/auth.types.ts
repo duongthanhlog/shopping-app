@@ -1,4 +1,4 @@
-import { Product } from '../product/types/card.type'
+import { Product } from '../product/types/product.type'
 
 export interface LoginFormData {
     email: string

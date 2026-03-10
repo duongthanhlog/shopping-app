@@ -1,5 +1,5 @@
 import { FaceBookIcon, InstagramIcon } from '@/public/icons'
-import { MenuItemType } from './header-menu.types'
+import { MenuItemType } from './headerMenu.types'
 
 export const menuLeft: MenuItemType[] = [
     { type: 'link', name: 'Kênh người bán', link: '/' },

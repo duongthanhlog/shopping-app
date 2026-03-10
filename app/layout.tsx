@@ -4,9 +4,13 @@ import './globals.css'
 import { ReactNode } from 'react'
 import AuthModal from '../src/feartures/auth/components/AuthModal'
 import Providers from './providers'
-import { useIsFetching } from '@tanstack/react-query'
 import Toast from '../src/feartures/toast/Toast'
 import Header from '@/components/layout/Header/Header'
+import FullScreenSpinner from '@/components/ui/FullScreenSpinner'
+import useGetUser from '@/feartures/auth/hooks/useGetUser'
+import { useLogout } from '@/feartures/auth/hooks/useLogout'
+import { useIsMutating } from '@tanstack/react-query'
+import useLogin from '@/feartures/auth/hooks/useLogin'
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -23,21 +27,31 @@ export interface RootLayoutProps {
 }
 
 export function GlobalLoading() {
-    const isFetching = useIsFetching()
-    if (!isFetching) return null
-    return <div className="fixed top-0 left-0 w-full text-center bg-white text-black">Loading...</div>
+    const isMutating = useIsMutating({
+        mutationKey: ['auth'],
+    })
+
+    if (isMutating === 0) return null
+
+    return (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/20 z-50">
+            <FullScreenSpinner />
+        </div>
+    )
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
     return (
         <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 min-h-[100vh]`}>
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 min-h-screen`}
+            >
                 <Providers>
                     <Header />
                     <Toast />
                     {children}
+                    <GlobalLoading />
                     <AuthModal />
-                    {/* <GlobalLoading /> */}
                 </Providers>
             </body>
         </html>

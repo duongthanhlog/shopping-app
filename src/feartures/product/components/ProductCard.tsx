@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { formatCurrency } from '../../../utils/formatNumber'
+import { formatCurrency } from '../../../utils/formatCurrency'
 import Currency from '@/components/ui/Currency'
 import Link from 'next/link'
 import PercentRating from '@/utils/canculateRating'
@@ -18,7 +18,14 @@ export default function ProductCard({ card, href }) {
                         {`-${card.discountPercentage}%`}
                     </span>
                 )}
-                <Image loading="eager" width={300} height={300} className="w-full" alt="" src={card.thumbnail} />
+                <Image
+                    loading="eager"
+                    width={300}
+                    height={300}
+                    className="w-full"
+                    alt=""
+                    src={card.thumbnail}
+                />
             </div>
             <div className="p-3">
                 <span className="line-clamp-2 leading-5 h-10">{card.title}</span>
@@ -33,12 +40,17 @@ export default function ProductCard({ card, href }) {
                             </span>
 
                             <span className="leading-tight text-[20px] text-primary font-medium">
-                                {formatCurrency(card.price - (card.price * card.discountPercentage) / 100)}
+                                {formatCurrency(
+                                    card.price -
+                                        (card.price * card.discountPercentage) / 100
+                                )}
                                 <Currency bottom={8} />
                             </span>
                             <span className="text-sm text-gray-400">
                                 Đã bán{' '}
-                                {card.sold > 1000 ? `${Math.round(card.sold) / 1000}k` : card.minimumOrderQuantity}
+                                {card.sold > 1000
+                                    ? `${Math.round(card.sold) / 1000}k`
+                                    : card.minimumOrderQuantity}
                             </span>
                         </div>
                     </div>

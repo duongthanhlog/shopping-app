@@ -1,10 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Product } from '../types/card.type'
-import { deleteCartItem } from '../services/product.cart.service'
+import { deleteCartItem } from '../../cart/services/product.cart.service'
 import { useToast } from '@/feartures/toast/toast.context'
 import { QUERY_KEYS } from '@/contants/queryKeys'
 import useGetUser from '@/feartures/auth/hooks/useGetUser'
-import { CartType } from '../types/cart.type'
 
 export default function useDeleteProducts() {
     const queryClient = useQueryClient()

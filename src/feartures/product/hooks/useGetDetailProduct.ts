@@ -5,7 +5,7 @@ import { QUERY_KEYS } from '@/contants/queryKeys'
 
 export default function useGetDetailProduct(id: string) {
     const {
-        data: card,
+        data: product,
         isLoading,
         isFetching,
     } = useQuery({
@@ -15,5 +15,5 @@ export default function useGetDetailProduct(id: string) {
         refetchOnWindowFocus: false,
     })
 
-    return { card, isLoading, isFetching }
+    return { product, isLoading, isFetching }
 }

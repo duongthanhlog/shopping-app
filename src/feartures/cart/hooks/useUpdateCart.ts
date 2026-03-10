@@ -1,24 +1,25 @@
-import { updateCartquantity } from '../services/product.cart.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ActionType, CartType } from '../types/cart.type'
 import { useToast } from '@/feartures/toast/toast.context'
-import { CART_ACTION } from '../constants/cartAction'
-import useDeleteProducts from './useDeleteProducts'
+import { CART_ACTION } from '../../cart/constants/cartAction'
 import { useModal } from '@/context/modal.context'
 import { QUERY_KEYS } from '@/contants/queryKeys'
 import useGetUser from '@/feartures/auth/hooks/useGetUser'
 import { useState } from 'react'
+import { updateCartquantity } from '../services/product.cart.service'
+import { ActionType } from '../type/cartItem.type'
 
 export default function useUpdateCart() {
     const { user } = useGetUser()
     const { showToast } = useToast()
-    const { openConfirm, closeModal } = useModal()
-    const { deleteMutate } = useDeleteProducts()
     const queryClient = useQueryClient()
     const [pendingId, setPendingId] = useState<string | null>(null)
 
     const { mutate: updateMutate, isPending } = useMutation({
-        mutationFn: (payload: { productId: any; type: ActionType; newQuantity?: number }) => {
+        mutationFn: (payload: {
+            productId: string
+            type: ActionType
+            newQuantity?: number
+        }) => {
             if (!user?._id) throw new Error('Unauthorized')
             return updateCartquantity(payload)
         },
@@ -33,16 +34,6 @@ export default function useUpdateCart() {
             setPendingId(null)
         },
     })
-    const handleDelete = (productId: string) => {
-        openConfirm({
-            title: 'Bạn chắc chắn muốn xóa sản phẩm ?',
-            onConfirm: () => {
-                deleteMutate(productId)
-                showToast('warning', 'Đã xóa sản phẩm')
-                closeModal()
-            },
-        })
-    }
 
     const handleIncrease = (productId: string, quantity?: number) => {
         setPendingId(productId)
@@ -53,24 +44,14 @@ export default function useUpdateCart() {
         })
     }
 
-    const handleDecrease = (productId: string, quantity: number) => {
-        if (quantity === 1) {
-            openConfirm({
-                title: 'Bạn chắc chắn muốn xóa sản phẩm khỏi giỏ hàng ?',
-                onConfirm: () => {
-                    deleteMutate(productId)
-                    closeModal()
-                },
-            })
-            return
-        }
+    const handleDecrease = (productId: string) => {
         setPendingId(productId)
         updateMutate({ productId, type: CART_ACTION.DECREASE })
     }
 
     return {
         pendingId,
-        onDelete: handleDelete,
+        isPending,
         onIncrease: handleIncrease,
         onDecrease: handleDecrease,
     }

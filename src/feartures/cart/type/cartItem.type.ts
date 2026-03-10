@@ -1,8 +1,8 @@
-import { Product } from './card.type'
+import { Product } from '@/feartures/product/types/product.type'
 
 export type ActionType = 'increase' | 'decrease' | 'delete'
 
-export interface CartType {
+export interface CartItemType {
     _id: string
     userId: string
     productId: Product
@@ -10,7 +10,7 @@ export interface CartType {
 }
 
 export type CartItemProps = {
-    item: CartType
+    item: CartItemType
     className: string
     onDecrease: (productId: string) => void
     onIncrease: (productId: string, quantity?: number) => void

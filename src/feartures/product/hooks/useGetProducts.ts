@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { getProducts } from '../services/product.card.service'
+import { getProducts } from '../services/products.service'
 import useFilter from '@/feartures/filter/hook/useFilter'
 import { QUERY_KEYS } from '@/contants/queryKeys'
 

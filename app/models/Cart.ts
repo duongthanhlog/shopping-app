@@ -1,4 +1,4 @@
-import { CartType } from '@/feartures/product/types/cart.type'
+import { CartItemType } from '@/feartures/cart/type/cartItem.type'
 import mongoose, { Schema } from 'mongoose'
 
 const CartSchema = new mongoose.Schema({
@@ -19,5 +19,5 @@ const CartSchema = new mongoose.Schema({
 
 CartSchema.index({ userId: 1, productId: 1 }, { unique: true })
 
-const Cart = mongoose.models.Cart || mongoose.model<CartType>('Cart', CartSchema)
+const Cart = mongoose.models.Cart || mongoose.model<CartItemType>('Cart', CartSchema)
 export default Cart

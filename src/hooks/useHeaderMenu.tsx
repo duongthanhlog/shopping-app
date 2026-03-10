@@ -1,10 +1,9 @@
 'use client'
-import { MenuItemType } from '../components/layout/Header/header-menu.types'
+import { MenuItemType } from '../components/layout/Header/headerMenu.types'
 import { useModal } from '../context/modal.context'
 import { guestMenu } from '../components/layout/Header/const'
 import useGetUser from '@/feartures/auth/hooks/useGetUser'
 import { useLogout } from '@/feartures/auth/hooks/useLogout'
-import { useToast } from '@/feartures/toast/toast.context'
 
 export default function useHeaderMenu() {
     const { user } = useGetUser()

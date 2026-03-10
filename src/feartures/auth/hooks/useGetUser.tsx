@@ -6,13 +6,13 @@ export default function useGetUser() {
     const {
         data: user,
         isLoading,
+        isFetching,
         error,
     } = useQuery({
         queryKey: QUERY_KEYS.USER,
         queryFn: getUser,
-        placeholderData: keepPreviousData,
         refetchOnWindowFocus: false,
         retry: false,
     })
-    return { user, isLoading, error }
+    return { user, isFetching, isLoading, error }
 }

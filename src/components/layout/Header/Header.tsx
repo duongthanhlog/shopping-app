@@ -1,13 +1,14 @@
+'use client'
 import SearchForm from './SearchForm'
 import TopMenu from './TopMenu'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useModal } from '../../../context/modal.context'
 import Link from 'next/link'
-import { Product } from '@/feartures/product/types/card.type'
 import { CartIcon, ShopeeIcon } from 'public/icons'
-import useGetUserCart from '@/feartures/product/hooks/useGetUserCart'
+
 import useGetUser from '@/feartures/auth/hooks/useGetUser'
-import { CartType } from '@/feartures/product/types/cart.type'
+import useGetUserCart from '@/feartures/cart/hooks/useGetUserCart'
+import { CartItemType } from '@/feartures/cart/type/cartItem.type'
 
 export default function Header() {
     const { isLoading, user } = useGetUser()
@@ -16,7 +17,7 @@ export default function Header() {
 
     const badgeNum = useMemo(() => {
         if (!data) return 0
-        return data.reduce((t: number, i: CartType) => t + i.quantity, 0)
+        return data.reduce((t: number, i: CartItemType) => t + i.quantity, 0)
     }, [data])
 
     const handleCartClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -24,7 +25,7 @@ export default function Header() {
             e.preventDefault()
             openConfirm({
                 title: 'Vui lòng đăng nhập',
-                onConfirm: () => {
+                onConfirm: async () => {
                     openModal('login')
                 },
             })
@@ -42,7 +43,11 @@ export default function Header() {
                     <ShopeeIcon className="w-40 " />
                 </a>
                 <SearchForm />
-                <Link href={`/cart`} onClick={handleCartClick} className="mx-10 p-3 mt-2 pb-1 relative cursor-pointer">
+                <Link
+                    href={`/cart`}
+                    onClick={handleCartClick}
+                    className="mx-10 p-3 mt-2 pb-1 relative cursor-pointer"
+                >
                     {data?.length > 0 && user && (
                         <span className="border absolute text-sm bg-white text-primary p-[1px] w-[24px] h-[24px] rounded-xl top-0 right-0 centerdiv">
                             {badgeNum}

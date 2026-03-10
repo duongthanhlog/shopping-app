@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import User from 'app/models/User'
 import { getUserIdFromToken } from '@/lib/auth'
 
+export const dynamic = 'force-dynamic'
 export async function GET() {
     await connectDB()
     try {

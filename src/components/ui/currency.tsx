@@ -2,9 +2,10 @@ interface Props {
     bottom: number
     right?: number
     size?: number
+    className?: string
 }
 
-export default function Currency({ bottom, right, size }: Props) {
+export default function Currency({ bottom, right, size, className }: Props) {
     return (
         <span
             style={{
@@ -12,7 +13,7 @@ export default function Currency({ bottom, right, size }: Props) {
                 right: `${right}px`,
                 fontSize: `${size}px`,
             }}
-            className={`relative text-[10px] ml-[2px] underline `}
+            className={`relative text-[10px] ml-[2px] underline ${className}`}
         >
             đ
         </span>

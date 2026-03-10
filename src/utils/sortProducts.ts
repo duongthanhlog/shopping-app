@@ -1,5 +1,5 @@
 import { SortWith } from '@/feartures/filter/types'
-import { Product } from '@/feartures/product/types/card.type'
+import { Product } from '@/feartures/product/types/product.type'
 
 export const sortProducts = (products: Product[], SortWith: SortWith) => {
     switch (SortWith) {
@@ -12,7 +12,9 @@ export const sortProducts = (products: Product[], SortWith: SortWith) => {
                 return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
             })
         case 'bestSeller':
-            return [...products].sort((a, b) => b.minimumOrderQuantity - a.minimumOrderQuantity)
+            return [...products].sort(
+                (a, b) => b.minimumOrderQuantity - a.minimumOrderQuantity
+            )
         case 'high-price-low':
             return [...products].sort((a, b) => b.price - a.price)
         case 'low-price-high':

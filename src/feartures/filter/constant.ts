@@ -6,6 +6,7 @@ export const SORTBY = {
     RATING: 'rating',
     CREATED_AT: 'createdAt',
     DISCOUNT: 'discountPercentage',
+    CATEGORY: 'category',
 } as const
 
 export const ORDER = {

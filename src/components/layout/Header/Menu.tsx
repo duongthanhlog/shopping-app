@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { MenuItemType } from './header-menu.types'
+import { MenuItemType } from './headerMenu.types'
 
 interface Props {
     item: MenuItemType
@@ -32,7 +32,9 @@ export default function MenuItem({ item, className, userRole }: Props) {
                             />
                         </>
                     )}
-                    <span className={`${userRole && item.name !== 'Đăng xuất' ? 'font-bold' : 'font-tight'}`}>
+                    <span
+                        className={`${userRole && item.name !== 'Đăng xuất' ? 'font-bold' : 'font-tight'}`}
+                    >
                         {item.name}
                     </span>
                 </button>

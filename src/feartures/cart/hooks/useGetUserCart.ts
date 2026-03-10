@@ -1,8 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { Product } from '../types/card.type'
-import { getCartByUserId } from '../services/product.cart.service'
 import { QUERY_KEYS } from '@/contants/queryKeys'
 import useGetUser from '@/feartures/auth/hooks/useGetUser'
+import { getCartByUserId } from '../services/product.cart.service'
 
 export default function useGetUserCart() {
     const { user } = useGetUser()

@@ -10,8 +10,9 @@ export default function useLogin() {
     const { closeModal } = useModal()
     const queryClient = useQueryClient()
     const { mutate, isPending } = useMutation({
+        mutationKey: ['auth'],
         mutationFn: login,
-        onSuccess: async () => {
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: QUERY_KEYS.USER,
             })

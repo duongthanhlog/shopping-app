@@ -1,6 +1,6 @@
 import ProductCard from './ProductCard'
 
-import { Product } from '../types/card.type'
+import { Product } from '../types/product.type'
 import useFilter from '@/feartures/filter/hook/useFilter'
 import usePanigate from '@/hooks/usePanigate'
 import TopFilterBar from '@/feartures/filter/components/TopFilterBar'
@@ -16,21 +16,40 @@ export default function ProductList() {
     const products = data?.products || []
     const totalPages = data?.totalPages
 
-    if (!products.length && !isLoading) return <div className="centerdiv text-gray-500">Không có sản phẩm nào</div>
+    if (!products.length && !isLoading)
+        return <div className="centerdiv text-gray-500">Không có sản phẩm nào</div>
 
     return (
         <>
-            <TopFilterBar isFetching={isFetching} totalPages={totalPages} onChange={handleChangePage} />
+            <TopFilterBar
+                isFetching={isFetching}
+                totalPages={totalPages}
+                onChange={handleChangePage}
+            />
             <ul
                 className={`${isFetching ? 'opacity-60 transition' : ''} mt-4 grid grid-cols-[1fr_1fr_1fr_1fr_1fr] gap-4`}
             >
                 {isLoading
-                    ? Array.from({ length: 10 }).map((_, i) => <ProductCardSkeleton key={i} />)
+                    ? Array.from({ length: 10 }).map((_, i) => (
+                          <ProductCardSkeleton key={i} />
+                      ))
                     : products.map((card: Product) => {
-                          return <ProductCard href={`/products/${card._id}`} key={card._id} card={card} />
+                          return (
+                              <ProductCard
+                                  href={`/products/${card._id}`}
+                                  key={card._id}
+                                  card={card}
+                              />
+                          )
                       })}
             </ul>
-            {totalPages > 1 && <BottomPaginationNav page={page} onChange={handleChangePage} totalPages={totalPages} />}
+            {totalPages > 1 && (
+                <BottomPaginationNav
+                    page={page}
+                    onChange={handleChangePage}
+                    totalPages={totalPages}
+                />
+            )}
         </>
     )
 }

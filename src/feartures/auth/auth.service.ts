@@ -11,11 +11,13 @@ export const getUser = async () => {
 }
 
 export const login = async (data: LoginFormData) => {
-    return await apiDummy.post('/api/auth/login', data)
+    const res = await apiDummy.post('/api/auth/login', data)
+    return res.data
 }
 
 export const register = async (data: RegisterFormData) => {
-    return await apiDummy.post('/api/auth/register', data)
+    const res = await apiDummy.post('/api/auth/register', data)
+    return res.data
 }
 
 export const logout = async () => {

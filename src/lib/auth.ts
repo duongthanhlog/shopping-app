@@ -11,9 +11,8 @@ export async function getUserIdFromToken() {
     if (!token) return null
 
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY) as TokenPayload
-        const { userId } = decoded
-        return userId
+        const decoded = jwt.verify(token, process.env.SECRET_KEY!) as TokenPayload
+        return decoded.userId
     } catch {
         return null
     }

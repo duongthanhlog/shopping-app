@@ -1,6 +1,5 @@
 import { connectDB } from '@/lib/mongodb'
 import Product from 'app/models/Product'
-import axios from 'axios'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
@@ -18,7 +17,7 @@ export async function GET(request: Request) {
 
     let query: any = {}
     const orderType = order === 'desc' ? -1 : 1
-    const sortField = sortBy || 'createdAt'
+    const sortField = sortBy || 'rating'
 
     if (category) query.category = category
     try {

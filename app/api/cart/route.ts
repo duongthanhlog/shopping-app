@@ -1,10 +1,8 @@
-import { CART_ACTION } from '@/feartures/product/constants/cartAction'
+import { CART_ACTION } from '@/feartures/cart/constants/cartAction'
 import { getUserIdFromToken } from '@/lib/auth'
 import { connectDB } from '@/lib/mongodb'
 import Cart from 'app/models/Cart'
 import User from 'app/models/User'
-import jwt, { JwtPayload } from 'jsonwebtoken'
-import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
@@ -30,7 +28,11 @@ export async function POST(req: Request) {
             quantity: quantity ?? 1,
         })
     } else {
-        await Cart.findOneAndUpdate({ userId, productId }, { $inc: { quantity: nextQuantity } }, { new: true })
+        await Cart.findOneAndUpdate(
+            { userId, productId },
+            { $inc: { quantity: nextQuantity } },
+            { new: true }
+        )
     }
     const cartItems = await Cart.find({ userId }).populate('productId')
     return NextResponse.json({ message: 'Đã lấy thành công giỏ hàng', data: cartItems })
@@ -38,10 +40,7 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
     await connectDB()
-    const cookieStore = await cookies()
-    const token = cookieStore.get('token')?.value
-    const decoded = jwt.verify(token, process.env.SECRET_KEY) as JwtPayload
-    const userId = decoded.userId
+    const userId = await getUserIdFromToken()
     const cartItems = await Cart.find({ userId }).populate('productId').lean()
 
     return NextResponse.json({ data: cartItems }, { status: 200 })
@@ -49,12 +48,9 @@ export async function GET(req: Request) {
 
 export async function DELETE(req: Request) {
     await connectDB()
-    const cookieStore = await cookies()
     const { productId } = await req.json()
-    const token = cookieStore.get('token')?.value
-    const decoded = jwt.verify(token, process.env.SECRET_KEY) as JwtPayload
-    const userId = decoded.userId
 
+    const userId = await getUserIdFromToken()
     const cartItems = await Cart.deleteOne({ userId, productId })
 
     return NextResponse.json({ message: 'Xóa thành công', data: cartItems })

@@ -16,9 +16,14 @@ export async function POST(req: Request) {
 
     try {
         if (!isMatch) {
-            return NextResponse.json({ message: 'Mật khẩu không chính xác' }, { status: 400 })
+            return NextResponse.json(
+                { message: 'Mật khẩu không chính xác' },
+                { status: 400 }
+            )
         }
-        const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY, { expiresIn: '7d' })
+        const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY, {
+            expiresIn: '7d',
+        })
         const cookieStore = await cookies()
         cookieStore.set('token', token, {
             httpOnly: true,

@@ -1,4 +1,5 @@
 import { useRouter, useSearchParams } from 'next/navigation'
+import { ORDER, SORTBY } from '../constant'
 
 export type FilterUrl = {
     category?: string
@@ -12,18 +13,18 @@ export default function useFilter() {
     const searchParams = useSearchParams()
     const query = new URLSearchParams(searchParams.toString())
 
-    const category = query.get('category')
-    const order = query.get('order')
-    const sortBy = query.get('sortBy')
+    const category = query.get(SORTBY.CATEGORY)
+    const order = query.get('order') || ORDER.DESC
+    const sortBy = query.get('sortBy') || SORTBY.RATING
     const page = Number(query.get('page')) || 1
     const limit = Number(query.get('limit')) || 15
 
     const handleFilter = (category: string) => {
         if (category) {
-            query.set('category', category)
+            query.set(SORTBY.CATEGORY, category)
             query.set('page', '1')
         } else {
-            query.delete('category')
+            query.delete(SORTBY.CATEGORY)
         }
         router.push(`/products?${query.toString()}`)
     }
