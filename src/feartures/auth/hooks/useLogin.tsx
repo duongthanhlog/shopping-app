@@ -9,7 +9,7 @@ export default function useLogin() {
     const { showToast } = useToast()
     const { closeModal } = useModal()
     const queryClient = useQueryClient()
-    const { mutate, isPending } = useMutation({
+    const { isPending, mutateAsync } = useMutation({
         mutationKey: ['auth'],
         mutationFn: login,
         onSuccess: () => {
@@ -19,10 +19,7 @@ export default function useLogin() {
             showToast('success', 'Đăng nhập thành công')
             closeModal()
         },
-        onError: (error: AxiosError<any>) => {
-            showToast('error', error.response?.data?.message)
-        },
     })
 
-    return { mutate, isPending }
+    return { isPending, mutateAsync }
 }

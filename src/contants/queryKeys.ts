@@ -7,4 +7,5 @@ export const QUERY_KEYS = {
     PRODUCT_FILTERED: (filter: FilterUrl) => ['products', filter] as const,
     USER: ['user'] as const,
     CART: (userId: string) => ['cart', userId] as const,
+    SEARCHSUGGEST: (keyword: string) => ['searchSuggest', keyword] as const,
 }

@@ -1,10 +1,9 @@
 'use client'
 import Image from 'next/image'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import useGetUser from '@/feartures/auth/hooks/useGetUser'
 import FullScreenSpinner from '@/components/ui/FullScreenSpinner'
 import { useEffect, useMemo, useState } from 'react'
-import useDeleteProducts from '@/feartures/product/hooks/useDeleteProducts'
 import { useModal } from '@/context/modal.context'
 import { useToast } from '@/feartures/toast/toast.context'
 import useGetUserCart from '@/feartures/cart/hooks/useGetUserCart'
@@ -12,13 +11,15 @@ import useUpdateCart from '@/feartures/cart/hooks/useUpdateCart'
 import { CartItemType } from '@/feartures/cart/type/cartItem.type'
 import CartItem from '@/feartures/cart/components/CartItem'
 import CartActionsBar from '@/feartures/cart/components/CartActionsBar'
+import CartSkeleton from '@/components/ui/skeletons/CartSkeleton'
+import useDeleteProducts from '@/feartures/cart/hooks/useDeleteCart'
 
 export default function CartPage() {
     const router = useRouter()
     const { user, isLoading } = useGetUser()
-    const { data, isFetching, isLoading: isLoadingCart } = useGetUserCart()
+    const { data, isSuccess } = useGetUserCart()
     const { onIncrease, onDecrease, pendingId } = useUpdateCart()
-    const { deleteMutate } = useDeleteProducts()
+    const { deleteMutate, isPending } = useDeleteProducts()
     const { openConfirm, closeModal } = useModal()
     const { showToast } = useToast()
     const [checkedId, setCheckedId] = useState([])
@@ -31,7 +32,7 @@ export default function CartPage() {
     }, [user, isLoading, router])
 
     const cartItemChecked = useMemo(
-        () => cart.filter((item: CartItemType) => checkedId.includes(item.productId._id)),
+        () => cart.filter((item: CartItemType) => checkedId.includes(item.productId)),
         [cart, checkedId]
     )
 
@@ -41,8 +42,7 @@ export default function CartPage() {
             0
         )
         const totalCartChecked = cartItemChecked.reduce(
-            (total: number, item: CartItemType) =>
-                total + item.productId.price * item.quantity,
+            (total: number, item: CartItemType) => total + item.price * item.quantity,
             0
         )
         return {
@@ -51,30 +51,32 @@ export default function CartPage() {
         }
     }, [cart, checkedId])
 
-    const handleIncrease = (id: string) => {
-        onIncrease(id)
+    const handleIncrease = (product: CartItemType) => {
+        onIncrease(product)
     }
 
-    const handleDecrease = (id: string, quantity: number) => {
+    const handleDecrease = (product: CartItemType, quantity: number) => {
         if (quantity === 1) {
             openConfirm({
                 title: 'Bạn chắc chắn muốn xóa sản phẩm khỏi giỏ hàng ?',
                 onConfirm: () => {
-                    deleteMutate(id)
+                    deleteMutate(product)
                     closeModal()
                 },
             })
             return
         }
-        onDecrease(id)
+        onDecrease(product)
     }
 
-    const handleDelete = (id: string) => {
+    const handleDelete = (product: CartItemType) => {
         openConfirm({
             title: 'Bạn chắc chắn muốn xóa sản phẩm ?',
-            onConfirm: async () => {
-                deleteMutate(id)
-                setCheckedId((prev) => prev.filter((checkedId) => checkedId !== id))
+            onConfirm: () => {
+                deleteMutate(product)
+                setCheckedId((prev) =>
+                    prev.filter((checkedId) => checkedId !== product.productId)
+                )
                 showToast('success', 'Đã xóa sản phẩm')
                 closeModal()
             },
@@ -86,9 +88,7 @@ export default function CartPage() {
             title: `Xóa ${cartItemChecked.length} sản phẩm đã chọn?`,
             onConfirm: async () => {
                 await Promise.all(
-                    cartItemChecked.map((item: CartItemType) =>
-                        deleteMutate(item.productId._id)
-                    )
+                    cartItemChecked.map((item: CartItemType) => deleteMutate(item))
                 )
                 showToast('success', `Đã xóa ${cartItemChecked.length} sản phẩm`)
                 closeModal()
@@ -100,7 +100,7 @@ export default function CartPage() {
         if (e.target.checked) {
             setCheckedId(() => {
                 const currentCartItemsId = cart.map((item: CartItemType) => {
-                    return item.productId._id
+                    return item.productId
                 })
 
                 return currentCartItemsId
@@ -118,14 +118,15 @@ export default function CartPage() {
         }
     }
 
-    if (isFetching || isLoading) return <FullScreenSpinner />
-
-    if (!isLoadingCart && cart.length === 0) {
+    if (isLoading) return <CartSkeleton />
+    if (isPending) return <FullScreenSpinner />
+    if (isSuccess && cart.length === 0) {
         return (
             <div className="flex justify-center select-none h-[calc(100vh-300px)]">
                 <Image
                     alt="Empty cart"
                     width={600}
+                    loading="eager"
                     height={600}
                     objectFit="cover"
                     src="https://bizweb.dktcdn.net/100/476/619/themes/894432/assets/empty-cart.png?1744439213741"
@@ -143,7 +144,7 @@ export default function CartPage() {
                 </div>
             </div>
             <div className="bg-white container">
-                <div className={`text-gray-500 ${cartGrid} p-4 my-4 select-none`}>
+                <div className={`text-gray-500 ${cartGrid} p-4 my-4 pl-8 select-none`}>
                     <div className="">Sản phẩm</div>
                     <div className="centerdiv">Đơn giá</div>
                     <div className="centerdiv">Số lượng</div>
@@ -153,20 +154,18 @@ export default function CartPage() {
             </div>
             <div className="bg-white py-5 ">
                 <div className="container">
-                    <ul className="min-h-[65vh]  border-t border-gray-300">
+                    <ul className="min-h-[65vh] border-t border-gray-300">
                         {cart.map((item: CartItemType) => {
                             return (
-                                <div key={item._id} className="flex items-center gap-4">
+                                <div key={item.productId} className="flex items-center">
                                     <input
-                                        onChange={(e) =>
-                                            handleCheck(e, item.productId._id)
-                                        }
-                                        checked={checkedId.includes(item.productId._id)}
+                                        onChange={(e) => handleCheck(e, item.productId)}
+                                        checked={checkedId.includes(item.productId)}
                                         type="checkbox"
                                         className=" w-5 h-5 accent-primary rounded cursor-pointer border-gray-300  focus:ring-primary"
                                     />
                                     <CartItem
-                                        isPending={pendingId === item.productId._id}
+                                        isPending={pendingId === item.productId}
                                         onIncrease={handleIncrease}
                                         onDecrease={handleDecrease}
                                         onDelete={handleDelete}

@@ -33,12 +33,12 @@ export const sortPriceSelections: {
 
 export const sortOptions = [
     {
-        label: 'Phổ biến',
+        label: 'Đánh giá cao',
         sortBy: SORTBY.RATING,
         order: ORDER.DESC,
     },
     {
-        label: 'Đang giảm giá',
+        label: 'Giảm giá sâu',
         sortBy: SORTBY.DISCOUNT,
         order: ORDER.DESC,
     },

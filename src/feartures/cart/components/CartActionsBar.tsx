@@ -18,7 +18,7 @@ export default function CartActionsBar({
     totalPrice,
 }: Props) {
     return (
-        <div className="container mt-10 sticky shadow-lg border border-gray-300 h-25 px-4  bg-gray-50 z-50 bottom-2 ">
+        <div className="container mt-10 sticky shadow-xl border border-gray-300 h-25 px-4 bg-gray-50 z-0 bottom-2 ">
             <label
                 htmlFor="checkall"
                 className="w-60 cursor-pointer flex items-center p-4 gap-4 pl-0 select-none"

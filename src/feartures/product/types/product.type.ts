@@ -1,6 +1,18 @@
-export interface Product {
+export interface ProductType {
     _id: string
     title: string
-    thumbnail: string
+    slug: string
+    description: string
+    category: string
+    brand: string
     price: number
+    discountPercentage: number
+    rating: number
+    sold: number
+    quantity: number
+    minimumOrderQuantity: number
+    thumbnail: string
+    stock: number
+    tags: string[]
+    createdAt: string
 }

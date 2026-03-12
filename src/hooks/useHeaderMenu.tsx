@@ -4,9 +4,11 @@ import { useModal } from '../context/modal.context'
 import { guestMenu } from '../components/layout/Header/const'
 import useGetUser from '@/feartures/auth/hooks/useGetUser'
 import { useLogout } from '@/feartures/auth/hooks/useLogout'
+import { useRouter } from 'next/navigation'
 
 export default function useHeaderMenu() {
     const { user } = useGetUser()
+    const router = useRouter()
     const { mutate: logout } = useLogout()
     const { openModal, closeModal, openConfirm } = useModal()
     let userMenu: MenuItemType[]
@@ -17,6 +19,9 @@ export default function useHeaderMenu() {
                 type: 'action',
                 name: user.name || user.email.split('@')[0],
                 avatar: user.avatar,
+                onClick() {
+                    router.push('/user')
+                },
             },
             {
                 type: 'action',
@@ -35,7 +40,7 @@ export default function useHeaderMenu() {
     }
 
     const menuRight: MenuItemType[] = user
-        ? [...guestMenu.slice(0, 3), ...userMenu]
+        ? userMenu
         : guestMenu.map((item) =>
               item.type === 'action'
                   ? {

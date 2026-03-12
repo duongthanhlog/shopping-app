@@ -3,16 +3,16 @@ import Currency from '@/components/ui/Currency'
 import { formatCurrency } from '../../../utils/formatCurrency'
 import QuantityBox from '@/components/ui/Quantity.box'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { CART_ACTION } from '../constants/cartAction'
 import { ActionType, CartItemType } from '../type/cartItem.type'
 
 type Props = {
     item: CartItemType
-    onIncrease: (id: string) => void
-    onDecrease: (id: string, quantity: number) => void
-    onDelete: (id: string) => void
+    onIncrease: (product: CartItemType) => void
+    onDecrease: (product: CartItemType, quantity: number) => void
+    onDelete: (product: CartItemType) => void
     className: string
     isPending: boolean
 }
@@ -26,41 +26,39 @@ export default function CartItem({
     isPending,
 }: Props) {
     const [action, setAction] = useState<ActionType | null>(null)
-    if (!item.productId) return null
+    if (!item) return null
 
     const handleIncrease = () => {
-        onIncrease(item.productId._id)
+        onIncrease(item)
         setAction(CART_ACTION.INCREASE)
     }
 
     const handleDecrease = () => {
-        onDecrease(item.productId._id, item.quantity)
+        onDecrease(item, item.quantity)
         setAction(CART_ACTION.DECREASE)
     }
 
     const handleDelete = () => {
-        onDelete(item.productId._id)
+        onDelete(item)
     }
 
     return (
         <div className="container">
             <div className={`${className} select-none border-b border-gray-300 p-4`}>
-                <Link
-                    href={`/products/${item.productId._id}`}
-                    className="centerdiv gap-4"
-                >
+                <Link href={`/products/${item.productId}`} className="flex self-start">
                     <Image
                         width={80}
                         height={80}
-                        src={item.productId.thumbnail || '/no-image.png'}
+                        src={item.thumbnail || '/no-image.png'}
                         alt=""
+                        loading="eager"
                     />
-                    <div className=" w-77.5">
-                        <span className="line-clamp-2">{item.productId.title}</span>
+                    <div className=" w-77.5 self-center">
+                        <span className="line-clamp-2">{item.title}</span>
                     </div>
                 </Link>
                 <div className="centerdiv font-medium">
-                    {formatCurrency(item.productId.price)}
+                    {formatCurrency(item.price)}
                     <Currency bottom={4} />
                 </div>
                 <QuantityBox
@@ -71,7 +69,7 @@ export default function CartItem({
                     onDecrease={handleDecrease}
                 />
                 <div className="centerdiv text-primary font-medium">
-                    {formatCurrency(item.quantity * item.productId.price)}
+                    {formatCurrency(item.quantity * item.price)}
                     <span className="relative text-[10px] ml-[2px] bottom-[4px] underline">
                         đ
                     </span>

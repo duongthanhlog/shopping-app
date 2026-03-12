@@ -33,11 +33,7 @@ export function GlobalLoading() {
 
     if (isMutating === 0) return null
 
-    return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/20 z-50">
-            <FullScreenSpinner />
-        </div>
-    )
+    return <FullScreenSpinner />
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {

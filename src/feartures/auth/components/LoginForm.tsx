@@ -5,19 +5,28 @@ import { CloseIcon } from '@/public/icons'
 import { useModal } from '../../../context/modal.context'
 import Spinner from '@/components/ui/Spinner'
 import useLogin from '../hooks/useLogin'
+import { AxiosError } from 'axios'
 
 export default function LoginForm() {
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors },
     } = useForm<LoginFormData>()
 
-    const { mutate, isPending } = useLogin()
+    const { mutateAsync, isPending } = useLogin()
     const { closeModal, openModal } = useModal()
 
     const onSubmit = async (data: LoginFormData) => {
-        mutate(data)
+        try {
+            await mutateAsync(data)
+        } catch (error) {
+            setError('password', {
+                type: 'server',
+                message: error?.response?.data?.message,
+            })
+        }
     }
     return (
         <form
@@ -75,7 +84,7 @@ export default function LoginForm() {
                 type="submit"
                 className="p-2 bg-primary centerdiv w-full h-12 text-white rounded-[4px] mt-8 hover:opacity-80 cursor-pointer"
             >
-                {isPending ? <Spinner /> : 'Đăng nhập'}
+                Đăng nhập
             </button>
             <div className="mt-2">
                 Chưa có tài khoản? -{' '}

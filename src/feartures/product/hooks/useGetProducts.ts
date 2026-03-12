@@ -1,16 +1,21 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { getProducts } from '../services/products.service'
-import useFilter from '@/feartures/filter/hook/useFilter'
+import useFilter, { FilterUrl } from '@/feartures/filter/hook/useFilter'
 import { QUERY_KEYS } from '@/contants/queryKeys'
 
 export default function useGetProducts() {
-    const { category, sortBy, order, limit, page } = useFilter()
-    const filter = {
+    const { category, sortBy, order, limit, page, rating, minPrice, maxPrice, search } =
+        useFilter()
+    const filter: FilterUrl = {
         category,
         sortBy,
         order,
         limit,
         page,
+        rating,
+        minPrice,
+        maxPrice,
+        search,
     }
     const { data, isLoading, isFetching } = useQuery({
         queryKey: QUERY_KEYS.PRODUCT_FILTERED(filter),

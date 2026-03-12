@@ -26,11 +26,7 @@ export function CartIcon({ className }) {
 }
 export function SearchIcon({ className }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-            viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
             <path
                 fill="none"
                 stroke="currentColor"
@@ -45,11 +41,7 @@ export function SearchIcon({ className }) {
 
 export function FaceBookIcon({ className }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-            viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
             <path
                 fill="none"
                 stroke="currentColor"
@@ -64,11 +56,7 @@ export function FaceBookIcon({ className }) {
 
 export function InstagramIcon({ className }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-            viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
             <g
                 fill="none"
                 stroke="currentColor"
@@ -85,11 +73,7 @@ export function InstagramIcon({ className }) {
 
 export function ArrowDownIcon({ className }) {
     return (
-        <svg
-            className={className}
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-        >
+        <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path
                 fill="currentColor"
                 d="M18.53 9.53a.75.75 0 0 0 0-1.06H5.47a.75.75 0 0 0 0 1.06l6 6a.75.75 0 0 0 1.06 0z"
@@ -98,13 +82,13 @@ export function ArrowDownIcon({ className }) {
     )
 }
 
-export function StarVote({ percent }) {
+export function StarVote({ percent, size }: { size: number; percent: number }) {
     return (
-        <div className="relative w-5 h-5">
+        <div className={`relative w-${size} h-${size}`}>
             {/* Star xám */}
             <svg
                 viewBox="0 0 24 24"
-                className="w-5 h-5 text-gray-300"
+                className={`w-${size} h-${size} text-gray-300`}
                 fill="currentColor"
             >
                 <path d="M12 .587l3.668 7.431 8.2 1.193-5.934 5.787 1.4 8.17L12 18.896l-7.334 3.872 1.4-8.17L.132 9.21l8.2-1.193z" />
@@ -117,7 +101,7 @@ export function StarVote({ percent }) {
             >
                 <svg
                     viewBox="0 0 24 24"
-                    className="w-5 h-5 text-yellow-400"
+                    className={`w-${size} h-${size} text-yellow-400`}
                     fill="currentColor"
                 >
                     <path d="M12 .587l3.668 7.431 8.2 1.193-5.934 5.787 1.4 8.17L12 18.896l-7.334 3.872 1.4-8.17L.132 9.21l8.2-1.193z" />
@@ -129,11 +113,7 @@ export function StarVote({ percent }) {
 
 export function CloseIcon({ className }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-            viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
             <path
                 fill="currentColor"
                 d="M6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 1 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 0 0-1.414-1.414L12 10.586z"
@@ -144,11 +124,7 @@ export function CloseIcon({ className }) {
 
 export function SuccessIcon({ className }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-            viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
             <path
                 fill="currentColor"
                 d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75s-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12m13.523-3.308a.75.75 0 0 0-1.048.169l-3.597 4.981a.25.25 0 0 1-.391.018l-1.506-1.72a.75.75 0 1 0-1.129.987l1.506 1.721a1.75 1.75 0 0 0 2.736-.128l3.597-4.98a.75.75 0 0 0-.168-1.048"
@@ -159,11 +135,7 @@ export function SuccessIcon({ className }) {
 
 export function WarningIcon({ className }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-            viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
             <path
                 fill="currentColor"
                 d="M12 1.25a3.16 3.16 0 0 0-2.235.926L2.177 9.765a3.16 3.16 0 0 0 0 4.47l7.588 7.588a3.16 3.16 0 0 0 4.47 0l7.588-7.588a3.16 3.16 0 0 0 0-4.47l-7.588-7.588A3.16 3.16 0 0 0 12 1.25m0 5.627a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0v-5.5a.75.75 0 0 1 .75-.75m.75 8.996v.5a.75.75 0 0 1-1.5 0v-.5a.75.75 0 0 1 1.5 0"
@@ -174,11 +146,7 @@ export function WarningIcon({ className }) {
 
 export function FailIcon({ className }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-            viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
             <path
                 fill="currentColor"
                 d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75s-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12m6.22-3.53a.75.75 0 0 0 0 1.06L10.94 12l-2.47 2.47a.75.75 0 1 0 1.06 1.06L12 13.06l2.47 2.47a.75.75 0 0 0 1.06-1.06L13.06 12l2.47-2.47a.75.75 0 0 0-1.06-1.06L12 10.94L9.53 8.47a.75.75 0 0 0-1.06 0"
@@ -189,11 +157,7 @@ export function FailIcon({ className }) {
 
 export function ConfirmIcon({ className }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-            viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
             <path
                 fill="currentColor"
                 d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75s9.75-4.365 9.75-9.75S17.385 2.25 12 2.25m0 12.497a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-1.5 0v-.5a.75.75 0 0 1 .75-.75m1.872-6.814c.544.482.878 1.188.878 2.057c0 .64-.164 1.138-.45 1.543c-.256.365-.588.614-.823.79l-.027.02c-.263.198-.416.32-.524.474c-.09.127-.176.317-.176.68a.75.75 0 0 1-1.5 0c0-.64.164-1.14.45-1.544c.256-.364.588-.613.823-.79l.027-.02c.263-.198.416-.32.524-.474c.09-.127.176-.317.176-.679c0-.46-.166-.75-.372-.934a1.33 1.33 0 0 0-.878-.31c-.34 0-.657.114-.877.31c-.207.183-.373.474-.373.934a.75.75 0 0 1-1.5 0c0-.869.334-1.575.877-2.057A2.83 2.83 0 0 1 12 7.246c.66 0 1.343.218 1.872.687"
@@ -204,11 +168,7 @@ export function ConfirmIcon({ className }) {
 
 export function ArrowRight({ className }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-            viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
             <path
                 fill="currentColor"
                 d="M9.53 5.47a.75.75 0 0 0-1.06 0v13.06a.75.75 0 0 0 1.06 0l6-6a.75.75 0 0 0 0-1.06z"
@@ -219,11 +179,7 @@ export function ArrowRight({ className }) {
 
 export function CheckIcon({ className }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-            viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
             <path
                 fill="currentColor"
                 d="M18.577 6.183a1 1 0 0 1 .24 1.394l-5.666 8.02c-.36.508-.665.94-.94 1.269c-.287.34-.61.658-1.038.86a2.83 2.83 0 0 1-2.03.153c-.456-.137-.82-.406-1.149-.702c-.315-.285-.672-.668-1.09-1.116l-1.635-1.753a1 1 0 1 1 1.462-1.364l1.606 1.722c.455.487.754.806.998 1.027c.24.216.344.259.385.271c.196.06.405.045.598-.046c.046-.022.149-.085.36-.338c.216-.257.473-.62.863-1.171l5.642-7.986a1 1 0 0 1 1.394-.24"
@@ -234,11 +190,7 @@ export function CheckIcon({ className }) {
 
 export function ArrowUpSolidIcon({ className }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-            viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
             <path
                 fill="currentColor"
                 d="M12.53 8.47a.75.75 0 0 0-1.06 0l-6 6a.75.75 0 0 0 0 1.06h13.06a.75.75 0 0 0 0-1.06z"

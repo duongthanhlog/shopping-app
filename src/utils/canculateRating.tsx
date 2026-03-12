@@ -6,7 +6,7 @@ export default function PercentRating(rateNum: number) {
         <>
             {[...Array(5)].map((_, index) => {
                 const percent = Math.min(Math.max(rateNum - index, 0), 1) * 100
-                return <StarVote key={index} percent={percent} />
+                return <StarVote key={index} size={5} percent={percent} />
             })}
         </>
     )

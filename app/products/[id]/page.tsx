@@ -31,7 +31,7 @@ export default function ProductDetail() {
             })
             return
         }
-        onIncrease(product._id, quantity)
+        onIncrease(product, quantity)
         showToast('success', 'Đã thêm vào giỏ hàng')
     }
 

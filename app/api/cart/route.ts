@@ -1,49 +1,65 @@
 import { CART_ACTION } from '@/feartures/cart/constants/cartAction'
+import { CartItemType } from '@/feartures/cart/type/cartItem.type'
 import { getUserIdFromToken } from '@/lib/auth'
 import { connectDB } from '@/lib/mongodb'
 import Cart from 'app/models/Cart'
 import User from 'app/models/User'
+import { Types } from 'mongoose'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
     await connectDB()
-    const { productId, type, quantity } = await req.json()
+    const { product, type, quantity } = await req.json()
+
+    const productId = product.productId || product._id
+    const nextQuantity = type === CART_ACTION.INCREASE ? (quantity ?? 1) : -1
 
     const userId = await getUserIdFromToken()
     const user = await User.findById(userId)
     if (!user) {
         return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
-    const existed = await Cart.findOne({ userId, productId })
-    let nextQuantity = type === CART_ACTION.INCREASE ? (quantity ?? 1) : -1
 
-    if (type === CART_ACTION.DECREASE && existed?.quantity === 1) {
-        return NextResponse.json({ message: 'Không thể giảm thêm' })
-    }
+    const updated = await Cart.updateOne(
+        { userId, 'items.productId': productId },
+        { $inc: { 'items.$.quantity': nextQuantity } }
+    )
 
-    if (!existed) {
-        await Cart.create({
-            userId,
-            productId,
-            quantity: quantity ?? 1,
-        })
-    } else {
-        await Cart.findOneAndUpdate(
-            { userId, productId },
-            { $inc: { quantity: nextQuantity } },
-            { new: true }
+    if (updated.matchedCount === 0 && type === CART_ACTION.INCREASE) {
+        await Cart.updateOne(
+            { userId },
+            {
+                $push: {
+                    items: {
+                        productId,
+                        thumbnail: product.thumbnail,
+                        title: product.title,
+                        price: product.price,
+                        quantity: nextQuantity,
+                    },
+                },
+            },
+            { upsert: true }
         )
     }
-    const cartItems = await Cart.find({ userId }).populate('productId')
-    return NextResponse.json({ message: 'Đã lấy thành công giỏ hàng', data: cartItems })
+    await Cart.updateOne(
+        { userId },
+        {
+            $pull: { items: { quantity: { $lte: 0 } } },
+        }
+    )
+
+    const cart = await Cart.findOne({ userId })
+
+    return NextResponse.json({ data: cart.items || [] })
 }
 
 export async function GET(req: Request) {
     await connectDB()
     const userId = await getUserIdFromToken()
-    const cartItems = await Cart.find({ userId }).populate('productId').lean()
+    const cart = await Cart.findOne({ userId })
 
-    return NextResponse.json({ data: cartItems }, { status: 200 })
+    return NextResponse.json({ data: cart.items || [] }, { status: 200 })
 }
 
 export async function DELETE(req: Request) {
@@ -51,7 +67,13 @@ export async function DELETE(req: Request) {
     const { productId } = await req.json()
 
     const userId = await getUserIdFromToken()
-    const cartItems = await Cart.deleteOne({ userId, productId })
-
-    return NextResponse.json({ message: 'Xóa thành công', data: cartItems })
+    await Cart.updateOne(
+        { userId },
+        {
+            $pull: { items: { productId: new Types.ObjectId(productId) } },
+        }
+    )
+    return NextResponse.json({
+        message: 'Xóa thành công',
+    })
 }

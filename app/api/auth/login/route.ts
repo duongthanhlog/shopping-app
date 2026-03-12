@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     try {
         if (!isMatch) {
             return NextResponse.json(
-                { message: 'Mật khẩu không chính xác' },
+                { message: 'Email hoặc mật khẩu không đúng' },
                 { status: 400 }
             )
         }

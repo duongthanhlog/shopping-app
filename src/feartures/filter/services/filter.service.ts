@@ -1,12 +1,15 @@
-import { Product } from '@/feartures/product/types/product.type'
 import { apiDummy } from '@/lib/axios'
 import { OrderType } from '../types'
+import { ProductType } from '@/feartures/product/types/product.type'
 
 type QueryParams = {
     limit?: number
     skip?: number
     order?: string
     sortBy?: string
+    rating?: number
+    minPrice?: string
+    maxPrice?: string
 }
 
 export const getProductByCategory = async (category: string, params: QueryParams) => {
@@ -24,14 +27,20 @@ export const getFilteredProducts = async (
     order?: OrderType,
     limit?: number,
     skip?: number,
-    sortBy?: string
+    sortBy?: string,
+    rating?: number,
+    minPrice?: string,
+    maxPrice?: string
 ) => {
-    let products: Product[] = []
+    let products: ProductType[] = []
     let totalProduct: number
     const params: QueryParams = {
         limit,
         skip,
         sortBy,
+        rating,
+        minPrice,
+        maxPrice,
     }
 
     if (order) {

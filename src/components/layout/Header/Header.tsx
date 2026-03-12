@@ -1,5 +1,4 @@
 'use client'
-import SearchForm from './SearchForm'
 import TopMenu from './TopMenu'
 import { useMemo } from 'react'
 import { useModal } from '../../../context/modal.context'
@@ -9,6 +8,7 @@ import { CartIcon, ShopeeIcon } from 'public/icons'
 import useGetUser from '@/feartures/auth/hooks/useGetUser'
 import useGetUserCart from '@/feartures/cart/hooks/useGetUserCart'
 import { CartItemType } from '@/feartures/cart/type/cartItem.type'
+import SearchForm from '@/feartures/search/SearchForm'
 
 export default function Header() {
     const { isLoading, user } = useGetUser()

@@ -12,14 +12,48 @@ export async function GET(request: Request) {
     const category = searchParams.get('category')
     const sortBy = searchParams.get('sortBy')
     const order = searchParams.get('order')
-    const limit = Math.min(Number(searchParams.get('limit')) || 15, 30)
     const page = Number(searchParams.get('page')) || 1
+    const ratingParam = searchParams.get('rating')
+    let rating = ratingParam ? Number(ratingParam) : undefined
+    const minPrice = Number(searchParams.get('minPrice')) || undefined
+    const maxPrice = Number(searchParams.get('maxPrice')) || undefined
+    const keyword = searchParams.get('search')
+    const limit = keyword ? 10 : Math.min(Number(searchParams.get('limit')) || 15, 30)
 
     let query: any = {}
     const orderType = order === 'desc' ? -1 : 1
-    const sortField = sortBy || 'rating'
+    const sortField = sortBy
 
+    if (minPrice || maxPrice) {
+        query.price = {}
+        if (minPrice) {
+            query.price.$gte = minPrice
+        }
+
+        if (maxPrice) {
+            query.price.$lte = maxPrice
+        }
+    }
+    if (keyword && keyword.trim() !== '') {
+        query.$or = [
+            {
+                title: { $regex: keyword, $options: 'i' },
+            },
+            {
+                description: { $regex: keyword, $options: 'i' },
+            },
+        ]
+    }
+
+    if (rating) {
+        if (rating === 5) {
+            query.rating = { $gte: 4.9 }
+        } else {
+            query.rating = { $gte: rating }
+        }
+    }
     if (category) query.category = category
+
     try {
         const total = await Product.countDocuments(query)
         const totalPages = Math.ceil(total / limit) || 1

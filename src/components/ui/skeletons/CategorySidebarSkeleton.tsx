@@ -1,3 +1,4 @@
+'use client'
 export default function CategorySidebarSkeleton() {
     return (
         <div className="w-55 bg-gray-50 p-4 animate-pulse">
@@ -10,10 +11,7 @@ export default function CategorySidebarSkeleton() {
             {/* Category list */}
             <div className="space-y-3">
                 {Array.from({ length: 6 }).map((_, index) => (
-                    <div
-                        key={index}
-                        className="h-4 bg-gray-200 rounded w-2/3"
-                    />
+                    <div key={index} className="h-4 bg-gray-200 rounded w-2/3" />
                 ))}
             </div>
 

@@ -1,12 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useToast } from '@/feartures/toast/toast.context'
 import { CART_ACTION } from '../../cart/constants/cartAction'
-import { useModal } from '@/context/modal.context'
 import { QUERY_KEYS } from '@/contants/queryKeys'
 import useGetUser from '@/feartures/auth/hooks/useGetUser'
 import { useState } from 'react'
 import { updateCartquantity } from '../services/product.cart.service'
-import { ActionType } from '../type/cartItem.type'
+import { ActionType, CartItemType } from '../type/cartItem.type'
 
 export default function useUpdateCart() {
     const { user } = useGetUser()
@@ -16,7 +15,7 @@ export default function useUpdateCart() {
 
     const { mutate: updateMutate, isPending } = useMutation({
         mutationFn: (payload: {
-            productId: string
+            product: CartItemType
             type: ActionType
             newQuantity?: number
         }) => {
@@ -35,18 +34,18 @@ export default function useUpdateCart() {
         },
     })
 
-    const handleIncrease = (productId: string, quantity?: number) => {
-        setPendingId(productId)
+    const handleIncrease = (product: CartItemType, quantity?: number) => {
+        setPendingId(product.productId)
         updateMutate({
-            productId,
+            product,
             type: CART_ACTION.INCREASE,
             newQuantity: quantity,
         })
     }
 
-    const handleDecrease = (productId: string) => {
-        setPendingId(productId)
-        updateMutate({ productId, type: CART_ACTION.DECREASE })
+    const handleDecrease = (product: CartItemType) => {
+        setPendingId(product.productId)
+        updateMutate({ product, type: CART_ACTION.DECREASE })
     }
 
     return {

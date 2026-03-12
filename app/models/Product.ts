@@ -1,22 +1,6 @@
+import { ProductType } from '@/feartures/product/types/product.type'
 import mongoose from 'mongoose'
 
-interface ProductSType {
-    title: string
-    slug: string
-    description: string
-    category: string
-    brand: string
-    price: number
-    discountPercentage: number
-    rating: number
-    sold: number
-    quantity: number
-    minimumOrderQuantity: number
-    thumbnail: string
-    stock: number
-    tags: string[]
-    createdAt: string
-}
 const ProductSchema = new mongoose.Schema(
     {
         title: String,
@@ -49,6 +33,7 @@ const ProductSchema = new mongoose.Schema(
     { timestamps: true }
 )
 
-const Product = mongoose.models.Product || mongoose.model<ProductSType>('Product', ProductSchema)
+const Product =
+    mongoose.models.Product || mongoose.model<ProductType>('Product', ProductSchema)
 
 export default Product

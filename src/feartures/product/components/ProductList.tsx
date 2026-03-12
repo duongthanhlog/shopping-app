@@ -1,12 +1,12 @@
 import ProductCard from './ProductCard'
 
-import { Product } from '../types/product.type'
 import useFilter from '@/feartures/filter/hook/useFilter'
 import usePanigate from '@/hooks/usePanigate'
 import TopFilterBar from '@/feartures/filter/components/TopFilterBar'
 import useGetProducts from '../hooks/useGetProducts'
 import BottomPaginationNav from '@/feartures/filter/components/BottomPaginationNav'
 import ProductCardSkeleton from '@/components/ui/skeletons/ProductCardSkeleton'
+import { ProductType } from '../types/product.type'
 
 export default function ProductList() {
     const { data, isLoading, isFetching } = useGetProducts()
@@ -15,9 +15,6 @@ export default function ProductList() {
 
     const products = data?.products || []
     const totalPages = data?.totalPages
-
-    if (!products.length && !isLoading)
-        return <div className="centerdiv text-gray-500">Không có sản phẩm nào</div>
 
     return (
         <>
@@ -33,7 +30,7 @@ export default function ProductList() {
                     ? Array.from({ length: 10 }).map((_, i) => (
                           <ProductCardSkeleton key={i} />
                       ))
-                    : products.map((card: Product) => {
+                    : products.map((card: ProductType) => {
                           return (
                               <ProductCard
                                   href={`/products/${card._id}`}
@@ -43,6 +40,9 @@ export default function ProductList() {
                           )
                       })}
             </ul>
+            {!products.length && !isLoading && (
+                <div className="centerdiv text-gray-500">Không có sản phẩm nào</div>
+            )}
             {totalPages > 1 && (
                 <BottomPaginationNav
                     page={page}

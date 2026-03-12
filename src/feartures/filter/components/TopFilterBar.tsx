@@ -10,7 +10,7 @@ export default function TopFilterBar({ totalPages, onChange, isFetching }) {
     const [open, setOpen] = useState(false)
     const [activeSelected, setActiveSelected] = useState<string>('Giá')
 
-    const { page, sortBy, order, handleSortBy } = useFilter()
+    const { page, sortBy, order, handleSortBy, handleResetFilter } = useFilter()
 
     const handleSelect = (value: string, order: OrderType, sortBy: SortByType) => {
         setActiveSelected(value)
@@ -50,13 +50,16 @@ export default function TopFilterBar({ totalPages, onChange, isFetching }) {
                             {sortPriceSelections.map((item, i) => (
                                 <div
                                     key={i}
-                                    onClick={() => handleSelect(item.text, item.order, item.sortBy)}
+                                    onClick={() =>
+                                        handleSelect(item.text, item.order, item.sortBy)
+                                    }
                                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full flex justify-between"
                                 >
                                     {item.text}
-                                    {item.sortBy === sortBy && activeSelected === item.text && (
-                                        <CheckIcon className="w-4 h-4 text-primary" />
-                                    )}
+                                    {item.sortBy === sortBy &&
+                                        activeSelected === item.text && (
+                                            <CheckIcon className="w-4 h-4 text-primary" />
+                                        )}
                                 </div>
                             ))}
                         </div>
@@ -65,7 +68,8 @@ export default function TopFilterBar({ totalPages, onChange, isFetching }) {
             </div>
             <div className="ml-auto flex items-center">
                 <span className="mr-4">
-                    <span className="text-primary">{page}</span>/<span>{!!totalPages && totalPages}</span>
+                    <span className="text-primary">{page}</span>/
+                    <span>{!!totalPages && totalPages}</span>
                 </span>
                 <button
                     disabled={page < 1 || isFetching}
