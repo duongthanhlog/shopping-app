@@ -3,16 +3,25 @@ import Currency from '@/components/ui/Currency'
 import { formatCurrency } from '../../../utils/formatCurrency'
 import QuantityBox from '@/components/ui/Quantity.box'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { CART_ACTION } from '../constants/cartAction'
 import { ActionType, CartItemType } from '../type/cartItem.type'
+import Button from '@/components/ui/Button'
 
 type Props = {
     item: CartItemType
-    onIncrease: (product: CartItemType) => void
-    onDecrease: (product: CartItemType, quantity: number) => void
-    onDelete: (product: CartItemType) => void
+    onIncrease: ({ productId, delta }: { productId: string; delta: number }) => void
+    onDecrease: ({
+        productId,
+        delta,
+    }: {
+        productId: string
+        delta: number
+        quantity: number
+    }) => void
+    onDelete: (productId: string) => void
+    onOrder: (productId: string) => void
     className: string
     isPending: boolean
 }
@@ -22,30 +31,32 @@ export default function CartItem({
     onIncrease,
     onDecrease,
     onDelete,
+    onOrder,
     className,
     isPending,
 }: Props) {
     const [action, setAction] = useState<ActionType | null>(null)
     if (!item) return null
+    const { productId } = item
 
     const handleIncrease = () => {
-        onIncrease(item)
+        onIncrease({ productId, delta: +1 })
         setAction(CART_ACTION.INCREASE)
     }
 
     const handleDecrease = () => {
-        onDecrease(item, item.quantity)
+        onDecrease({ productId, delta: -1, quantity: item.quantity })
         setAction(CART_ACTION.DECREASE)
     }
 
     const handleDelete = () => {
-        onDelete(item)
+        onDelete(productId)
     }
 
     return (
         <div className="container">
             <div className={`${className} select-none border-b border-gray-300 p-4`}>
-                <Link href={`/products/${item.productId}`} className="flex self-start">
+                <Link href={`/products/${item?.productId}`} className="flex self-start">
                     <Image
                         width={80}
                         height={80}
@@ -75,9 +86,13 @@ export default function CartItem({
                     </span>
                 </div>
                 <div className="centerdiv">
-                    <button className="centerdiv bg-primary text-white p-2 rounded-md font-bold mr-4 cursor-pointer hover:bg-red-600">
+                    {/* <Button
+                        active
+                        onClick={() => onOrder(item.productId)}
+                        className="centerdiv bg-primary text-white p-2 rounded-md font-bold mr-4 cursor-pointer hover:bg-red-600"
+                    >
                         Mua ngay
-                    </button>
+                    </Button> */}
                     <button
                         onClick={handleDelete}
                         className="centerdiv font-medium mr-4 cursor-pointer hover:underline"

@@ -11,9 +11,9 @@ export default function useDeleteProducts() {
     const { showToast } = useToast()
 
     const { mutate: deleteMutate, isPending } = useMutation({
-        mutationFn: (product: CartItemType) => {
+        mutationFn: (productId: string) => {
             if (!user?._id) throw new Error('Unauthorized')
-            return deleteCartItem(product)
+            return deleteCartItem(productId)
         },
         onSuccess: () => {
             if (!user?._id) throw new Error('Unauthorized')

@@ -1,8 +1,9 @@
-export const formatCurrency = (number: any) => {
-    return new Intl.NumberFormat('vi-VN', {
+export const formatCurrency = (number: number) => {
+    const formated = new Intl.NumberFormat('vi-VN', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
     }).format(number * 26000)
+    return formated
 }
 export const parseCurrencyToApi = (value: any) => {
     const number = Number(value.replace(/\./g, ''))

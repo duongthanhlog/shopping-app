@@ -3,29 +3,52 @@ import { CartItemType } from '@/feartures/cart/type/cartItem.type'
 import { getUserIdFromToken } from '@/lib/auth'
 import { connectDB } from '@/lib/mongodb'
 import Cart from 'app/models/Cart'
+import Product from 'app/models/Product'
 import User from 'app/models/User'
 import { Types } from 'mongoose'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
     await connectDB()
-    const { product, type, quantity } = await req.json()
+    const { productId, delta } = await req.json()
 
-    const productId = product.productId || product._id
-    const nextQuantity = type === CART_ACTION.INCREASE ? (quantity ?? 1) : -1
+    // const productId = product.productId || product._id
+    // const nextQuantity = type === CART_ACTION.INCREASE ? (quantity ?? 1) : -1
 
     const userId = await getUserIdFromToken()
     const user = await User.findById(userId)
+    const product = await Product.findById(productId)
+    const userCart = await Cart.findOne({ userId })
+    const existingItem = await Cart.findOne({
+        userId,
+        'items.productId': productId,
+    })
     if (!user) {
         return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    const updated = await Cart.updateOne(
-        { userId, 'items.productId': productId },
-        { $inc: { 'items.$.quantity': nextQuantity } }
-    )
-
-    if (updated.matchedCount === 0 && type === CART_ACTION.INCREASE) {
+    if (!userCart) {
+        await Cart.create({
+            userId,
+            items: [
+                {
+                    productId,
+                    thumbnail: product.thumbnail,
+                    title: product.title,
+                    price: product.price,
+                    quantity: delta,
+                },
+            ],
+        })
+    }
+    if (existingItem) {
+        await Cart.updateOne(
+            { userId, 'items.productId': productId },
+            {
+                $inc: { 'items.$.quantity': delta ?? 1 },
+            }
+        )
+    } else {
         await Cart.updateOne(
             { userId },
             {
@@ -35,11 +58,10 @@ export async function POST(req: Request) {
                         thumbnail: product.thumbnail,
                         title: product.title,
                         price: product.price,
-                        quantity: nextQuantity,
+                        quantity: delta ?? 1,
                     },
                 },
-            },
-            { upsert: true }
+            }
         )
     }
     await Cart.updateOne(

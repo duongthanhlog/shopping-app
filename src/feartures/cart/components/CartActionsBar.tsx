@@ -1,6 +1,7 @@
 import Button from '@/components/ui/Button'
 import Currency from '@/components/ui/Currency'
 import { formatCurrency } from '@/utils/formatCurrency'
+import Link from 'next/link'
 
 type Props = {
     checkedId: string[]
@@ -8,6 +9,7 @@ type Props = {
     onRemoveMultiCartItem: () => void
     totalQuantity: number
     totalPrice: number
+    onOrder: (productId: string) => void
 }
 
 export default function CartActionsBar({
@@ -16,6 +18,7 @@ export default function CartActionsBar({
     onRemoveMultiCartItem,
     totalQuantity,
     totalPrice,
+    onOrder,
 }: Props) {
     return (
         <div className="container mt-10 sticky shadow-xl border border-gray-300 h-25 px-4 bg-gray-50 z-0 bottom-2 ">
@@ -52,8 +55,12 @@ export default function CartActionsBar({
                         className="text-[16px] font-semibold text-primary"
                     />
                 </div>
-                <Button active className="bg-primary bottom-0  w-40 h-12 text-xl">
-                    Mua ngay
+                <Button
+                    active
+                    onClick={onOrder}
+                    className="bg-primary bottom-0 w-40 h-12 text-xl text-white centerdiv rounded-md hover:bg-red-700"
+                >
+                    Mua hàng
                 </Button>
             </div>
         </div>

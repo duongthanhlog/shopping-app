@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     const order = searchParams.get('order')
     const page = Number(searchParams.get('page')) || 1
     const ratingParam = searchParams.get('rating')
-    let rating = ratingParam ? Number(ratingParam) : undefined
+    const rating = ratingParam ? Number(ratingParam) : undefined
     const minPrice = Number(searchParams.get('minPrice')) || undefined
     const maxPrice = Number(searchParams.get('maxPrice')) || undefined
     const keyword = searchParams.get('search')
@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 
     let query: any = {}
     const orderType = order === 'desc' ? -1 : 1
-    const sortField = sortBy
+    const sortField = sortBy || 'createdAt'
 
     if (minPrice || maxPrice) {
         query.price = {}
@@ -58,6 +58,7 @@ export async function GET(request: Request) {
         const total = await Product.countDocuments(query)
         const totalPages = Math.ceil(total / limit) || 1
         const currentPage = Math.min(page, totalPages)
+
         const skip = (currentPage - 1) * limit
 
         const products = await Product.find(query)

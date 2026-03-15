@@ -13,16 +13,18 @@ import CartItem from '@/feartures/cart/components/CartItem'
 import CartActionsBar from '@/feartures/cart/components/CartActionsBar'
 import CartSkeleton from '@/components/ui/skeletons/CartSkeleton'
 import useDeleteProducts from '@/feartures/cart/hooks/useDeleteCart'
+import useUpdateCheckout from '@/feartures/checkout/useUpdateCheckout'
 
 export default function CartPage() {
     const router = useRouter()
+    const [checkedId, setCheckedId] = useState<string[]>([])
     const { user, isLoading } = useGetUser()
     const { data, isSuccess } = useGetUserCart()
     const { onIncrease, onDecrease, pendingId } = useUpdateCart()
     const { deleteMutate, isPending } = useDeleteProducts()
     const { openConfirm, closeModal } = useModal()
     const { showToast } = useToast()
-    const [checkedId, setCheckedId] = useState([])
+    const { mutateAsync } = useUpdateCheckout()
 
     const cart = data ?? []
     useEffect(() => {
@@ -51,31 +53,45 @@ export default function CartPage() {
         }
     }, [cart, checkedId])
 
-    const handleIncrease = (product: CartItemType) => {
-        onIncrease(product)
+    const handleIncrease = ({
+        productId,
+        delta,
+    }: {
+        productId: string
+        delta: number
+    }) => {
+        onIncrease({ productId, delta })
     }
 
-    const handleDecrease = (product: CartItemType, quantity: number) => {
+    const handleDecrease = ({
+        productId,
+        delta,
+        quantity,
+    }: {
+        productId: string
+        delta: number
+        quantity: number
+    }) => {
         if (quantity === 1) {
             openConfirm({
                 title: 'Bạn chắc chắn muốn xóa sản phẩm khỏi giỏ hàng ?',
                 onConfirm: () => {
-                    deleteMutate(product)
+                    deleteMutate(productId)
                     closeModal()
                 },
             })
             return
         }
-        onDecrease(product)
+        onDecrease({ productId, delta })
     }
 
-    const handleDelete = (product: CartItemType) => {
+    const handleDelete = (productId: string) => {
         openConfirm({
             title: 'Bạn chắc chắn muốn xóa sản phẩm ?',
             onConfirm: () => {
-                deleteMutate(product)
+                deleteMutate(productId)
                 setCheckedId((prev) =>
-                    prev.filter((checkedId) => checkedId !== product.productId)
+                    prev.filter((checkedId) => checkedId !== productId)
                 )
                 showToast('success', 'Đã xóa sản phẩm')
                 closeModal()
@@ -88,7 +104,9 @@ export default function CartPage() {
             title: `Xóa ${cartItemChecked.length} sản phẩm đã chọn?`,
             onConfirm: async () => {
                 await Promise.all(
-                    cartItemChecked.map((item: CartItemType) => deleteMutate(item))
+                    cartItemChecked.map((item: CartItemType) =>
+                        deleteMutate(item.productId)
+                    )
                 )
                 showToast('success', `Đã xóa ${cartItemChecked.length} sản phẩm`)
                 closeModal()
@@ -118,11 +136,20 @@ export default function CartPage() {
         }
     }
 
+    const handleCheckOut = async () => {
+        const selectedItems = cart.filter((item: CartItemType) =>
+            checkedId.includes(item.productId)
+        )
+        if (!checkedId.length) return
+        await mutateAsync(selectedItems)
+        router.push('/checkout')
+    }
+
     if (isLoading) return <CartSkeleton />
     if (isPending) return <FullScreenSpinner />
     if (isSuccess && cart.length === 0) {
         return (
-            <div className="flex justify-center select-none h-[calc(100vh-300px)]">
+            <div className="flex h-[calc(100vh-300px)] justify-center select-none">
                 <Image
                     alt="Empty cart"
                     width={600}
@@ -139,12 +166,12 @@ export default function CartPage() {
     return (
         <>
             <div className="bg-white">
-                <div className="text-primary text-[30px] container py-5">
+                <div className="text-primary container py-5 text-[30px]">
                     Giỏ hàng của bạn{' '}
                 </div>
             </div>
-            <div className="bg-white container">
-                <div className={`text-gray-500 ${cartGrid} p-4 my-4 pl-8 select-none`}>
+            <div className="container bg-white">
+                <div className={`text-gray-500 ${cartGrid} my-4 p-4 pl-8 select-none`}>
                     <div className="">Sản phẩm</div>
                     <div className="centerdiv">Đơn giá</div>
                     <div className="centerdiv">Số lượng</div>
@@ -152,23 +179,24 @@ export default function CartPage() {
                     <div className="centerdiv">Thao tác</div>
                 </div>
             </div>
-            <div className="bg-white py-5 ">
+            <div className="bg-white py-5">
                 <div className="container">
                     <ul className="min-h-[65vh] border-t border-gray-300">
                         {cart.map((item: CartItemType) => {
                             return (
-                                <div key={item.productId} className="flex items-center">
+                                <div key={item?.productId} className="flex items-center">
                                     <input
                                         onChange={(e) => handleCheck(e, item.productId)}
                                         checked={checkedId.includes(item.productId)}
                                         type="checkbox"
-                                        className=" w-5 h-5 accent-primary rounded cursor-pointer border-gray-300  focus:ring-primary"
+                                        className="accent-primary focus:ring-primary h-5 w-5 cursor-pointer rounded border-gray-300"
                                     />
                                     <CartItem
                                         isPending={pendingId === item.productId}
                                         onIncrease={handleIncrease}
                                         onDecrease={handleDecrease}
                                         onDelete={handleDelete}
+                                        onOrder={() => {}}
                                         item={item}
                                         className={cartGrid}
                                     />
@@ -177,6 +205,7 @@ export default function CartPage() {
                         })}
                     </ul>
                     <CartActionsBar
+                        onOrder={handleCheckOut}
                         checkedId={checkedId}
                         onCheckAll={handleCheckAll}
                         onRemoveMultiCartItem={handleRemoveMultiCartItem}

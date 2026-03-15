@@ -7,24 +7,25 @@ export const getCartByUserId = async () => {
     return res.data.data || []
 }
 
-export const deleteCartItem = async (product: CartItemType) => {
+export const deleteCartItem = async (productId: string) => {
     const res = await apiDummy.delete('/api/cart', {
         data: {
-            productId: product.productId,
+            productId,
         },
     })
     return res.data.data
 }
 
-export const updateCartquantity = async (payload: {
-    product: CartItemType
-    type: ActionType
-    newQuantity?: number
+export const updateCartquantity = async ({
+    productId,
+    delta,
+}: {
+    productId: String
+    delta?: number
 }) => {
     const res = await apiDummy.post('/api/cart', {
-        product: payload.product,
-        type: payload.type,
-        quantity: payload.newQuantity,
+        productId,
+        delta,
     })
     return res.data.data
 }
