@@ -1,5 +1,3 @@
-import { Product } from '../product/types/product.type'
-
 export interface LoginFormData {
     email: string
     password: string
@@ -10,7 +8,7 @@ export interface RegisterFormData extends LoginFormData {
 }
 
 export interface User {
-    id: string
+    _id: string
     email: string
     name: string
     avatar: string
@@ -24,10 +22,12 @@ export interface LoginResponse {
 }
 
 export interface Adresses {
-    id: string
+    _id: string
     fullName: string
     phone: number
-    street: string
-    city: string
+    ward: string
+    address: string
+    district: string
+    province: string
     isDefault: boolean
 }

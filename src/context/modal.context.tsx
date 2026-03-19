@@ -1,7 +1,7 @@
 'use client'
 import { createContext, ReactNode, useContext, useRef, useState } from 'react'
 
-type ModalType = 'login' | 'register' | 'confirm' | 'orders' | null
+type ModalType = 'login' | 'register' | 'confirm' | 'orders' | 'address' | null
 
 type ConfirmOption = {
     title: string

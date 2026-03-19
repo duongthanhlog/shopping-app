@@ -20,9 +20,9 @@ export const menuLeft: MenuItemType[] = [
 ]
 
 export const guestMenu: MenuItemType[] = [
-    // { type: 'link', name: 'Thông báo', link: '/' },
-    // { type: 'link', name: 'Hỗ trợ', link: '/' },
-    // { type: 'link', name: 'Tiếng Việt', link: '/' },
+    { type: 'link', name: 'Thông báo', link: '/' },
+    { type: 'link', name: 'Hỗ trợ', link: '/' },
+    { type: 'link', name: 'Tiếng Việt', link: '/' },
     { type: 'action', name: 'Đăng kí', modalType: 'register' },
     { type: 'action', name: 'Đăng nhập', modalType: 'login' },
 ]

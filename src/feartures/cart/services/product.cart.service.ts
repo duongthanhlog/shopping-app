@@ -1,6 +1,4 @@
 import { apiDummy } from '@/lib/axios'
-import { ActionType, CartItemType } from '../type/cartItem.type'
-import { ProductType } from '@/feartures/product/types/product.type'
 
 export const getCartByUserId = async () => {
     const res = await apiDummy.get(`/api/cart`)

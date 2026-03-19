@@ -43,7 +43,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 min-h-screen`}
             >
                 <Providers>
-                    <Header />
                     <Toast />
                     {children}
                     <GlobalLoading />

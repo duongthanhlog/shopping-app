@@ -20,22 +20,6 @@ export async function POST(req: Request) {
         { items: productList, totalPrice, shippingFee },
         { returnDocument: 'after', upsert: true }
     )
-    console.log(order)
-
-    // let order = await Order.findOne({ userId })
-    // if (!order) {
-    //     await Order.create({
-    //         userId,
-    //         items: productList,
-    //         totalPrice,
-    //         shippingFee,
-    //         status: 'pending',
-    //     })
-    // } else {
-    //     await Order.updateOne({ userId }, { items: productList, totalPrice, shippingFee })
-    // }
-    // order = await Order.findOne({ userId })
-
     return NextResponse.json({ message: 'order thành công', data: order })
 }
 

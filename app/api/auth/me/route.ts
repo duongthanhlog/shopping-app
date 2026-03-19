@@ -14,3 +14,25 @@ export async function GET() {
         return NextResponse.json({ message: 'invalid token' }, { status: 401 })
     }
 }
+
+export async function POST(req: Request) {
+    await connectDB()
+
+    const { addressForm } = await req.json()
+    const userId = await getUserIdFromToken()
+    const user = await User.findByIdAndUpdate(
+        userId,
+        {
+            $push: {
+                addresses: {
+                    ...addressForm,
+                    fullName: addressForm.name,
+                },
+            },
+        },
+        { returnDocument: 'after' }
+    )
+    console.log(addressForm)
+
+    return NextResponse.json({ message: 'Cập nhật địa chỉ thành công' })
+}

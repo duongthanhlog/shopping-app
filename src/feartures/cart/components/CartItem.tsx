@@ -95,7 +95,7 @@ export default function CartItem({
                     </Button> */}
                     <button
                         onClick={handleDelete}
-                        className="centerdiv font-medium mr-4 cursor-pointer hover:underline"
+                        className="centerdiv font-medium  cursor-pointer hover:underline"
                     >
                         Xóa
                     </button>

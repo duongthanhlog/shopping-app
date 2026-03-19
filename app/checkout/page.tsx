@@ -2,24 +2,28 @@
 import Button from '@/components/ui/Button'
 import { useModal } from '@/context/modal.context'
 import { formatCurrency } from '@/utils/formatCurrency'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
-import useGetCheckout from '@/feartures/checkout/useGetCheckout'
 import { CheckoutType } from '@/feartures/checkout/checkout.type'
-import { useGetOrder } from '@/feartures/order/hooks/useGetOrder'
+import { AdressIcon, MapIcon } from '@/public/icons'
+import useGetCheckout from '@/feartures/checkout/hooks/useGetCheckout'
+import useGetUser from '@/feartures/auth/hooks/useGetUser'
+import { Adresses } from 'app/models/User'
+import FullScreenSpinner from '@/components/ui/FullScreenSpinner'
 
 export default function CheckoutPage() {
     const { openModal } = useModal()
     const [payment, setPayment] = useState<'COD' | 'banking'>('COD')
-    const { order } = useGetOrder()
-    const { data } = useGetCheckout()
+    const { data, isLoading } = useGetCheckout()
+    const { user } = useGetUser()
 
-    const totalPrice = useMemo(() => {
-        return data?.reduce((total: number, item: CheckoutType) => {
-            return total + item?.productId?.price * item?.quantity
-        }, 0)
-    }, [data])
+    const checkoutList = (user && data?.checkoutList) || []
+    const totalPrice = data?.totalPrice || 0
+    const subTotal = data?.subTotal || 0
+    const shippingFee = data?.shippingFee || 0
+    const addressList = user?.addresses || []
 
+    if (isLoading) return <FullScreenSpinner />
     return (
         <section className="mt-8 grid grid-cols-[5fr_2fr] gap-4">
             <div className="flex flex-col gap-4">
@@ -28,32 +32,47 @@ export default function CheckoutPage() {
                         Địa chỉ nhận hàng
                     </span>
                     <div className="my-4 h-[1px] w-full bg-gray-300"></div>
-                    {/* <div className="flex gap-2">
-                        <div className="flex flex-col">
-                            <div className=" bg-primary rounded-full w-7 h-7"></div>
-                            <span className="mt-auto">icon</span>
-                        </div>
-                        <div className="flex flex-col">
-                            <span className="text-black font-semibold text-lg">
-                                Dương Thanh Long
-                            </span>
-                            <span className="text-gray-500">
-                                Số điện thoại: 0925633080
-                            </span>
-                            <span className="text-gray-500">
-                                Địa chỉ : 3 đê la thành nhỏ , xã đàn, hà nội
-                            </span>
-                        </div>
-                        <button className="ml-auto mb-auto font-semibold text-lg text-primary cursor-pointer">
-                            Thay đổi
-                        </button>
-                    </div> */}
+                    {addressList.map((item: Adresses) => {
+                        return (
+                            <div key={item._id}>
+                                <div className="flex gap-2">
+                                    <div className="flex flex-col items-center">
+                                        {/* <div className="bg-primary h-7 w-7 rounded-full"></div> */}
+                                        <MapIcon className="text-primary mt-auto w-4 pb-1" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-lg font-semibold text-black">
+                                            {item.fullName}
+                                        </span>
+                                        <span className="text-gray-500">
+                                            Số điện thoại: {item.phone}
+                                        </span>
+                                        <span className="text-[14px] text-gray-500">
+                                            Địa chỉ : {item.address} {item.ward}-{' '}
+                                            {item.district}-{item.province}
+                                        </span>
+                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            openModal('address')
+                                        }}
+                                        className="text-primary mb-auto ml-auto cursor-pointer text-lg text-[16px] font-semibold"
+                                    >
+                                        Thay đổi
+                                    </button>
+                                </div>
+                                <div className="my-4 h-[0.5px] w-full bg-gray-300"></div>
+                            </div>
+                        )
+                    })}
+                    {/* {addressList.length === 0 && ( */}
                     <span
-                        className="cursor-pointer p-3"
+                        className="text-primary mt-2 flex cursor-pointer items-center gap-0.5"
                         onClick={() => openModal('orders')}
                     >
-                        Thêm địa chỉ
+                        <AdressIcon className="h-5 w-5" /> Thêm địa chỉ
                     </span>
+                    {/* )} */}
                 </div>
                 <div className="bg-white px-6 py-4">
                     <span className="text-xl font-semibold">Sản phẩm</span>
@@ -65,30 +84,29 @@ export default function CheckoutPage() {
                         <span className="">Số lượng</span>
                         <span className="">Tổng</span>
                     </div>
-                    {data?.map((item: CheckoutType) => {
-                        const { _id, thumbnail, title, price } = item.productId
+                    {checkoutList?.map((item: CheckoutType) => {
                         const lastOrderItem =
-                            item._id === data[data.length - 1]?.productId._id
+                            item._id === checkoutList[checkoutList?.length - 1]?._id
 
                         return (
-                            <div key={_id}>
+                            <div key={item._id}>
                                 <div className="grid grid-cols-[6fr_3fr_2fr_4fr] items-center px-3">
                                     <div className="flex gap-3">
                                         <Image
                                             alt="order-item"
                                             width={50}
                                             height={50}
-                                            src={thumbnail}
+                                            src={item.thumbnail}
                                             className="border border-gray-300"
                                         />
-                                        <div>{title}</div>
+                                        <div>{item.title}</div>
                                     </div>
                                     <span className="text-center">
-                                        {formatCurrency(price)}
+                                        {formatCurrency(item.price)}
                                     </span>
                                     <span className="text-center">{item.quantity}</span>
                                     <span className="text-center">
-                                        {formatCurrency(price * item.quantity)}
+                                        {formatCurrency(item.price * item.quantity)}
                                     </span>
                                 </div>
                                 {!lastOrderItem ? (
@@ -133,21 +151,19 @@ export default function CheckoutPage() {
                     <div className="my-4 h-[0.5px] w-full bg-gray-300"></div>
                     <div className="flex justify-between text-lg">
                         <span>Tổng tiền hàng:</span>
-                        <span className="font-semibold">
-                            {formatCurrency(totalPrice)}
-                        </span>
+                        <span className="font-semibold">{formatCurrency(subTotal)}</span>
                     </div>
                     <div className="flex justify-between text-lg">
                         <span>Phí vận chuyển:</span>
                         <span className="font-semibold">
-                            {formatCurrency(order?.shippingFee)}
+                            {checkoutList.length && formatCurrency(shippingFee)}
                         </span>
                     </div>
                     <div className="my-4 h-[0.5px] w-full bg-gray-300"></div>
                     <div className="flex justify-between">
                         <span className="text-xl font-semibold">Tổng cộng:</span>
                         <span className="text-primary text-2xl font-semibold">
-                            {formatCurrency(order?.totalPrice)}
+                            {formatCurrency(totalPrice)}
                         </span>
                     </div>
                     <Button

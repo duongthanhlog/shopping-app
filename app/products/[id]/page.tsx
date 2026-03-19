@@ -3,27 +3,25 @@ import Image from 'next/image'
 import Currency from '@/components/ui/Currency'
 import { formatCurrency } from '@/utils/formatCurrency'
 import QuantityBox from '@/components/ui/Quantity.box'
-import { useModal } from '@/context/modal.context'
 import { useState } from 'react'
 import PercentRating from '@/utils/canculateRating'
 import { useParams, useRouter } from 'next/navigation'
 import useGetDetailProduct from '@/feartures/product/hooks/useGetDetailProduct'
 import ProductDetailSkeleton from '@/components/ui/skeletons/ProductDetailSkeleton'
-import useGetUser from '@/feartures/auth/hooks/useGetUser'
 import { useToast } from '@/feartures/toast/toast.context'
 import useUpdateCart from '@/feartures/cart/hooks/useUpdateCart'
-import useUpdateCheckout from '@/feartures/checkout/useUpdateCheckout'
+import useRequireLogin from '@/hooks/useRequireLogin'
+import useUpdateCheckout from '@/feartures/checkout/hooks/useUpdateCheckout'
 
 export default function ProductDetail() {
     const router = useRouter()
-    const { user } = useGetUser()
-    const { openModal, openConfirm } = useModal()
     const { onIncrease, isPending } = useUpdateCart()
     const [quantity, setQuantity] = useState(1)
     const { showToast } = useToast()
     const { id } = useParams<{ id: string }>()
     const { product, isLoading } = useGetDetailProduct(id)
     const { mutateAsync } = useUpdateCheckout()
+    const { requireLogin } = useRequireLogin()
 
     const checkoutProduct = {
         productId: product?._id,
@@ -31,13 +29,7 @@ export default function ProductDetail() {
     }
 
     const handleAddToCart = () => {
-        if (!user) {
-            openConfirm({
-                title: 'Vui lòng đăng nhập',
-                onConfirm: () => openModal('login'),
-            })
-            return
-        }
+        if (!requireLogin()) return
         onIncrease({ productId: id, delta: quantity })
         showToast('success', 'Đã thêm vào giỏ hàng')
     }
@@ -49,8 +41,9 @@ export default function ProductDetail() {
     }
 
     const handleCheckout = async () => {
+        if (!requireLogin()) return
         await mutateAsync([checkoutProduct])
-        router.push('/checkout')
+        router.push(`/checkout`)
     }
 
     if (isLoading) return <ProductDetailSkeleton />
@@ -125,12 +118,6 @@ export default function ProductDetail() {
                     <span className="shrink-0 text-gray-500">Vận chuyển</span>
                     <div className="ml-4 flex-col">
                         <div>{product.shippingInformation}</div>
-                        <div className="my-1 font-semibold text-green-700">
-                            Phí ship 0đ
-                        </div>
-                        <div className="text-sm text-gray-400">
-                            Tặng Voucher 20.000₫ nếu đơn giao sau thời gian trên.
-                        </div>
                     </div>
                 </section>
 

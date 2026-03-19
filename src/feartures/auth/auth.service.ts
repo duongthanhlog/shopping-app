@@ -1,5 +1,6 @@
 import { apiDummy } from '@/lib/axios'
 import { LoginFormData, RegisterFormData } from './auth.types'
+import { AddressFormType } from '../checkout/checkout.type'
 
 export const getUser = async () => {
     try {
@@ -23,4 +24,9 @@ export const register = async (data: RegisterFormData) => {
 export const logout = async () => {
     const res = await apiDummy.post('/api/auth/logout')
     return res.data
+}
+
+export const createUserAddress = async (addressForm: AddressFormType) => {
+    const res = await apiDummy.post('/api/auth/me', { addressForm })
+    return res.data.data
 }

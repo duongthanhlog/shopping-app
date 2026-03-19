@@ -3,7 +3,8 @@ import Modal from '@/components/ui/Modal'
 import { useModal } from '../../../context/modal.context'
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
-import ModalForm from './OrderForm'
+import CheckOutForm from '../../checkout/CheckoutForm'
+import AddressList from './AddressList'
 
 export default function AuthModal() {
     const { type } = useModal()
@@ -16,7 +17,9 @@ export default function AuthModal() {
             case 'confirm':
                 return <ConfirmModal />
             case 'orders':
-                return <ModalForm />
+                return <CheckOutForm />
+            case 'address':
+                return <AddressList />
             default:
                 return null
         }

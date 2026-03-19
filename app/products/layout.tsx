@@ -1,5 +1,12 @@
 'use client'
 
+import Header from '@/components/layout/Header/Header'
+
 export default function Layout({ children }) {
-    return <div className="container">{children}</div>
+    return (
+        <>
+            <Header />
+            <div className="container">{children}</div>
+        </>
+    )
 }

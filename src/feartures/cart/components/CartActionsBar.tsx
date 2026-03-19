@@ -36,13 +36,13 @@ export default function CartActionsBar({
                     <span>Chọn tất cả</span>
                 </div>
             </label>
-            <Button
+            <button
                 disabled={checkedId.length === 0}
                 onClick={onRemoveMultiCartItem}
-                className="text-black hover:bg-gray-300"
+                className="text-gray-600 px-3 py-1 rounded-sm cursor-pointer hover:bg-gray-300 bg-gray-200"
             >
                 Xóa
-            </Button>
+            </button>
             <div className="flex absolute top-0 right-4 items-center h-full gap-4">
                 <div className="text-lg">
                     Tổng cộng ( <span className="text-primary">{totalQuantity}</span> sản

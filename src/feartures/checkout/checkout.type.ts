@@ -8,3 +8,18 @@ export type CheckoutType = {
     title: string
     price: number
 }
+
+export type AddressFormType = {
+    _id?: string
+    name: string
+    phone: string
+    address: string
+    type: 'home' | 'office'
+    province: string
+    district: string
+    ward: string
+}
+
+export type AddressCheckoutType = {
+    _id: string
+} & AddressFormType

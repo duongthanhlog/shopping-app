@@ -19,8 +19,8 @@ export default function TopFilterBar({ totalPages, onChange, isFetching }) {
     }
 
     return (
-        <div className="flex bg-gray-200 text-[15px] px-4">
-            <div className="flex gap-3 p-3 pl-0 items-center">
+        <div className="flex bg-gray-200 px-4 text-[15px]">
+            <div className="flex items-center gap-3 p-3 pl-0">
                 <span className="font-semibold">Sắp xếp theo</span>
                 {sortOptions.map((option, i) => {
                     return (
@@ -36,9 +36,13 @@ export default function TopFilterBar({ totalPages, onChange, isFetching }) {
                     )
                 })}
 
-                <div className="relative">
+                <div
+                    onMouseLeave={() => setOpen(false)}
+                    onMouseEnter={() => setOpen(true)}
+                    className="relative"
+                >
                     <div
-                        className={` ${sortBy === SORTBY.PRICE ? 'text-primary' : 'text-black'} select-none w-50 relative flex justify-between cursor-pointer bg-white font-semibold p-1 px-3`}
+                        className={` ${sortBy === SORTBY.PRICE ? 'text-primary' : 'text-black'} relative flex w-50 cursor-pointer justify-between bg-white p-1 px-3 font-semibold select-none`}
                         onClick={() => setOpen(!open)}
                     >
                         {activeSelected}
@@ -46,19 +50,21 @@ export default function TopFilterBar({ totalPages, onChange, isFetching }) {
                     </div>
 
                     {open && (
-                        <div className="absolute left-0 font-semibold w-full bg-white shadow-md z-10">
+                        <div
+                            className={`absolute left-0 z-10 w-full bg-white font-semibold shadow-md`}
+                        >
                             {sortPriceSelections.map((item, i) => (
                                 <div
                                     key={i}
                                     onClick={() =>
                                         handleSelect(item.text, item.order, item.sortBy)
                                     }
-                                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full flex justify-between"
+                                    className="flex w-full cursor-pointer justify-between px-4 py-2 hover:bg-gray-100"
                                 >
                                     {item.text}
                                     {item.sortBy === sortBy &&
                                         activeSelected === item.text && (
-                                            <CheckIcon className="w-4 h-4 text-primary" />
+                                            <CheckIcon className="text-primary h-4 w-4" />
                                         )}
                                 </div>
                             ))}
@@ -74,14 +80,14 @@ export default function TopFilterBar({ totalPages, onChange, isFetching }) {
                 <button
                     disabled={page < 1 || isFetching}
                     onClick={() => onChange(page - 1)}
-                    className={`${page === 1 && 'opacity-50'} cursor-pointer bg-white w-10 h-10 border border-gray-200`}
+                    className={`${page === 1 && 'opacity-50'} h-10 w-10 cursor-pointer border border-gray-200 bg-white`}
                 >
                     {'<'}
                 </button>
                 <button
                     disabled={page === totalPages || isFetching}
                     onClick={() => onChange(page + 1)}
-                    className={`${page === totalPages && 'opacity-50'} cursor-pointer bg-white w-10 h-10 border border-gray-200`}
+                    className={`${page === totalPages && 'opacity-50'} h-10 w-10 cursor-pointer border border-gray-200 bg-white`}
                 >
                     {'>'}
                 </button>

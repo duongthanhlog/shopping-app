@@ -37,11 +37,11 @@ export async function POST(req: Request) {
                     title: product.title,
                     price: product.price,
                     quantity: delta,
+                    selected: false,
                 },
             ],
         })
-    }
-    if (existingItem) {
+    } else if (existingItem) {
         await Cart.updateOne(
             { userId, 'items.productId': productId },
             {
@@ -59,6 +59,7 @@ export async function POST(req: Request) {
                         title: product.title,
                         price: product.price,
                         quantity: delta ?? 1,
+                        selected: false,
                     },
                 },
             }

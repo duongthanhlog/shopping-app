@@ -11,11 +11,13 @@ interface User {
 }
 
 export interface Adresses {
-    id: string
+    _id: string
     fullName: string
     phone: number
-    street: string
-    city: string
+    province: string
+    district: string
+    ward: string
+    address: String
     isDefault: boolean
 }
 
@@ -33,10 +35,15 @@ const UserSchema = new mongoose.Schema(
         addresses: [
             {
                 fullName: String,
-                phone: Number,
-                street: String,
-                city: String,
-                isDefault: Boolean,
+                phone: String,
+                province: String,
+                address: String,
+                district: String,
+                ward: String,
+                isDefault: {
+                    type: Boolean,
+                    default: false,
+                },
             },
         ],
         role: {

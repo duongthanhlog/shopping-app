@@ -9,7 +9,6 @@ const CartSchema = new mongoose.Schema({
     },
     items: [
         {
-            _id: false,
             productId: { type: Schema.Types.ObjectId, required: true },
             thumbnail: String,
             title: String,

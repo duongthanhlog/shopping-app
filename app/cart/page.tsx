@@ -13,13 +13,16 @@ import CartItem from '@/feartures/cart/components/CartItem'
 import CartActionsBar from '@/feartures/cart/components/CartActionsBar'
 import CartSkeleton from '@/components/ui/skeletons/CartSkeleton'
 import useDeleteProducts from '@/feartures/cart/hooks/useDeleteCart'
-import useUpdateCheckout from '@/feartures/checkout/useUpdateCheckout'
+import useUpdateCheckout from '@/feartures/checkout/hooks/useUpdateCheckout'
+import { ShopeeCartIcon } from '@/public/icons'
+import SearchForm from '@/feartures/search/SearchForm'
+import Link from 'next/link'
 
 export default function CartPage() {
     const router = useRouter()
     const [checkedId, setCheckedId] = useState<string[]>([])
     const { user, isLoading } = useGetUser()
-    const { data, isSuccess } = useGetUserCart()
+    const { data } = useGetUserCart()
     const { onIncrease, onDecrease, pendingId } = useUpdateCart()
     const { deleteMutate, isPending } = useDeleteProducts()
     const { openConfirm, closeModal } = useModal()
@@ -137,17 +140,24 @@ export default function CartPage() {
     }
 
     const handleCheckOut = async () => {
-        const selectedItems = cart.filter((item: CartItemType) =>
-            checkedId.includes(item.productId)
-        )
+        const selectedItems = cart.map((item: CartItemType) => {
+            if (checkedId.includes(item.productId)) {
+                return {
+                    productId: item.productId,
+                    quantity: item.quantity,
+                }
+            }
+        })
         if (!checkedId.length) return
+        console.log(selectedItems)
+
         await mutateAsync(selectedItems)
         router.push('/checkout')
     }
 
     if (isLoading) return <CartSkeleton />
     if (isPending) return <FullScreenSpinner />
-    if (isSuccess && cart.length === 0) {
+    if (cart.length === 0 && user) {
         return (
             <div className="flex h-[calc(100vh-300px)] justify-center select-none">
                 <Image
@@ -166,8 +176,18 @@ export default function CartPage() {
     return (
         <>
             <div className="bg-white">
-                <div className="text-primary container py-5 text-[30px]">
-                    Giỏ hàng của bạn{' '}
+                <div className="text-primary container py-5 text-[30px] flex">
+                    <Link href={'/'}>
+                        <ShopeeCartIcon className="w-40 text-primary" />
+                    </Link>
+                    <span
+                        className="flex-1 leading-10 self-end top-0.5 text-[24px] font-mono relative after:bg-primary ml-8
+                         after:absolute after:h-[90%] after:top-0
+                      after:-left-4 after:w-[1px] after:content[''] "
+                    >
+                        Giỏ hàng
+                    </span>
+                    <SearchForm className="border-2 border-primary text-[14px] pl-2" />
                 </div>
             </div>
             <div className="container bg-white">
@@ -182,7 +202,7 @@ export default function CartPage() {
             <div className="bg-white py-5">
                 <div className="container">
                     <ul className="min-h-[65vh] border-t border-gray-300">
-                        {cart.map((item: CartItemType) => {
+                        {cart?.map((item: CartItemType) => {
                             return (
                                 <div key={item?.productId} className="flex items-center">
                                     <input
